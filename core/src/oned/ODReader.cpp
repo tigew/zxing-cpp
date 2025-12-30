@@ -9,7 +9,6 @@
 
 #include "BinaryBitmap.h"
 #include "ReaderOptions.h"
-#include "ODAustraliaPostReader.h"
 #include "ODCodabarReader.h"
 #include "ODCode128Reader.h"
 #include "ODCode39Reader.h"
@@ -68,8 +67,8 @@ Reader::Reader(const ReaderOptions& opts) : ZXing::Reader(opts)
 		_readers.emplace_back(new DataBarLimitedReader(opts));
 	if (formats.testFlag(BarcodeFormat::DXFilmEdge))
 		_readers.emplace_back(new DXFilmEdgeReader(opts));
-	if (formats.testFlag(BarcodeFormat::AustraliaPost))
-		_readers.emplace_back(new AustraliaPostReader(opts));
+	// Note: AustraliaPost and KIXCode are registered in MultiFormatReader
+	// because they require 2D access for bar height analysis
 }
 
 Reader::~Reader() = default;

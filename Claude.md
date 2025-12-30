@@ -40,11 +40,16 @@ When implementing a new barcode format reader or writer:
    - C API (ZXingC.h)
    - This documentation
 
+5. **Format Migration**: When a format is fully implemented:
+   - Remove it from the "Missing Formats to Implement" section
+   - Add it to the "Fully Supported Formats" table
+   - Update the "Progress Tracking" section with implementation details
+
 ---
 
 ## Current Implementation Status
 
-### Fully Supported Formats (21 formats)
+### Fully Supported Formats (22 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
@@ -62,6 +67,7 @@ When implementing a new barcode format reader or writer:
 | EAN-8 | Yes | Yes | Yes | |
 | EAN-13 | Yes | Yes | Yes | |
 | ITF | Yes | Yes | Yes | Interleaved 2 of 5, ITF-14 |
+| KIXCode | Yes | No | Yes | Dutch Post 4-state (Netherlands), same encoding as RM4SCC |
 | MaxiCode | Yes (partial) | No | Yes | |
 | MicroQRCode | Yes | No | Yes | |
 | PDF417 | Yes | Yes | Yes | Includes Truncated variant |
@@ -78,8 +84,6 @@ When implementing a new barcode format reader or writer:
 
 | Format | Category | Complexity | Notes |
 |--------|----------|------------|-------|
-| Australia Post (4 variants) | Postal | Medium | Standard Customer, Reply Paid, Routing, Redirection |
-| Dutch Post KIX Code | Postal | Medium | Netherlands postal |
 | Japan Post | Postal | Medium | |
 | Korea Post | Postal | Medium | |
 | Royal Mail 4-State (RM4SCC) | Postal | Medium | UK postal |
@@ -491,6 +495,15 @@ cmake -B build -DZXING_ENABLE_NEWFORMAT=OFF
   - N-Table (numeric) and C-Table (alphanumeric) encoding/decoding
   - Reed-Solomon GF(64) error correction
   - FCC 11 (Standard Customer), 45 (Reply Paid), 59 (Customer Barcode 2), 62 (Customer Barcode 3), 87 (Routing), 92 (Redirection)
+  - Writer available via libzint integration (ZXING_WRITERS=NEW)
+  - iOS wrapper and C API updated
+
+- [x] **Dutch Post KIX Code** - Fully implemented with:
+  - 4-state bar detection with height analysis (Full, Ascender, Descender, Tracker)
+  - Same encoding as Royal Mail 4-State (RM4SCC) but without start/stop bars and checksum
+  - Royal Table encoding for alphanumeric characters (0-9, A-Z)
+  - 7-24 character support (28-96 bars)
+  - Bidirectional decoding (can read upside-down barcodes)
   - Writer available via libzint integration (ZXING_WRITERS=NEW)
   - iOS wrapper and C API updated
 

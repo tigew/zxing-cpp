@@ -21,6 +21,8 @@
 #endif
 #ifdef ZXING_WITH_1D
 #include "oned/ODReader.h"
+#include "oned/ODAustraliaPostReader.h"
+#include "oned/ODKIXCodeReader.h"
 #endif
 #ifdef ZXING_WITH_PDF417
 #include "pdf417/PDFReader.h"
@@ -62,6 +64,14 @@ MultiFormatReader::MultiFormatReader(const ReaderOptions& opts) : _opts(opts)
 #ifdef ZXING_WITH_MAXICODE
 	if (formats.testFlag(BarcodeFormat::MaxiCode))
 		_readers.emplace_back(new MaxiCode::Reader(opts));
+#endif
+
+	// 4-state postal codes need 2D access for bar height analysis
+#ifdef ZXING_WITH_1D
+	if (formats.testFlag(BarcodeFormat::AustraliaPost))
+		_readers.emplace_back(new OneD::AustraliaPostReader(opts));
+	if (formats.testFlag(BarcodeFormat::KIXCode))
+		_readers.emplace_back(new OneD::KIXCodeReader(opts));
 #endif
 
 	// At end in "try harder" mode

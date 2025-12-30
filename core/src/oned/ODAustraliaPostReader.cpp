@@ -8,6 +8,10 @@
 #include "Barcode.h"
 #include "BinaryBitmap.h"
 #include "BitMatrix.h"
+#include "Content.h"
+#include "DecoderResult.h"
+#include "DetectorResult.h"
+#include "Quadrilateral.h"
 #include "ReaderOptions.h"
 #include "ZXAlgorithms.h"
 
@@ -583,7 +587,15 @@ Barcode AustraliaPostReader::decodeInternal(const BitMatrix& image, bool tryRota
 			// Symbology identifier for Australia Post
 			SymbologyIdentifier si = {'X', '0'};
 
-			return Barcode(content, position, BarcodeFormat::AustraliaPost, si);
+			// Create Content from the decoded string
+			ByteArray bytes(content);
+			Content contentObj(std::move(bytes), si);
+
+			// Create DecoderResult and DetectorResult
+			DecoderResult decoderResult(std::move(contentObj));
+			DetectorResult detectorResult({}, std::move(position));
+
+			return Barcode(std::move(decoderResult), std::move(detectorResult), BarcodeFormat::AustraliaPost);
 		}
 	}
 
