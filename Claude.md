@@ -3,6 +3,7 @@
 This document tracks the implementation status of barcode formats in zxing-cpp and provides guidelines for adding new format support.
 
 ## Table of Contents
+- [Implementation Policy](#implementation-policy)
 - [Current Implementation Status](#current-implementation-status)
 - [Missing Formats to Implement](#missing-formats-to-implement)
 - [Coding Conventions](#coding-conventions)
@@ -12,13 +13,42 @@ This document tracks the implementation status of barcode formats in zxing-cpp a
 
 ---
 
+## Implementation Policy
+
+**IMPORTANT: All implementations MUST be fully functional. No skeleton, stub, or placeholder implementations are acceptable.**
+
+When implementing a new barcode format reader or writer:
+
+1. **Complete Functionality Required**: Every reader must fully decode the barcode format, including:
+   - Pattern detection and recognition
+   - Data decoding with proper character set handling
+   - Error correction where applicable (e.g., Reed-Solomon)
+   - All format variants must be supported
+
+2. **No Half-Baked Implementations**: Do not commit code that:
+   - Returns empty results without attempting decoding
+   - Has TODO comments for critical functionality
+   - Only handles a subset of the format's variants
+   - Lacks proper error detection/correction
+
+3. **Test Before Commit**: Ensure the implementation can decode real-world barcode samples before marking as complete.
+
+4. **Update All Layers**: Each implementation must include updates to:
+   - Core library (BarcodeFormat enum, reader/writer classes)
+   - CMake build configuration
+   - iOS wrapper (ZXIFormat.h, ZXIFormatHelper.mm)
+   - C API (ZXingC.h)
+   - This documentation
+
+---
+
 ## Current Implementation Status
 
 ### Fully Supported Formats (21 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
-| AustraliaPost | Yes* | No | Yes | 4-state postal, 4 variants (*Reader skeleton) |
+| AustraliaPost | Yes | No | Yes | 4-state postal, 6 FCC variants (11, 45, 59, 62, 87, 92) |
 | Aztec | Yes | Yes | Yes | Full support |
 | Codabar | Yes | Yes | Yes | |
 | Code39 | Yes | Yes | Yes | Includes Extended variant |
@@ -455,13 +485,14 @@ cmake -B build -DZXING_ENABLE_NEWFORMAT=OFF
 
 ## Progress Tracking
 
-### Completed Formats
-- [x] Initial documentation created
-
-### In Progress
-- [x] **Australia Post** (4 variants) - Standard Customer, Reply Paid, Routing, Redirection
-  - Reader skeleton implemented (requires 4-state height detection for full decoding)
+### Completed
+- [x] **Australia Post** (6 FCC variants) - Fully implemented with:
+  - 4-state bar detection with height analysis (Full, Ascender, Descender, Tracker)
+  - N-Table (numeric) and C-Table (alphanumeric) encoding/decoding
+  - Reed-Solomon GF(64) error correction
+  - FCC 11 (Standard Customer), 45 (Reply Paid), 59 (Customer Barcode 2), 62 (Customer Barcode 3), 87 (Routing), 92 (Redirection)
   - Writer available via libzint integration (ZXING_WRITERS=NEW)
+  - iOS wrapper and C API updated
 
 ### Pending Phases
 - [ ] Phase 1: Low-Complexity Linear Codes
