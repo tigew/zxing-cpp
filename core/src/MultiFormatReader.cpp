@@ -22,6 +22,7 @@
 #ifdef ZXING_WITH_1D
 #include "oned/ODReader.h"
 #include "oned/ODAustraliaPostReader.h"
+#include "oned/ODJapanPostReader.h"
 #include "oned/ODKIXCodeReader.h"
 #endif
 #ifdef ZXING_WITH_PDF417
@@ -70,6 +71,8 @@ MultiFormatReader::MultiFormatReader(const ReaderOptions& opts) : _opts(opts)
 #ifdef ZXING_WITH_1D
 	if (formats.testFlag(BarcodeFormat::AustraliaPost))
 		_readers.emplace_back(new OneD::AustraliaPostReader(opts));
+	if (formats.testFlag(BarcodeFormat::JapanPost))
+		_readers.emplace_back(new OneD::JapanPostReader(opts));
 	if (formats.testFlag(BarcodeFormat::KIXCode))
 		_readers.emplace_back(new OneD::KIXCodeReader(opts));
 #endif

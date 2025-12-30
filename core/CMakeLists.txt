@@ -370,6 +370,8 @@ if (ZXING_READERS AND ZXING_ENABLE_1D)
         src/oned/ODDXFilmEdgeReader.cpp
         src/oned/ODITFReader.h
         src/oned/ODITFReader.cpp
+        src/oned/ODJapanPostReader.h
+        src/oned/ODJapanPostReader.cpp
         src/oned/ODKIXCodeReader.h
         src/oned/ODKIXCodeReader.cpp
         src/oned/ODMultiUPCEANReader.h

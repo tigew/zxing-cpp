@@ -38,6 +38,7 @@ static const BarcodeFormatName NAMES[] = {
 	{BarcodeFormat::EAN8, "EAN-8"},
 	{BarcodeFormat::EAN13, "EAN-13"},
 	{BarcodeFormat::ITF, "ITF"},
+	{BarcodeFormat::JapanPost, "JapanPost"},
 	{BarcodeFormat::KIXCode, "KIXCode"},
 	{BarcodeFormat::MaxiCode, "MaxiCode"},
 	{BarcodeFormat::MicroQRCode, "MicroQRCode"},

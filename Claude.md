@@ -49,7 +49,7 @@ When implementing a new barcode format reader or writer:
 
 ## Current Implementation Status
 
-### Fully Supported Formats (22 formats)
+### Fully Supported Formats (23 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
@@ -67,6 +67,7 @@ When implementing a new barcode format reader or writer:
 | EAN-8 | Yes | Yes | Yes | |
 | EAN-13 | Yes | Yes | Yes | |
 | ITF | Yes | Yes | Yes | Interleaved 2 of 5, ITF-14 |
+| JapanPost | Yes | No | Yes | Japan Post 4-State (Kasutama), 7-digit postal + address |
 | KIXCode | Yes | No | Yes | Dutch Post 4-state (Netherlands), same encoding as RM4SCC |
 | MaxiCode | Yes (partial) | No | Yes | |
 | MicroQRCode | Yes | No | Yes | |
@@ -84,7 +85,6 @@ When implementing a new barcode format reader or writer:
 
 | Format | Category | Complexity | Notes |
 |--------|----------|------------|-------|
-| Japan Post | Postal | Medium | |
 | Korea Post | Postal | Medium | |
 | Royal Mail 4-State (RM4SCC) | Postal | Medium | UK postal |
 | Royal Mail 4-State Mailmark | Postal | Medium | Modern UK postal |
@@ -503,6 +503,16 @@ cmake -B build -DZXING_ENABLE_NEWFORMAT=OFF
   - Same encoding as Royal Mail 4-State (RM4SCC) but without start/stop bars and checksum
   - Royal Table encoding for alphanumeric characters (0-9, A-Z)
   - 7-24 character support (28-96 bars)
+  - Bidirectional decoding (can read upside-down barcodes)
+  - Writer available via libzint integration (ZXING_WRITERS=NEW)
+  - iOS wrapper and C API updated
+
+- [x] **Japan Post 4-State** (Kasutama Barcode) - Fully implemented with:
+  - 4-state bar detection with height analysis (Full=4, Ascender=2, Descender=3, Tracker=1)
+  - 3-bar character encoding for digits (0-9), hyphen (-), and control codes
+  - Letter encoding via control code pairs (CC1+digit=A-J, CC2+digit=K-T, CC3+digit=U-Z)
+  - Fixed 67-bar structure: Start(2) + PostalCode(21) + Address(39) + CheckDigit(3) + Stop(2)
+  - Modulo 19 checksum validation
   - Bidirectional decoding (can read upside-down barcodes)
   - Writer available via libzint integration (ZXING_WRITERS=NEW)
   - iOS wrapper and C API updated
