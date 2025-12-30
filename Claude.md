@@ -7,16 +7,18 @@ This document tracks the implementation status of barcode formats in zxing-cpp a
 - [Missing Formats to Implement](#missing-formats-to-implement)
 - [Coding Conventions](#coding-conventions)
 - [Implementation Patterns](#implementation-patterns)
+- [Wrapper Updates Required](#wrapper-updates-required)
 - [Implementation Roadmap](#implementation-roadmap)
 
 ---
 
 ## Current Implementation Status
 
-### Fully Supported Formats (20 formats)
+### Fully Supported Formats (21 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
+| AustraliaPost | Yes* | No | Yes | 4-state postal, 4 variants (*Reader skeleton) |
 | Aztec | Yes | Yes | Yes | Full support |
 | Codabar | Yes | Yes | Yes | |
 | Code39 | Yes | Yes | Yes | Includes Extended variant |
@@ -316,6 +318,64 @@ static constexpr BarcodeFormatZXing2Zint barcodeFormatZXing2Zint[] = {
 
 ---
 
+## Wrapper Updates Required
+
+When adding a new barcode format to the core library, the following wrapper APIs must also be updated:
+
+### iOS Wrapper (Required)
+
+The iOS wrapper requires updates to expose new formats to Swift/Objective-C applications.
+
+**Files to update:**
+
+1. **`wrappers/ios/Sources/Wrapper/ZXIFormat.h`**
+   - Add new enum value to `ZXIFormat` typedef
+   ```objc
+   typedef NS_ENUM(NSInteger, ZXIFormat) {
+       // ... existing formats
+       AUSTRALIA_POST,  // Add new format
+       // ...
+   };
+   ```
+
+2. **`wrappers/ios/Sources/Wrapper/ZXIFormatHelper.mm`**
+   - Add case to `BarcodeFormatFromZXIFormat()` function
+   - Add case to `ZXIFormatFromBarcodeFormat()` function
+   ```objc
+   // In BarcodeFormatFromZXIFormat:
+   case ZXIFormat::AUSTRALIA_POST:
+       return ZXing::BarcodeFormat::AustraliaPost;
+
+   // In ZXIFormatFromBarcodeFormat:
+   case ZXing::BarcodeFormat::AustraliaPost:
+       return ZXIFormat::AUSTRALIA_POST;
+   ```
+
+### Other Wrappers (As Needed)
+
+The following wrappers may also need updates depending on how they expose format enums:
+
+| Wrapper | Location | Update Required |
+|---------|----------|-----------------|
+| Android | `wrappers/android/` | Format enum mapping |
+| Python | `wrappers/python/` | BarcodeFormat bindings |
+| C API | `core/src/ZXingC.h` | ZXing_BarcodeFormat enum |
+| .NET | `wrappers/dotnet/` | BarcodeFormat enum |
+| Rust | `wrappers/rust/` | BarcodeFormat enum |
+| WebAssembly | `wrappers/wasm/` | JavaScript bindings |
+
+### C API Updates
+
+When adding new formats, also update `core/src/ZXingC.h`:
+```c
+typedef enum {
+    // ... existing
+    ZXing_BarcodeFormat_AustraliaPost = (1 << 20),  // Next available bit
+} ZXing_BarcodeFormat;
+```
+
+---
+
 ## Implementation Roadmap
 
 ### Phase 1: Low-Complexity Linear Codes
@@ -395,19 +455,34 @@ cmake -B build -DZXING_ENABLE_NEWFORMAT=OFF
 
 ## Progress Tracking
 
-### Completed
+### Completed Formats
 - [x] Initial documentation created
+
+### In Progress
+- [x] **Australia Post** (4 variants) - Standard Customer, Reply Paid, Routing, Redirection
+  - Reader skeleton implemented (requires 4-state height detection for full decoding)
+  - Writer available via libzint integration (ZXING_WRITERS=NEW)
+
+### Pending Phases
 - [ ] Phase 1: Low-Complexity Linear Codes
 - [ ] Phase 2: Code 39 Variants
-- [ ] Phase 3: Postal Codes
+- [ ] Phase 3: Postal Codes (Australia Post first)
 - [ ] Phase 4: Stacked Linear Codes
 - [ ] Phase 5: 2D Matrix Codes
 
-### Next Steps
-1. Start with Code 11 implementation (simplest missing format)
-2. Follow the implementation pattern documented above
-3. Add unit tests for each new format
-4. Update this document as formats are completed
+### Implementation Checklist Template
+For each new format, complete these steps:
+- [ ] Add to `BarcodeFormat.h` enum
+- [ ] Add to `BarcodeFormat.cpp` NAMES array
+- [ ] Create reader implementation (`core/src/{format}/`)
+- [ ] Create writer implementation (if applicable)
+- [ ] Register in `MultiFormatReader.cpp`
+- [ ] Register in `MultiFormatWriter.cpp` (if applicable)
+- [ ] Update `core/CMakeLists.txt`
+- [ ] Update iOS wrapper (`ZXIFormat.h`, `ZXIFormatHelper.mm`)
+- [ ] Update C API (`ZXingC.h`)
+- [ ] Add unit tests
+- [ ] Update this documentation
 
 ---
 

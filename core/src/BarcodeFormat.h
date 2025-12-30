@@ -42,13 +42,14 @@ enum class BarcodeFormat
 	RMQRCode        = (1 << 17), ///< Rectangular Micro QR Code
 	DXFilmEdge      = (1 << 18), ///< DX Film Edge Barcode
 	DataBarLimited  = (1 << 19), ///< GS1 DataBar Limited
+	AustraliaPost   = (1 << 20), ///< Australia Post 4-State (Standard Customer, Reply Paid, Routing, Redirection)
 
 	LinearCodes = Codabar | Code39 | Code93 | Code128 | EAN8 | EAN13 | ITF | DataBar | DataBarExpanded | DataBarLimited
-				  | DXFilmEdge | UPCA | UPCE,
+				  | DXFilmEdge | UPCA | UPCE | AustraliaPost,
 	MatrixCodes = Aztec | DataMatrix | MaxiCode | PDF417 | QRCode | MicroQRCode | RMQRCode,
 	Any         = LinearCodes | MatrixCodes,
 
-	_max = DataBarLimited, ///> implementation detail, don't use
+	_max = AustraliaPost, ///> implementation detail, don't use
 };
 
 ZX_DECLARE_FLAGS(BarcodeFormats, BarcodeFormat)
