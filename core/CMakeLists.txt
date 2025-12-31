@@ -350,6 +350,8 @@ if (ZXING_READERS AND ZXING_ENABLE_1D)
         src/oned/ODAustraliaPostReader.cpp
         src/oned/ODCodabarReader.h
         src/oned/ODCodabarReader.cpp
+        src/oned/ODCode11Reader.h
+        src/oned/ODCode11Reader.cpp
         src/oned/ODCode39Reader.h
         src/oned/ODCode39Reader.cpp
         src/oned/ODCode93Reader.h

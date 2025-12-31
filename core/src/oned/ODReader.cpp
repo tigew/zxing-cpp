@@ -10,6 +10,7 @@
 #include "BinaryBitmap.h"
 #include "ReaderOptions.h"
 #include "ODCodabarReader.h"
+#include "ODCode11Reader.h"
 #include "ODCode128Reader.h"
 #include "ODCode39Reader.h"
 #include "ODCode93Reader.h"
@@ -61,6 +62,8 @@ Reader::Reader(const ReaderOptions& opts) : ZXing::Reader(opts)
 		_readers.emplace_back(new ITFReader(opts));
 	if (formats.testFlag(BarcodeFormat::Codabar))
 		_readers.emplace_back(new CodabarReader(opts));
+	if (formats.testFlag(BarcodeFormat::Code11))
+		_readers.emplace_back(new Code11Reader(opts));
 	if (formats.testFlag(BarcodeFormat::DataBar))
 		_readers.emplace_back(new DataBarReader(opts));
 	if (formats.testFlag(BarcodeFormat::DataBarExpanded))

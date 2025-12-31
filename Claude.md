@@ -49,13 +49,14 @@ When implementing a new barcode format reader or writer:
 
 ## Current Implementation Status
 
-### Fully Supported Formats (29 formats)
+### Fully Supported Formats (30 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
 | AustraliaPost | Yes | No | Yes | 4-state postal, 6 FCC variants (11, 45, 59, 62, 87, 92) |
 | Aztec | Yes | Yes | Yes | Full support |
 | Codabar | Yes | Yes | Yes | |
+| Code11 | Yes | No | Yes | Telecommunications (USD-8), check digit C and K |
 | Code39 | Yes | Yes | Yes | Includes Extended variant |
 | Code93 | Yes | Yes | Yes | |
 | Code128 | Yes | Yes | Yes | Automatic subset switching |
@@ -97,7 +98,6 @@ When implementing a new barcode format reader or writer:
 
 | Format | Category | Complexity | Notes |
 |--------|----------|------------|-------|
-| Code 11 | Linear | Low | Telecommunications |
 | MSI (Modified Plessey) | Linear | Low | Inventory/warehousing |
 | Telepen | Linear | Low | UK library system |
 | LOGMARS | Linear | Low | Code 39 variant for military |
@@ -575,6 +575,17 @@ cmake -B build -DZXING_ENABLE_NEWFORMAT=OFF
   - Same check digit algorithm as Leitcode (Modulo 10 with weights 4 and 9)
   - Based on Interleaved 2 of 5 (ITF) encoding
   - Shares reader implementation with Leitcode (ODDeutschePostReader)
+  - Writer available via libzint integration (ZXING_WRITERS=NEW)
+  - iOS wrapper and C API updated
+
+- [x] **Code11** (Code 11 / USD-8) - Fully implemented with:
+  - Character set: digits 0-9 and dash (-)
+  - Each character: 3 bars + 2 spaces (5 elements)
+  - Start/stop character pattern
+  - Check digit C: Modulo 11 with weights 1-10 cycling from right
+  - Check digit K: Modulo 11 with weights 1-9 cycling from right (includes C)
+  - Single check digit (C) for data <= 10 characters
+  - Dual check digits (C + K) for data > 10 characters
   - Writer available via libzint integration (ZXING_WRITERS=NEW)
   - iOS wrapper and C API updated
 
