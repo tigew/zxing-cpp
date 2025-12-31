@@ -49,7 +49,7 @@ When implementing a new barcode format reader or writer:
 
 ## Current Implementation Status
 
-### Fully Supported Formats (30 formats)
+### Fully Supported Formats (32 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
@@ -57,6 +57,8 @@ When implementing a new barcode format reader or writer:
 | Aztec | Yes | Yes | Yes | Full support |
 | Codabar | Yes | Yes | Yes | |
 | Code11 | Yes | No | Yes | Telecommunications (USD-8), check digit C and K |
+| POSTNET | Yes | No | Yes | USPS POSTNET (height-modulated 5-bar encoding) |
+| PLANET | Yes | No | Yes | USPS PLANET (inverse of POSTNET encoding) |
 | Code39 | Yes | Yes | Yes | Includes Extended variant |
 | Code93 | Yes | Yes | Yes | |
 | Code128 | Yes | Yes | Yes | Automatic subset switching |
@@ -88,13 +90,7 @@ When implementing a new barcode format reader or writer:
 
 ## Missing Formats to Implement
 
-### Priority 1: Postal Codes (High demand)
-
-| Format | Category | Complexity | Notes |
-|--------|----------|------------|-------|
-| POSTNET / PLANET | Postal | Low | Legacy US postal |
-
-### Priority 2: Industrial/Linear Codes
+### Priority 1: Industrial/Linear Codes
 
 | Format | Category | Complexity | Notes |
 |--------|----------|------------|-------|
@@ -107,7 +103,7 @@ When implementing a new barcode format reader or writer:
 | Pharmazentralnummer | Linear | Low | German pharmaceutical (Code 39 variant) |
 | Channel Code | Linear | Medium | Compact numeric encoding |
 
-### Priority 3: Code 2 of 5 Variants
+### Priority 2: Code 2 of 5 Variants
 
 | Format | Category | Complexity | Notes |
 |--------|----------|------------|-------|
@@ -116,7 +112,7 @@ When implementing a new barcode format reader or writer:
 | IATA 2 of 5 | Linear | Low | Airline industry |
 | Datalogic 2 of 5 | Linear | Low | |
 
-### Priority 4: Stacked/Multi-Row Linear
+### Priority 3: Stacked/Multi-Row Linear
 
 | Format | Category | Complexity | Notes |
 |--------|----------|------------|-------|
@@ -127,7 +123,7 @@ When implementing a new barcode format reader or writer:
 | GS1 DataBar Stacked Omnidirectional | Stacked | Medium | |
 | GS1 DataBar Expanded Stacked | Stacked | Medium | Already partial via `stacked` option |
 
-### Priority 5: 2D Matrix Codes
+### Priority 4: 2D Matrix Codes
 
 | Format | Category | Complexity | Notes |
 |--------|----------|------------|-------|
@@ -586,6 +582,29 @@ cmake -B build -DZXING_ENABLE_NEWFORMAT=OFF
   - Check digit K: Modulo 11 with weights 1-9 cycling from right (includes C)
   - Single check digit (C) for data <= 10 characters
   - Dual check digits (C + K) for data > 10 characters
+  - Writer available via libzint integration (ZXING_WRITERS=NEW)
+  - iOS wrapper and C API updated
+
+- [x] **POSTNET** (USPS Postal Numeric Encoding Technique) - Fully implemented with:
+  - Height-modulated barcode (tall=1, short=0)
+  - 5-bar encoding per digit with weights 7-4-2-1-0
+  - 2 tall bars (plus optional third for zero) per digit
+  - Frame bars (tall bars at start and end)
+  - Modulo 10 check digit
+  - Supports ZIP (32 bars), ZIP+4 (52 bars), ZIP+4+DPC (62 bars)
+  - Bidirectional decoding support
+  - Writer available via libzint integration (ZXING_WRITERS=NEW)
+  - iOS wrapper and C API updated
+
+- [x] **PLANET** (USPS Postal Alpha Numeric Encoding Technique) - Fully implemented with:
+  - Height-modulated barcode (inverse of POSTNET: tall=0, short=1)
+  - 5-bar encoding per digit with weights 7-4-2-1-0
+  - 3 tall bars (or 2 for zero) per digit
+  - Frame bars (tall bars at start and end)
+  - Modulo 10 check digit
+  - Supports 12-digit (62 bars) and 14-digit (72 bars) formats
+  - Bidirectional decoding support
+  - Shares reader implementation with POSTNET (ODPOSTNETReader)
   - Writer available via libzint integration (ZXING_WRITERS=NEW)
   - iOS wrapper and C API updated
 

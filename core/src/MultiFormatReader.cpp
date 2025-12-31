@@ -25,6 +25,7 @@
 #include "oned/ODJapanPostReader.h"
 #include "oned/ODKIXCodeReader.h"
 #include "oned/ODMailmarkReader.h"
+#include "oned/ODPOSTNETReader.h"
 #include "oned/ODRM4SCCReader.h"
 #include "oned/ODUSPSIMBReader.h"
 #endif
@@ -84,6 +85,8 @@ MultiFormatReader::MultiFormatReader(const ReaderOptions& opts) : _opts(opts)
 		_readers.emplace_back(new OneD::MailmarkReader(opts));
 	if (formats.testFlag(BarcodeFormat::USPSIMB))
 		_readers.emplace_back(new OneD::USPSIMBReader(opts));
+	if (formats.testFlags(BarcodeFormat::POSTNET | BarcodeFormat::PLANET))
+		_readers.emplace_back(new OneD::POSTNETReader(opts));
 #endif
 
 	// At end in "try harder" mode

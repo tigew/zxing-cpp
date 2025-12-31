@@ -47,6 +47,8 @@ static const BarcodeFormatName NAMES[] = {
 	{BarcodeFormat::DeutschePostLeitcode, "DeutschePostLeitcode"},
 	{BarcodeFormat::DeutschePostIdentcode, "DeutschePostIdentcode"},
 	{BarcodeFormat::Code11, "Code11"},
+	{BarcodeFormat::POSTNET, "POSTNET"},
+	{BarcodeFormat::PLANET, "PLANET"},
 	{BarcodeFormat::MaxiCode, "MaxiCode"},
 	{BarcodeFormat::MicroQRCode, "MicroQRCode"},
 	{BarcodeFormat::PDF417, "PDF417"},

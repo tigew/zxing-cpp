@@ -108,6 +108,8 @@ typedef enum
 	ZXing_BarcodeFormat_DeutschePostLeitcode = (1 << 27),
 	ZXing_BarcodeFormat_DeutschePostIdentcode = (1 << 28),
 	ZXing_BarcodeFormat_Code11 = (1 << 29),
+	ZXing_BarcodeFormat_POSTNET = (1 << 30),
+	ZXing_BarcodeFormat_PLANET = (1u << 31),
 
 	ZXing_BarcodeFormat_LinearCodes = ZXing_BarcodeFormat_Codabar | ZXing_BarcodeFormat_Code39 | ZXing_BarcodeFormat_Code93
 									  | ZXing_BarcodeFormat_Code128 | ZXing_BarcodeFormat_EAN8 | ZXing_BarcodeFormat_EAN13
@@ -116,7 +118,8 @@ typedef enum
 									  | ZXing_BarcodeFormat_UPCE | ZXing_BarcodeFormat_AustraliaPost | ZXing_BarcodeFormat_KIXCode
 									  | ZXing_BarcodeFormat_JapanPost | ZXing_BarcodeFormat_KoreaPost | ZXing_BarcodeFormat_RM4SCC
 									  | ZXing_BarcodeFormat_Mailmark | ZXing_BarcodeFormat_USPSIMB | ZXing_BarcodeFormat_DeutschePostLeitcode
-									  | ZXing_BarcodeFormat_DeutschePostIdentcode | ZXing_BarcodeFormat_Code11,
+									  | ZXing_BarcodeFormat_DeutschePostIdentcode | ZXing_BarcodeFormat_Code11
+								  | ZXing_BarcodeFormat_POSTNET | ZXing_BarcodeFormat_PLANET,
 	ZXing_BarcodeFormat_MatrixCodes = ZXing_BarcodeFormat_Aztec | ZXing_BarcodeFormat_DataMatrix | ZXing_BarcodeFormat_MaxiCode
 									  | ZXing_BarcodeFormat_PDF417 | ZXing_BarcodeFormat_QRCode | ZXing_BarcodeFormat_MicroQRCode
 									  | ZXing_BarcodeFormat_RMQRCode,
