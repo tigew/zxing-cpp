@@ -44,6 +44,8 @@ ZXing::BarcodeFormat BarcodeFormatFromZXIFormat(ZXIFormat format) {
             return ZXing::BarcodeFormat::POSTNET;
         case ZXIFormat::PLANET:
             return ZXing::BarcodeFormat::PLANET;
+        case ZXIFormat::MSI:
+            return ZXing::BarcodeFormat::MSI;
         case ZXIFormat::EAN_13:
             return ZXing::BarcodeFormat::EAN13;
         case ZXIFormat::EAN_8:
@@ -137,6 +139,8 @@ ZXIFormat ZXIFormatFromBarcodeFormat(ZXing::BarcodeFormat format) {
             return ZXIFormat::POSTNET;
         case ZXing::BarcodeFormat::PLANET:
             return ZXIFormat::PLANET;
+        case ZXing::BarcodeFormat::MSI:
+            return ZXIFormat::MSI;
         case ZXing::BarcodeFormat::MaxiCode:
             return ZXIFormat::MAXICODE;
         case ZXing::BarcodeFormat::PDF417:

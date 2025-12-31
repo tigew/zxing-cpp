@@ -17,7 +17,7 @@ namespace ZXing {
 /**
 * Enumerates barcode formats known to this package.
 */
-enum class BarcodeFormat : uint32_t
+enum class BarcodeFormat : uint64_t
 {
 	// The values are an implementation detail. The c++ use-case (ZXing::Flags) could have been designed such that it
 	// would not have been necessary to explicitly set the values to single bit constants. This has been done to ease
@@ -54,15 +54,16 @@ enum class BarcodeFormat : uint32_t
 	DeutschePostIdentcode = (1 << 28), ///< Deutsche Post Identcode (12 digits, German identification)
 	Code11          = (1 << 29), ///< Code 11 (USD-8, telecommunications)
 	POSTNET         = (1 << 30), ///< USPS POSTNET (Postal Numeric Encoding Technique)
-	PLANET          = (1u << 31), ///< USPS PLANET (Postal Alpha Numeric Encoding Technique)
+	PLANET          = (1ull << 31), ///< USPS PLANET (Postal Alpha Numeric Encoding Technique)
+	MSI             = (1ull << 32), ///< MSI (Modified Plessey, inventory/warehousing)
 
 	LinearCodes = Codabar | Code39 | Code93 | Code128 | EAN8 | EAN13 | ITF | DataBar | DataBarExpanded | DataBarLimited
 				  | DXFilmEdge | UPCA | UPCE | AustraliaPost | KIXCode | JapanPost | KoreaPost | RM4SCC | Mailmark | USPSIMB
-				  | DeutschePostLeitcode | DeutschePostIdentcode | Code11 | POSTNET | PLANET,
+				  | DeutschePostLeitcode | DeutschePostIdentcode | Code11 | POSTNET | PLANET | MSI,
 	MatrixCodes = Aztec | DataMatrix | MaxiCode | PDF417 | QRCode | MicroQRCode | RMQRCode,
 	Any         = LinearCodes | MatrixCodes,
 
-	_max = PLANET, ///> implementation detail, don't use
+	_max = MSI, ///> implementation detail, don't use
 };
 
 ZX_DECLARE_FLAGS(BarcodeFormats, BarcodeFormat)

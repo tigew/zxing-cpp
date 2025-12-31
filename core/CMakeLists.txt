@@ -388,6 +388,8 @@ if (ZXING_READERS AND ZXING_ENABLE_1D)
         src/oned/ODDeutschePostReader.cpp
         src/oned/ODPOSTNETReader.h
         src/oned/ODPOSTNETReader.cpp
+        src/oned/ODMSIReader.h
+        src/oned/ODMSIReader.cpp
         src/oned/ODMultiUPCEANReader.h
         src/oned/ODMultiUPCEANReader.cpp
         src/oned/ODReader.h

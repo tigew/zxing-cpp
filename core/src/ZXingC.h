@@ -75,58 +75,60 @@ ZXing_ImageFormat ZXing_Image_format(const ZXing_Image* img);
  * ZXing/BarcodeFormat.h
  */
 
-typedef enum
-{
-	ZXing_BarcodeFormat_None = 0,
-	ZXing_BarcodeFormat_Aztec = (1 << 0),
-	ZXing_BarcodeFormat_Codabar = (1 << 1),
-	ZXing_BarcodeFormat_Code39 = (1 << 2),
-	ZXing_BarcodeFormat_Code93 = (1 << 3),
-	ZXing_BarcodeFormat_Code128 = (1 << 4),
-	ZXing_BarcodeFormat_DataBar = (1 << 5),
-	ZXing_BarcodeFormat_DataBarExpanded = (1 << 6),
-	ZXing_BarcodeFormat_DataMatrix = (1 << 7),
-	ZXing_BarcodeFormat_EAN8 = (1 << 8),
-	ZXing_BarcodeFormat_EAN13 = (1 << 9),
-	ZXing_BarcodeFormat_ITF = (1 << 10),
-	ZXing_BarcodeFormat_MaxiCode = (1 << 11),
-	ZXing_BarcodeFormat_PDF417 = (1 << 12),
-	ZXing_BarcodeFormat_QRCode = (1 << 13),
-	ZXing_BarcodeFormat_UPCA = (1 << 14),
-	ZXing_BarcodeFormat_UPCE = (1 << 15),
-	ZXing_BarcodeFormat_MicroQRCode = (1 << 16),
-	ZXing_BarcodeFormat_RMQRCode = (1 << 17),
-	ZXing_BarcodeFormat_DXFilmEdge = (1 << 18),
-	ZXing_BarcodeFormat_DataBarLimited = (1 << 19),
-	ZXing_BarcodeFormat_AustraliaPost = (1 << 20),
-	ZXing_BarcodeFormat_KIXCode = (1 << 21),
-	ZXing_BarcodeFormat_JapanPost = (1 << 22),
-	ZXing_BarcodeFormat_KoreaPost = (1 << 23),
-	ZXing_BarcodeFormat_RM4SCC = (1 << 24),
-	ZXing_BarcodeFormat_Mailmark = (1 << 25),
-	ZXing_BarcodeFormat_USPSIMB = (1 << 26),
-	ZXing_BarcodeFormat_DeutschePostLeitcode = (1 << 27),
-	ZXing_BarcodeFormat_DeutschePostIdentcode = (1 << 28),
-	ZXing_BarcodeFormat_Code11 = (1 << 29),
-	ZXing_BarcodeFormat_POSTNET = (1 << 30),
-	ZXing_BarcodeFormat_PLANET = (1u << 31),
+typedef uint64_t ZXing_BarcodeFormat;
 
-	ZXing_BarcodeFormat_LinearCodes = ZXing_BarcodeFormat_Codabar | ZXing_BarcodeFormat_Code39 | ZXing_BarcodeFormat_Code93
-									  | ZXing_BarcodeFormat_Code128 | ZXing_BarcodeFormat_EAN8 | ZXing_BarcodeFormat_EAN13
-									  | ZXing_BarcodeFormat_ITF | ZXing_BarcodeFormat_DataBar | ZXing_BarcodeFormat_DataBarExpanded
-									  | ZXing_BarcodeFormat_DataBarLimited | ZXing_BarcodeFormat_DXFilmEdge | ZXing_BarcodeFormat_UPCA
-									  | ZXing_BarcodeFormat_UPCE | ZXing_BarcodeFormat_AustraliaPost | ZXing_BarcodeFormat_KIXCode
-									  | ZXing_BarcodeFormat_JapanPost | ZXing_BarcodeFormat_KoreaPost | ZXing_BarcodeFormat_RM4SCC
-									  | ZXing_BarcodeFormat_Mailmark | ZXing_BarcodeFormat_USPSIMB | ZXing_BarcodeFormat_DeutschePostLeitcode
-									  | ZXing_BarcodeFormat_DeutschePostIdentcode | ZXing_BarcodeFormat_Code11
-								  | ZXing_BarcodeFormat_POSTNET | ZXing_BarcodeFormat_PLANET,
-	ZXing_BarcodeFormat_MatrixCodes = ZXing_BarcodeFormat_Aztec | ZXing_BarcodeFormat_DataMatrix | ZXing_BarcodeFormat_MaxiCode
-									  | ZXing_BarcodeFormat_PDF417 | ZXing_BarcodeFormat_QRCode | ZXing_BarcodeFormat_MicroQRCode
-									  | ZXing_BarcodeFormat_RMQRCode,
-	ZXing_BarcodeFormat_Any = ZXing_BarcodeFormat_LinearCodes | ZXing_BarcodeFormat_MatrixCodes,
+#define ZXing_BarcodeFormat_None            ((ZXing_BarcodeFormat)0)
+#define ZXing_BarcodeFormat_Aztec           ((ZXing_BarcodeFormat)(1ull << 0))
+#define ZXing_BarcodeFormat_Codabar         ((ZXing_BarcodeFormat)(1ull << 1))
+#define ZXing_BarcodeFormat_Code39          ((ZXing_BarcodeFormat)(1ull << 2))
+#define ZXing_BarcodeFormat_Code93          ((ZXing_BarcodeFormat)(1ull << 3))
+#define ZXing_BarcodeFormat_Code128         ((ZXing_BarcodeFormat)(1ull << 4))
+#define ZXing_BarcodeFormat_DataBar         ((ZXing_BarcodeFormat)(1ull << 5))
+#define ZXing_BarcodeFormat_DataBarExpanded ((ZXing_BarcodeFormat)(1ull << 6))
+#define ZXing_BarcodeFormat_DataMatrix      ((ZXing_BarcodeFormat)(1ull << 7))
+#define ZXing_BarcodeFormat_EAN8            ((ZXing_BarcodeFormat)(1ull << 8))
+#define ZXing_BarcodeFormat_EAN13           ((ZXing_BarcodeFormat)(1ull << 9))
+#define ZXing_BarcodeFormat_ITF             ((ZXing_BarcodeFormat)(1ull << 10))
+#define ZXing_BarcodeFormat_MaxiCode        ((ZXing_BarcodeFormat)(1ull << 11))
+#define ZXing_BarcodeFormat_PDF417          ((ZXing_BarcodeFormat)(1ull << 12))
+#define ZXing_BarcodeFormat_QRCode          ((ZXing_BarcodeFormat)(1ull << 13))
+#define ZXing_BarcodeFormat_UPCA            ((ZXing_BarcodeFormat)(1ull << 14))
+#define ZXing_BarcodeFormat_UPCE            ((ZXing_BarcodeFormat)(1ull << 15))
+#define ZXing_BarcodeFormat_MicroQRCode     ((ZXing_BarcodeFormat)(1ull << 16))
+#define ZXing_BarcodeFormat_RMQRCode        ((ZXing_BarcodeFormat)(1ull << 17))
+#define ZXing_BarcodeFormat_DXFilmEdge      ((ZXing_BarcodeFormat)(1ull << 18))
+#define ZXing_BarcodeFormat_DataBarLimited  ((ZXing_BarcodeFormat)(1ull << 19))
+#define ZXing_BarcodeFormat_AustraliaPost   ((ZXing_BarcodeFormat)(1ull << 20))
+#define ZXing_BarcodeFormat_KIXCode         ((ZXing_BarcodeFormat)(1ull << 21))
+#define ZXing_BarcodeFormat_JapanPost       ((ZXing_BarcodeFormat)(1ull << 22))
+#define ZXing_BarcodeFormat_KoreaPost       ((ZXing_BarcodeFormat)(1ull << 23))
+#define ZXing_BarcodeFormat_RM4SCC          ((ZXing_BarcodeFormat)(1ull << 24))
+#define ZXing_BarcodeFormat_Mailmark        ((ZXing_BarcodeFormat)(1ull << 25))
+#define ZXing_BarcodeFormat_USPSIMB         ((ZXing_BarcodeFormat)(1ull << 26))
+#define ZXing_BarcodeFormat_DeutschePostLeitcode  ((ZXing_BarcodeFormat)(1ull << 27))
+#define ZXing_BarcodeFormat_DeutschePostIdentcode ((ZXing_BarcodeFormat)(1ull << 28))
+#define ZXing_BarcodeFormat_Code11          ((ZXing_BarcodeFormat)(1ull << 29))
+#define ZXing_BarcodeFormat_POSTNET         ((ZXing_BarcodeFormat)(1ull << 30))
+#define ZXing_BarcodeFormat_PLANET          ((ZXing_BarcodeFormat)(1ull << 31))
+#define ZXing_BarcodeFormat_MSI             ((ZXing_BarcodeFormat)(1ull << 32))
 
-	ZXing_BarcodeFormat_Invalid = 0xFFFFFFFFu /* return value when BarcodeFormatsFromString() throws */
-} ZXing_BarcodeFormat;
+#define ZXing_BarcodeFormat_LinearCodes (ZXing_BarcodeFormat_Codabar | ZXing_BarcodeFormat_Code39 | ZXing_BarcodeFormat_Code93 \
+	| ZXing_BarcodeFormat_Code128 | ZXing_BarcodeFormat_EAN8 | ZXing_BarcodeFormat_EAN13 \
+	| ZXing_BarcodeFormat_ITF | ZXing_BarcodeFormat_DataBar | ZXing_BarcodeFormat_DataBarExpanded \
+	| ZXing_BarcodeFormat_DataBarLimited | ZXing_BarcodeFormat_DXFilmEdge | ZXing_BarcodeFormat_UPCA \
+	| ZXing_BarcodeFormat_UPCE | ZXing_BarcodeFormat_AustraliaPost | ZXing_BarcodeFormat_KIXCode \
+	| ZXing_BarcodeFormat_JapanPost | ZXing_BarcodeFormat_KoreaPost | ZXing_BarcodeFormat_RM4SCC \
+	| ZXing_BarcodeFormat_Mailmark | ZXing_BarcodeFormat_USPSIMB | ZXing_BarcodeFormat_DeutschePostLeitcode \
+	| ZXing_BarcodeFormat_DeutschePostIdentcode | ZXing_BarcodeFormat_Code11 \
+	| ZXing_BarcodeFormat_POSTNET | ZXing_BarcodeFormat_PLANET | ZXing_BarcodeFormat_MSI)
+
+#define ZXing_BarcodeFormat_MatrixCodes (ZXing_BarcodeFormat_Aztec | ZXing_BarcodeFormat_DataMatrix | ZXing_BarcodeFormat_MaxiCode \
+	| ZXing_BarcodeFormat_PDF417 | ZXing_BarcodeFormat_QRCode | ZXing_BarcodeFormat_MicroQRCode \
+	| ZXing_BarcodeFormat_RMQRCode)
+
+#define ZXing_BarcodeFormat_Any (ZXing_BarcodeFormat_LinearCodes | ZXing_BarcodeFormat_MatrixCodes)
+
+#define ZXing_BarcodeFormat_Invalid ((ZXing_BarcodeFormat)0xFFFFFFFFFFFFFFFFull)
 
 typedef ZXing_BarcodeFormat ZXing_BarcodeFormats;
 

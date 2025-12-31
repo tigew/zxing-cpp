@@ -49,7 +49,7 @@ When implementing a new barcode format reader or writer:
 
 ## Current Implementation Status
 
-### Fully Supported Formats (32 formats)
+### Fully Supported Formats (33 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
@@ -59,6 +59,7 @@ When implementing a new barcode format reader or writer:
 | Code11 | Yes | No | Yes | Telecommunications (USD-8), check digit C and K |
 | POSTNET | Yes | No | Yes | USPS POSTNET (height-modulated 5-bar encoding) |
 | PLANET | Yes | No | Yes | USPS PLANET (inverse of POSTNET encoding) |
+| MSI | Yes | No | Yes | MSI (Modified Plessey), inventory/warehousing |
 | Code39 | Yes | Yes | Yes | Includes Extended variant |
 | Code93 | Yes | Yes | Yes | |
 | Code128 | Yes | Yes | Yes | Automatic subset switching |
@@ -94,7 +95,6 @@ When implementing a new barcode format reader or writer:
 
 | Format | Category | Complexity | Notes |
 |--------|----------|------------|-------|
-| MSI (Modified Plessey) | Linear | Low | Inventory/warehousing |
 | Telepen | Linear | Low | UK library system |
 | LOGMARS | Linear | Low | Code 39 variant for military |
 | Code 32 | Linear | Low | Italian Pharmacode (Code 39 variant) |
@@ -605,6 +605,17 @@ cmake -B build -DZXING_ENABLE_NEWFORMAT=OFF
   - Supports 12-digit (62 bars) and 14-digit (72 bars) formats
   - Bidirectional decoding support
   - Shares reader implementation with POSTNET (ODPOSTNETReader)
+  - Writer available via libzint integration (ZXING_WRITERS=NEW)
+  - iOS wrapper and C API updated
+
+- [x] **MSI** (Modified Plessey) - Fully implemented with:
+  - Numeric-only barcode symbology for inventory control
+  - Each digit encoded as 4 bits (8 elements: 4 bar/space pairs)
+  - Bit encoding: 0 = narrow bar + wide space, 1 = wide bar + narrow space
+  - Start pattern: narrow bar + wide space (21)
+  - Stop pattern: narrow bar + wide space + narrow bar (121)
+  - Check digit algorithms: Mod 10 (Luhn), Mod 11, Mod 10/10, Mod 11/10
+  - BarcodeFormat enum expanded to uint64_t for additional format capacity
   - Writer available via libzint integration (ZXING_WRITERS=NEW)
   - iOS wrapper and C API updated
 
