@@ -49,7 +49,7 @@ When implementing a new barcode format reader or writer:
 
 ## Current Implementation Status
 
-### Fully Supported Formats (25 formats)
+### Fully Supported Formats (26 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
@@ -70,6 +70,7 @@ When implementing a new barcode format reader or writer:
 | JapanPost | Yes | No | Yes | Japan Post 4-State (Kasutama), 7-digit postal + address |
 | KIXCode | Yes | No | Yes | Dutch Post 4-state (Netherlands), same encoding as RM4SCC |
 | KoreaPost | Yes | No | Yes | Korea Post (Korean Postal Authority), 6-digit postal + check |
+| Mailmark | Yes | No | Yes | Royal Mail 4-State Mailmark (UK postal), Types C (66 bars) and L (78 bars), RS error correction |
 | RM4SCC | Yes | No | Yes | Royal Mail 4-State Customer Code (UK postal), checksum validated |
 | MaxiCode | Yes (partial) | No | Yes | |
 | MicroQRCode | Yes | No | Yes | |
@@ -87,7 +88,6 @@ When implementing a new barcode format reader or writer:
 
 | Format | Category | Complexity | Notes |
 |--------|----------|------------|-------|
-| Royal Mail 4-State Mailmark | Postal | Medium | Modern UK postal |
 | USPS OneCode (Intelligent Mail) | Postal | High | US postal |
 | POSTNET / PLANET | Postal | Low | Legacy US postal |
 | Deutsche Post Leitcode | Postal | Medium | German routing |
@@ -533,6 +533,19 @@ cmake -B build -DZXING_ENABLE_NEWFORMAT=OFF
   - Modulo-6 checksum validation (row/column sum algorithm)
   - UK postcode + Delivery Point Suffix (DPS) support
   - Bidirectional decoding (can read upside-down barcodes)
+  - Writer available via libzint integration (ZXING_WRITERS=NEW)
+  - iOS wrapper and C API updated
+
+- [x] **Mailmark** (Royal Mail 4-State Mailmark) - Fully implemented with:
+  - Two variants: Barcode C (22 chars, 66 bars) and Barcode L (26 chars, 78 bars)
+  - 4-state bar detection with DAFT encoding (Descender, Ascender, Full, Tracker)
+  - 3-bar extender groups with position-dependent parity encoding
+  - Reed-Solomon GF(64) error correction with custom polynomial (x^6+x^5+x^2+1)
+  - Barcode C: 16 data symbols + 6 check symbols
+  - Barcode L: 19 data symbols + 7 check symbols
+  - CDV (Consolidated Data Value) big integer extraction for field decoding
+  - Data fields: Format, Version ID, Mail Class, Supply Chain ID, Item ID, Postcode+DPS
+  - Bidirectional decoding support
   - Writer available via libzint integration (ZXING_WRITERS=NEW)
   - iOS wrapper and C API updated
 

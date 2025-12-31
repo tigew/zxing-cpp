@@ -64,6 +64,13 @@ GenericGF::MaxiCodeField64()
 	return inst;
 }
 
+const GenericGF &
+GenericGF::MailmarkField64()
+{
+	static const GenericGF inst(0x65, 64, 1); // x^6 + x^5 + x^2 + 1
+	return inst;
+}
+
 
 /**
 * Create a representation of GF(size) using the given primitive polynomial.

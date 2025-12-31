@@ -24,6 +24,7 @@
 #include "oned/ODAustraliaPostReader.h"
 #include "oned/ODJapanPostReader.h"
 #include "oned/ODKIXCodeReader.h"
+#include "oned/ODMailmarkReader.h"
 #include "oned/ODRM4SCCReader.h"
 #endif
 #ifdef ZXING_WITH_PDF417
@@ -78,6 +79,8 @@ MultiFormatReader::MultiFormatReader(const ReaderOptions& opts) : _opts(opts)
 		_readers.emplace_back(new OneD::KIXCodeReader(opts));
 	if (formats.testFlag(BarcodeFormat::RM4SCC))
 		_readers.emplace_back(new OneD::RM4SCCReader(opts));
+	if (formats.testFlag(BarcodeFormat::Mailmark))
+		_readers.emplace_back(new OneD::MailmarkReader(opts));
 #endif
 
 	// At end in "try harder" mode

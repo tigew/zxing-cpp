@@ -47,13 +47,14 @@ enum class BarcodeFormat
 	JapanPost       = (1 << 22), ///< Japan Post 4-State Customer Code (Kasutama Barcode)
 	KoreaPost       = (1 << 23), ///< Korea Post Barcode (Korean Postal Authority Code)
 	RM4SCC          = (1 << 24), ///< Royal Mail 4-State Customer Code (UK postal)
+	Mailmark        = (1 << 25), ///< Royal Mail 4-State Mailmark (UK postal, Types C and L)
 
 	LinearCodes = Codabar | Code39 | Code93 | Code128 | EAN8 | EAN13 | ITF | DataBar | DataBarExpanded | DataBarLimited
-				  | DXFilmEdge | UPCA | UPCE | AustraliaPost | KIXCode | JapanPost | KoreaPost | RM4SCC,
+				  | DXFilmEdge | UPCA | UPCE | AustraliaPost | KIXCode | JapanPost | KoreaPost | RM4SCC | Mailmark,
 	MatrixCodes = Aztec | DataMatrix | MaxiCode | PDF417 | QRCode | MicroQRCode | RMQRCode,
 	Any         = LinearCodes | MatrixCodes,
 
-	_max = RM4SCC, ///> implementation detail, don't use
+	_max = Mailmark, ///> implementation detail, don't use
 };
 
 ZX_DECLARE_FLAGS(BarcodeFormats, BarcodeFormat)

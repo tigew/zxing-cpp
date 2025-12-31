@@ -378,6 +378,8 @@ if (ZXING_READERS AND ZXING_ENABLE_1D)
         src/oned/ODKoreaPostReader.cpp
         src/oned/ODRM4SCCReader.h
         src/oned/ODRM4SCCReader.cpp
+        src/oned/ODMailmarkReader.h
+        src/oned/ODMailmarkReader.cpp
         src/oned/ODMultiUPCEANReader.h
         src/oned/ODMultiUPCEANReader.cpp
         src/oned/ODReader.h
