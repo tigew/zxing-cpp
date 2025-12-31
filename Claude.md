@@ -49,7 +49,7 @@ When implementing a new barcode format reader or writer:
 
 ## Current Implementation Status
 
-### Fully Supported Formats (24 formats)
+### Fully Supported Formats (25 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
@@ -70,6 +70,7 @@ When implementing a new barcode format reader or writer:
 | JapanPost | Yes | No | Yes | Japan Post 4-State (Kasutama), 7-digit postal + address |
 | KIXCode | Yes | No | Yes | Dutch Post 4-state (Netherlands), same encoding as RM4SCC |
 | KoreaPost | Yes | No | Yes | Korea Post (Korean Postal Authority), 6-digit postal + check |
+| RM4SCC | Yes | No | Yes | Royal Mail 4-State Customer Code (UK postal), checksum validated |
 | MaxiCode | Yes (partial) | No | Yes | |
 | MicroQRCode | Yes | No | Yes | |
 | PDF417 | Yes | Yes | Yes | Includes Truncated variant |
@@ -86,7 +87,6 @@ When implementing a new barcode format reader or writer:
 
 | Format | Category | Complexity | Notes |
 |--------|----------|------------|-------|
-| Royal Mail 4-State (RM4SCC) | Postal | Medium | UK postal |
 | Royal Mail 4-State Mailmark | Postal | Medium | Modern UK postal |
 | USPS OneCode (Intelligent Mail) | Postal | High | US postal |
 | POSTNET / PLANET | Postal | Low | Legacy US postal |
@@ -523,6 +523,16 @@ cmake -B build -DZXING_ENABLE_NEWFORMAT=OFF
   - Pattern matching with tolerance-based variance calculation
   - Check digit validation (10 - sum % 10)
   - Simple linear barcode (not 4-state) using RowReader pattern
+  - Writer available via libzint integration (ZXING_WRITERS=NEW)
+  - iOS wrapper and C API updated
+
+- [x] **RM4SCC** (Royal Mail 4-State Customer Code) - Fully implemented with:
+  - 4-state bar detection with height analysis (Full, Ascender, Descender, Tracker)
+  - Same Royal Table encoding as KIX Code (36 characters: 0-9, A-Z)
+  - Start bar (Ascender) and Stop bar (Full) detection
+  - Modulo-6 checksum validation (row/column sum algorithm)
+  - UK postcode + Delivery Point Suffix (DPS) support
+  - Bidirectional decoding (can read upside-down barcodes)
   - Writer available via libzint integration (ZXING_WRITERS=NEW)
   - iOS wrapper and C API updated
 
