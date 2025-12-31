@@ -374,6 +374,8 @@ if (ZXING_READERS AND ZXING_ENABLE_1D)
         src/oned/ODJapanPostReader.cpp
         src/oned/ODKIXCodeReader.h
         src/oned/ODKIXCodeReader.cpp
+        src/oned/ODKoreaPostReader.h
+        src/oned/ODKoreaPostReader.cpp
         src/oned/ODMultiUPCEANReader.h
         src/oned/ODMultiUPCEANReader.cpp
         src/oned/ODReader.h

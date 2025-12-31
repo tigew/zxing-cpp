@@ -28,6 +28,8 @@ ZXing::BarcodeFormat BarcodeFormatFromZXIFormat(ZXIFormat format) {
             return ZXing::BarcodeFormat::JapanPost;
         case ZXIFormat::KIX_CODE:
             return ZXing::BarcodeFormat::KIXCode;
+        case ZXIFormat::KOREA_POST:
+            return ZXing::BarcodeFormat::KoreaPost;
         case ZXIFormat::EAN_13:
             return ZXing::BarcodeFormat::EAN13;
         case ZXIFormat::EAN_8:
@@ -101,6 +103,8 @@ ZXIFormat ZXIFormatFromBarcodeFormat(ZXing::BarcodeFormat format) {
             return ZXIFormat::JAPAN_POST;
         case ZXing::BarcodeFormat::KIXCode:
             return ZXIFormat::KIX_CODE;
+        case ZXing::BarcodeFormat::KoreaPost:
+            return ZXIFormat::KOREA_POST;
         case ZXing::BarcodeFormat::MaxiCode:
             return ZXIFormat::MAXICODE;
         case ZXing::BarcodeFormat::PDF417:

@@ -18,6 +18,7 @@
 #include "ODDataBarReader.h"
 #include "ODDXFilmEdgeReader.h"
 #include "ODITFReader.h"
+#include "ODKoreaPostReader.h"
 #include "ODMultiUPCEANReader.h"
 #include "Barcode.h"
 
@@ -67,7 +68,9 @@ Reader::Reader(const ReaderOptions& opts) : ZXing::Reader(opts)
 		_readers.emplace_back(new DataBarLimitedReader(opts));
 	if (formats.testFlag(BarcodeFormat::DXFilmEdge))
 		_readers.emplace_back(new DXFilmEdgeReader(opts));
-	// Note: AustraliaPost and KIXCode are registered in MultiFormatReader
+	if (formats.testFlag(BarcodeFormat::KoreaPost))
+		_readers.emplace_back(new KoreaPostReader(opts));
+	// Note: AustraliaPost, KIXCode, and JapanPost are registered in MultiFormatReader
 	// because they require 2D access for bar height analysis
 }
 

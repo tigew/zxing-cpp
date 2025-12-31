@@ -49,7 +49,7 @@ When implementing a new barcode format reader or writer:
 
 ## Current Implementation Status
 
-### Fully Supported Formats (23 formats)
+### Fully Supported Formats (24 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
@@ -69,6 +69,7 @@ When implementing a new barcode format reader or writer:
 | ITF | Yes | Yes | Yes | Interleaved 2 of 5, ITF-14 |
 | JapanPost | Yes | No | Yes | Japan Post 4-State (Kasutama), 7-digit postal + address |
 | KIXCode | Yes | No | Yes | Dutch Post 4-state (Netherlands), same encoding as RM4SCC |
+| KoreaPost | Yes | No | Yes | Korea Post (Korean Postal Authority), 6-digit postal + check |
 | MaxiCode | Yes (partial) | No | Yes | |
 | MicroQRCode | Yes | No | Yes | |
 | PDF417 | Yes | Yes | Yes | Includes Truncated variant |
@@ -85,7 +86,6 @@ When implementing a new barcode format reader or writer:
 
 | Format | Category | Complexity | Notes |
 |--------|----------|------------|-------|
-| Korea Post | Postal | Medium | |
 | Royal Mail 4-State (RM4SCC) | Postal | Medium | UK postal |
 | Royal Mail 4-State Mailmark | Postal | Medium | Modern UK postal |
 | USPS OneCode (Intelligent Mail) | Postal | High | US postal |
@@ -514,6 +514,15 @@ cmake -B build -DZXING_ENABLE_NEWFORMAT=OFF
   - Fixed 67-bar structure: Start(2) + PostalCode(21) + Address(39) + CheckDigit(3) + Stop(2)
   - Modulo 19 checksum validation
   - Bidirectional decoding (can read upside-down barcodes)
+  - Writer available via libzint integration (ZXING_WRITERS=NEW)
+  - iOS wrapper and C API updated
+
+- [x] **Korea Post** (Korean Postal Authority Code) - Fully implemented with:
+  - 6-digit postal code encoding with modulo-10 check digit
+  - Variable-width bar/space patterns for each digit (0-9)
+  - Pattern matching with tolerance-based variance calculation
+  - Check digit validation (10 - sum % 10)
+  - Simple linear barcode (not 4-state) using RowReader pattern
   - Writer available via libzint integration (ZXING_WRITERS=NEW)
   - iOS wrapper and C API updated
 

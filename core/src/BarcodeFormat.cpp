@@ -40,6 +40,7 @@ static const BarcodeFormatName NAMES[] = {
 	{BarcodeFormat::ITF, "ITF"},
 	{BarcodeFormat::JapanPost, "JapanPost"},
 	{BarcodeFormat::KIXCode, "KIXCode"},
+	{BarcodeFormat::KoreaPost, "KoreaPost"},
 	{BarcodeFormat::MaxiCode, "MaxiCode"},
 	{BarcodeFormat::MicroQRCode, "MicroQRCode"},
 	{BarcodeFormat::PDF417, "PDF417"},
