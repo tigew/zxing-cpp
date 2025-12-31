@@ -26,6 +26,7 @@
 #include "oned/ODKIXCodeReader.h"
 #include "oned/ODMailmarkReader.h"
 #include "oned/ODRM4SCCReader.h"
+#include "oned/ODUSPSIMBReader.h"
 #endif
 #ifdef ZXING_WITH_PDF417
 #include "pdf417/PDFReader.h"
@@ -81,6 +82,8 @@ MultiFormatReader::MultiFormatReader(const ReaderOptions& opts) : _opts(opts)
 		_readers.emplace_back(new OneD::RM4SCCReader(opts));
 	if (formats.testFlag(BarcodeFormat::Mailmark))
 		_readers.emplace_back(new OneD::MailmarkReader(opts));
+	if (formats.testFlag(BarcodeFormat::USPSIMB))
+		_readers.emplace_back(new OneD::USPSIMBReader(opts));
 #endif
 
 	// At end in "try harder" mode

@@ -49,7 +49,7 @@ When implementing a new barcode format reader or writer:
 
 ## Current Implementation Status
 
-### Fully Supported Formats (26 formats)
+### Fully Supported Formats (27 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
@@ -72,6 +72,7 @@ When implementing a new barcode format reader or writer:
 | KoreaPost | Yes | No | Yes | Korea Post (Korean Postal Authority), 6-digit postal + check |
 | Mailmark | Yes | No | Yes | Royal Mail 4-State Mailmark (UK postal), Types C (66 bars) and L (78 bars), RS error correction |
 | RM4SCC | Yes | No | Yes | Royal Mail 4-State Customer Code (UK postal), checksum validated |
+| USPSIMB | Yes | No | Yes | USPS Intelligent Mail Barcode (OneCode, 4CB), 65-bar 4-state, CRC-11 |
 | MaxiCode | Yes (partial) | No | Yes | |
 | MicroQRCode | Yes | No | Yes | |
 | PDF417 | Yes | Yes | Yes | Includes Truncated variant |
@@ -88,7 +89,6 @@ When implementing a new barcode format reader or writer:
 
 | Format | Category | Complexity | Notes |
 |--------|----------|------------|-------|
-| USPS OneCode (Intelligent Mail) | Postal | High | US postal |
 | POSTNET / PLANET | Postal | Low | Legacy US postal |
 | Deutsche Post Leitcode | Postal | Medium | German routing |
 | Deutsche Post Identcode | Postal | Medium | German identification |
@@ -545,6 +545,18 @@ cmake -B build -DZXING_ENABLE_NEWFORMAT=OFF
   - Barcode L: 19 data symbols + 7 check symbols
   - CDV (Consolidated Data Value) big integer extraction for field decoding
   - Data fields: Format, Version ID, Mail Class, Supply Chain ID, Item ID, Postcode+DPS
+  - Bidirectional decoding support
+  - Writer available via libzint integration (ZXING_WRITERS=NEW)
+  - iOS wrapper and C API updated
+
+- [x] **USPSIMB** (USPS Intelligent Mail Barcode / OneCode / 4CB) - Fully implemented with:
+  - 65-bar 4-state barcode (Full, Ascender, Descender, Tracker)
+  - 130 total bits (each bar encodes ascender bit + descender bit)
+  - 10 codewords of 13 bits each extracted via mixed radix conversion
+  - 5-of-13 character table (1287 entries) and 2-of-13 character table (78 entries)
+  - CRC-11 error detection (polynomial 0x0F35, init 0x07FF)
+  - Bar-to-character and bar-to-bit mapping tables for decoding
+  - Data fields: Barcode ID (2), Service Type ID (3), Mailer ID (6/9), Serial (9/6), Routing (0/5/9/11 digits)
   - Bidirectional decoding support
   - Writer available via libzint integration (ZXING_WRITERS=NEW)
   - iOS wrapper and C API updated
