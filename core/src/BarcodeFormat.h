@@ -49,13 +49,16 @@ enum class BarcodeFormat
 	RM4SCC          = (1 << 24), ///< Royal Mail 4-State Customer Code (UK postal)
 	Mailmark        = (1 << 25), ///< Royal Mail 4-State Mailmark (UK postal, Types C and L)
 	USPSIMB         = (1 << 26), ///< USPS Intelligent Mail Barcode (OneCode, 4CB)
+	DeutschePostLeitcode  = (1 << 27), ///< Deutsche Post Leitcode (14 digits, German routing)
+	DeutschePostIdentcode = (1 << 28), ///< Deutsche Post Identcode (12 digits, German identification)
 
 	LinearCodes = Codabar | Code39 | Code93 | Code128 | EAN8 | EAN13 | ITF | DataBar | DataBarExpanded | DataBarLimited
-				  | DXFilmEdge | UPCA | UPCE | AustraliaPost | KIXCode | JapanPost | KoreaPost | RM4SCC | Mailmark | USPSIMB,
+				  | DXFilmEdge | UPCA | UPCE | AustraliaPost | KIXCode | JapanPost | KoreaPost | RM4SCC | Mailmark | USPSIMB
+				  | DeutschePostLeitcode | DeutschePostIdentcode,
 	MatrixCodes = Aztec | DataMatrix | MaxiCode | PDF417 | QRCode | MicroQRCode | RMQRCode,
 	Any         = LinearCodes | MatrixCodes,
 
-	_max = USPSIMB, ///> implementation detail, don't use
+	_max = DeutschePostIdentcode, ///> implementation detail, don't use
 };
 
 ZX_DECLARE_FLAGS(BarcodeFormats, BarcodeFormat)

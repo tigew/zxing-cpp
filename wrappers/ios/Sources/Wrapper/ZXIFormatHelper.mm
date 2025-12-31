@@ -36,6 +36,10 @@ ZXing::BarcodeFormat BarcodeFormatFromZXIFormat(ZXIFormat format) {
             return ZXing::BarcodeFormat::RM4SCC;
         case ZXIFormat::USPS_IMB:
             return ZXing::BarcodeFormat::USPSIMB;
+        case ZXIFormat::DEUTSCHE_POST_LEITCODE:
+            return ZXing::BarcodeFormat::DeutschePostLeitcode;
+        case ZXIFormat::DEUTSCHE_POST_IDENTCODE:
+            return ZXing::BarcodeFormat::DeutschePostIdentcode;
         case ZXIFormat::EAN_13:
             return ZXing::BarcodeFormat::EAN13;
         case ZXIFormat::EAN_8:
@@ -117,6 +121,10 @@ ZXIFormat ZXIFormatFromBarcodeFormat(ZXing::BarcodeFormat format) {
             return ZXIFormat::RM4SCC;
         case ZXing::BarcodeFormat::USPSIMB:
             return ZXIFormat::USPS_IMB;
+        case ZXing::BarcodeFormat::DeutschePostLeitcode:
+            return ZXIFormat::DEUTSCHE_POST_LEITCODE;
+        case ZXing::BarcodeFormat::DeutschePostIdentcode:
+            return ZXIFormat::DEUTSCHE_POST_IDENTCODE;
         case ZXing::BarcodeFormat::MaxiCode:
             return ZXIFormat::MAXICODE;
         case ZXing::BarcodeFormat::PDF417:

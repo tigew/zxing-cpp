@@ -382,6 +382,8 @@ if (ZXING_READERS AND ZXING_ENABLE_1D)
         src/oned/ODMailmarkReader.cpp
         src/oned/ODUSPSIMBReader.h
         src/oned/ODUSPSIMBReader.cpp
+        src/oned/ODDeutschePostReader.h
+        src/oned/ODDeutschePostReader.cpp
         src/oned/ODMultiUPCEANReader.h
         src/oned/ODMultiUPCEANReader.cpp
         src/oned/ODReader.h

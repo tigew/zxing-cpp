@@ -49,7 +49,7 @@ When implementing a new barcode format reader or writer:
 
 ## Current Implementation Status
 
-### Fully Supported Formats (27 formats)
+### Fully Supported Formats (29 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
@@ -73,6 +73,8 @@ When implementing a new barcode format reader or writer:
 | Mailmark | Yes | No | Yes | Royal Mail 4-State Mailmark (UK postal), Types C (66 bars) and L (78 bars), RS error correction |
 | RM4SCC | Yes | No | Yes | Royal Mail 4-State Customer Code (UK postal), checksum validated |
 | USPSIMB | Yes | No | Yes | USPS Intelligent Mail Barcode (OneCode, 4CB), 65-bar 4-state, CRC-11 |
+| DeutschePostLeitcode | Yes | No | Yes | Deutsche Post Leitcode (14 digits, German routing), ITF-based |
+| DeutschePostIdentcode | Yes | No | Yes | Deutsche Post Identcode (12 digits, German ID), ITF-based |
 | MaxiCode | Yes (partial) | No | Yes | |
 | MicroQRCode | Yes | No | Yes | |
 | PDF417 | Yes | Yes | Yes | Includes Truncated variant |
@@ -90,8 +92,6 @@ When implementing a new barcode format reader or writer:
 | Format | Category | Complexity | Notes |
 |--------|----------|------------|-------|
 | POSTNET / PLANET | Postal | Low | Legacy US postal |
-| Deutsche Post Leitcode | Postal | Medium | German routing |
-| Deutsche Post Identcode | Postal | Medium | German identification |
 
 ### Priority 2: Industrial/Linear Codes
 
@@ -558,6 +558,23 @@ cmake -B build -DZXING_ENABLE_NEWFORMAT=OFF
   - Bar-to-character and bar-to-bit mapping tables for decoding
   - Data fields: Barcode ID (2), Service Type ID (3), Mailer ID (6/9), Serial (9/6), Routing (0/5/9/11 digits)
   - Bidirectional decoding support
+  - Writer available via libzint integration (ZXING_WRITERS=NEW)
+  - iOS wrapper and C API updated
+
+- [x] **DeutschePostLeitcode** (Deutsche Post Leitcode) - Fully implemented with:
+  - 14-digit ITF-based barcode for German mail routing
+  - Structure: PLZ (5 digits) + Street (3 digits) + House (3 digits) + Product (2 digits) + Check (1 digit)
+  - Modulo 10 check digit with weights 4 and 9 (alternating)
+  - Based on Interleaved 2 of 5 (ITF) encoding
+  - Writer available via libzint integration (ZXING_WRITERS=NEW)
+  - iOS wrapper and C API updated
+
+- [x] **DeutschePostIdentcode** (Deutsche Post Identcode) - Fully implemented with:
+  - 12-digit ITF-based barcode for German shipment identification
+  - Structure: MailCenter (2 digits) + Customer (3 digits) + Delivery (6 digits) + Check (1 digit)
+  - Same check digit algorithm as Leitcode (Modulo 10 with weights 4 and 9)
+  - Based on Interleaved 2 of 5 (ITF) encoding
+  - Shares reader implementation with Leitcode (ODDeutschePostReader)
   - Writer available via libzint integration (ZXING_WRITERS=NEW)
   - iOS wrapper and C API updated
 
