@@ -49,7 +49,7 @@ When implementing a new barcode format reader or writer:
 
 ## Current Implementation Status
 
-### Fully Supported Formats (33 formats)
+### Fully Supported Formats (34 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
@@ -60,6 +60,7 @@ When implementing a new barcode format reader or writer:
 | POSTNET | Yes | No | Yes | USPS POSTNET (height-modulated 5-bar encoding) |
 | PLANET | Yes | No | Yes | USPS PLANET (inverse of POSTNET encoding) |
 | MSI | Yes | No | Yes | MSI (Modified Plessey), inventory/warehousing |
+| Telepen | Yes | No | Yes | Full ASCII encoding, UK library system |
 | Code39 | Yes | Yes | Yes | Includes Extended variant |
 | Code93 | Yes | Yes | Yes | |
 | Code128 | Yes | Yes | Yes | Automatic subset switching |
@@ -95,7 +96,6 @@ When implementing a new barcode format reader or writer:
 
 | Format | Category | Complexity | Notes |
 |--------|----------|------------|-------|
-| Telepen | Linear | Low | UK library system |
 | LOGMARS | Linear | Low | Code 39 variant for military |
 | Code 32 | Linear | Low | Italian Pharmacode (Code 39 variant) |
 | Pharmacode | Linear | Low | Pharmaceutical |
@@ -616,6 +616,18 @@ cmake -B build -DZXING_ENABLE_NEWFORMAT=OFF
   - Stop pattern: narrow bar + wide space + narrow bar (121)
   - Check digit algorithms: Mod 10 (Luhn), Mod 11, Mod 10/10, Mod 11/10
   - BarcodeFormat enum expanded to uint64_t for additional format capacity
+  - Writer available via libzint integration (ZXING_WRITERS=NEW)
+  - iOS wrapper and C API updated
+
+- [x] **Telepen** (Full ASCII) - Fully implemented with:
+  - Full 128 ASCII character encoding (developed 1972 by SB Electronic Systems)
+  - 16 modules per character (4-8 bars/spaces of narrow or wide widths)
+  - Narrow (1 module) and wide (3 modules) elements with 3:1 ratio
+  - Start character: underscore "_" (ASCII 95)
+  - Stop character: lowercase "z" (ASCII 122)
+  - Modulo 127 check digit (hidden, automatically validated)
+  - Even parity on each character byte
+  - Pattern matching with variance-based decoding
   - Writer available via libzint integration (ZXING_WRITERS=NEW)
   - iOS wrapper and C API updated
 

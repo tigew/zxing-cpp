@@ -56,14 +56,15 @@ enum class BarcodeFormat : uint64_t
 	POSTNET         = (1 << 30), ///< USPS POSTNET (Postal Numeric Encoding Technique)
 	PLANET          = (1ull << 31), ///< USPS PLANET (Postal Alpha Numeric Encoding Technique)
 	MSI             = (1ull << 32), ///< MSI (Modified Plessey, inventory/warehousing)
+	Telepen         = (1ull << 33), ///< Telepen (Full ASCII, developed by SB Electronic Systems)
 
 	LinearCodes = Codabar | Code39 | Code93 | Code128 | EAN8 | EAN13 | ITF | DataBar | DataBarExpanded | DataBarLimited
 				  | DXFilmEdge | UPCA | UPCE | AustraliaPost | KIXCode | JapanPost | KoreaPost | RM4SCC | Mailmark | USPSIMB
-				  | DeutschePostLeitcode | DeutschePostIdentcode | Code11 | POSTNET | PLANET | MSI,
+				  | DeutschePostLeitcode | DeutschePostIdentcode | Code11 | POSTNET | PLANET | MSI | Telepen,
 	MatrixCodes = Aztec | DataMatrix | MaxiCode | PDF417 | QRCode | MicroQRCode | RMQRCode,
 	Any         = LinearCodes | MatrixCodes,
 
-	_max = MSI, ///> implementation detail, don't use
+	_max = Telepen, ///> implementation detail, don't use
 };
 
 ZX_DECLARE_FLAGS(BarcodeFormats, BarcodeFormat)

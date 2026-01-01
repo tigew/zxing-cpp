@@ -390,6 +390,8 @@ if (ZXING_READERS AND ZXING_ENABLE_1D)
         src/oned/ODPOSTNETReader.cpp
         src/oned/ODMSIReader.h
         src/oned/ODMSIReader.cpp
+        src/oned/ODTelepenReader.h
+        src/oned/ODTelepenReader.cpp
         src/oned/ODMultiUPCEANReader.h
         src/oned/ODMultiUPCEANReader.cpp
         src/oned/ODReader.h

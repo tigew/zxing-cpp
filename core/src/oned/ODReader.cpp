@@ -20,6 +20,7 @@
 #include "ODDeutschePostReader.h"
 #include "ODDXFilmEdgeReader.h"
 #include "ODMSIReader.h"
+#include "ODTelepenReader.h"
 #include "ODITFReader.h"
 #include "ODKoreaPostReader.h"
 #include "ODMultiUPCEANReader.h"
@@ -79,6 +80,8 @@ Reader::Reader(const ReaderOptions& opts) : ZXing::Reader(opts)
 		_readers.emplace_back(new DeutschePostReader(opts));
 	if (formats.testFlag(BarcodeFormat::MSI))
 		_readers.emplace_back(new MSIReader(opts));
+	if (formats.testFlag(BarcodeFormat::Telepen))
+		_readers.emplace_back(new TelepenReader(opts));
 	// Note: AustraliaPost, KIXCode, and JapanPost are registered in MultiFormatReader
 	// because they require 2D access for bar height analysis
 }
