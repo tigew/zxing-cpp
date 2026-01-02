@@ -396,6 +396,8 @@ if (ZXING_READERS AND ZXING_ENABLE_1D)
         src/oned/ODLOGMARSReader.cpp
         src/oned/ODCode32Reader.h
         src/oned/ODCode32Reader.cpp
+        src/oned/ODPharmacodeReader.h
+        src/oned/ODPharmacodeReader.cpp
         src/oned/ODMultiUPCEANReader.h
         src/oned/ODMultiUPCEANReader.cpp
         src/oned/ODReader.h

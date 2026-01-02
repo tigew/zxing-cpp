@@ -49,7 +49,7 @@ When implementing a new barcode format reader or writer:
 
 ## Current Implementation Status
 
-### Fully Supported Formats (36 formats)
+### Fully Supported Formats (37 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
@@ -63,6 +63,7 @@ When implementing a new barcode format reader or writer:
 | Telepen | Yes | No | Yes | Full ASCII encoding, UK library system |
 | LOGMARS | Yes | No | Yes | Code 39 variant for US military (MIL-STD-1189) |
 | Code32 | Yes | No | Yes | Italian Pharmacode (Code 39 variant), base-32 encoding |
+| Pharmacode | Yes | No | Yes | Laetus Pharmacode, pharmaceutical binary barcode (3-131,070) |
 | Code39 | Yes | Yes | Yes | Includes Extended variant |
 | Code93 | Yes | Yes | Yes | |
 | Code128 | Yes | Yes | Yes | Automatic subset switching |
@@ -98,8 +99,7 @@ When implementing a new barcode format reader or writer:
 
 | Format | Category | Complexity | Notes |
 |--------|----------|------------|-------|
-| Pharmacode | Linear | Low | Pharmaceutical |
-| Pharmacode Two-Track | Linear | Medium | Pharmaceutical |
+| Pharmacode Two-Track | Linear | Medium | Pharmaceutical (2D variant) |
 | Pharmazentralnummer | Linear | Low | German pharmaceutical (Code 39 variant) |
 | Channel Code | Linear | Medium | Compact numeric encoding |
 

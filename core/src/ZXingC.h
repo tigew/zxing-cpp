@@ -114,6 +114,7 @@ typedef uint64_t ZXing_BarcodeFormat;
 #define ZXing_BarcodeFormat_Telepen         ((ZXing_BarcodeFormat)(1ull << 33))
 #define ZXing_BarcodeFormat_LOGMARS         ((ZXing_BarcodeFormat)(1ull << 34))
 #define ZXing_BarcodeFormat_Code32          ((ZXing_BarcodeFormat)(1ull << 35))
+#define ZXing_BarcodeFormat_Pharmacode      ((ZXing_BarcodeFormat)(1ull << 36))
 
 #define ZXing_BarcodeFormat_LinearCodes (ZXing_BarcodeFormat_Codabar | ZXing_BarcodeFormat_Code39 | ZXing_BarcodeFormat_Code93 \
 	| ZXing_BarcodeFormat_Code128 | ZXing_BarcodeFormat_EAN8 | ZXing_BarcodeFormat_EAN13 \
@@ -124,7 +125,8 @@ typedef uint64_t ZXing_BarcodeFormat;
 	| ZXing_BarcodeFormat_Mailmark | ZXing_BarcodeFormat_USPSIMB | ZXing_BarcodeFormat_DeutschePostLeitcode \
 	| ZXing_BarcodeFormat_DeutschePostIdentcode | ZXing_BarcodeFormat_Code11 \
 	| ZXing_BarcodeFormat_POSTNET | ZXing_BarcodeFormat_PLANET | ZXing_BarcodeFormat_MSI \
-	| ZXing_BarcodeFormat_Telepen | ZXing_BarcodeFormat_LOGMARS | ZXing_BarcodeFormat_Code32)
+	| ZXing_BarcodeFormat_Telepen | ZXing_BarcodeFormat_LOGMARS | ZXing_BarcodeFormat_Code32 \
+	| ZXing_BarcodeFormat_Pharmacode)
 
 #define ZXing_BarcodeFormat_MatrixCodes (ZXing_BarcodeFormat_Aztec | ZXing_BarcodeFormat_DataMatrix | ZXing_BarcodeFormat_MaxiCode \
 	| ZXing_BarcodeFormat_PDF417 | ZXing_BarcodeFormat_QRCode | ZXing_BarcodeFormat_MicroQRCode \
