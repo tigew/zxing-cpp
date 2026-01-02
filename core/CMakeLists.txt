@@ -392,6 +392,8 @@ if (ZXING_READERS AND ZXING_ENABLE_1D)
         src/oned/ODMSIReader.cpp
         src/oned/ODTelepenReader.h
         src/oned/ODTelepenReader.cpp
+        src/oned/ODLOGMARSReader.h
+        src/oned/ODLOGMARSReader.cpp
         src/oned/ODMultiUPCEANReader.h
         src/oned/ODMultiUPCEANReader.cpp
         src/oned/ODReader.h

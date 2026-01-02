@@ -49,7 +49,7 @@ When implementing a new barcode format reader or writer:
 
 ## Current Implementation Status
 
-### Fully Supported Formats (34 formats)
+### Fully Supported Formats (35 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
@@ -61,6 +61,7 @@ When implementing a new barcode format reader or writer:
 | PLANET | Yes | No | Yes | USPS PLANET (inverse of POSTNET encoding) |
 | MSI | Yes | No | Yes | MSI (Modified Plessey), inventory/warehousing |
 | Telepen | Yes | No | Yes | Full ASCII encoding, UK library system |
+| LOGMARS | Yes | No | Yes | Code 39 variant for US military (MIL-STD-1189) |
 | Code39 | Yes | Yes | Yes | Includes Extended variant |
 | Code93 | Yes | Yes | Yes | |
 | Code128 | Yes | Yes | Yes | Automatic subset switching |
@@ -96,7 +97,6 @@ When implementing a new barcode format reader or writer:
 
 | Format | Category | Complexity | Notes |
 |--------|----------|------------|-------|
-| LOGMARS | Linear | Low | Code 39 variant for military |
 | Code 32 | Linear | Low | Italian Pharmacode (Code 39 variant) |
 | Pharmacode | Linear | Low | Pharmaceutical |
 | Pharmacode Two-Track | Linear | Medium | Pharmaceutical |
@@ -628,6 +628,17 @@ cmake -B build -DZXING_ENABLE_NEWFORMAT=OFF
   - Modulo 127 check digit (hidden, automatically validated)
   - Even parity on each character byte
   - Pattern matching with variance-based decoding
+  - Writer available via libzint integration (ZXING_WRITERS=NEW)
+  - iOS wrapper and C API updated
+
+- [x] **LOGMARS** (Logistics Applications of Automated Marking and Reading Symbols) - Fully implemented with:
+  - Code 39 variant used by US Department of Defense (MIL-STD-1189B, MIL-STD-129)
+  - Same encoding as Code 39 (9 elements per char: 5 bars + 4 spaces, 3 wide + 6 narrow)
+  - Character set: 0-9, A-Z, space, and special chars (-, ., $, /, +, %)
+  - Start/stop character: asterisk (*)
+  - Mandatory Modulo 43 check digit (unlike optional in standard Code 39)
+  - Density requirements: 3.0 to 9.4 characters per inch
+  - Symbology identifier: ]L0
   - Writer available via libzint integration (ZXING_WRITERS=NEW)
   - iOS wrapper and C API updated
 
