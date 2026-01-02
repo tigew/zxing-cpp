@@ -49,7 +49,7 @@ When implementing a new barcode format reader or writer:
 
 ## Current Implementation Status
 
-### Fully Supported Formats (35 formats)
+### Fully Supported Formats (36 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
@@ -62,6 +62,7 @@ When implementing a new barcode format reader or writer:
 | MSI | Yes | No | Yes | MSI (Modified Plessey), inventory/warehousing |
 | Telepen | Yes | No | Yes | Full ASCII encoding, UK library system |
 | LOGMARS | Yes | No | Yes | Code 39 variant for US military (MIL-STD-1189) |
+| Code32 | Yes | No | Yes | Italian Pharmacode (Code 39 variant), base-32 encoding |
 | Code39 | Yes | Yes | Yes | Includes Extended variant |
 | Code93 | Yes | Yes | Yes | |
 | Code128 | Yes | Yes | Yes | Automatic subset switching |
@@ -97,7 +98,6 @@ When implementing a new barcode format reader or writer:
 
 | Format | Category | Complexity | Notes |
 |--------|----------|------------|-------|
-| Code 32 | Linear | Low | Italian Pharmacode (Code 39 variant) |
 | Pharmacode | Linear | Low | Pharmaceutical |
 | Pharmacode Two-Track | Linear | Medium | Pharmaceutical |
 | Pharmazentralnummer | Linear | Low | German pharmaceutical (Code 39 variant) |

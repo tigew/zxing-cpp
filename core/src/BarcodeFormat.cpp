@@ -52,6 +52,7 @@ static const BarcodeFormatName NAMES[] = {
 	{BarcodeFormat::MSI, "MSI"},
 	{BarcodeFormat::Telepen, "Telepen"},
 	{BarcodeFormat::LOGMARS, "LOGMARS"},
+	{BarcodeFormat::Code32, "Code32"},
 	{BarcodeFormat::MaxiCode, "MaxiCode"},
 	{BarcodeFormat::MicroQRCode, "MicroQRCode"},
 	{BarcodeFormat::PDF417, "PDF417"},

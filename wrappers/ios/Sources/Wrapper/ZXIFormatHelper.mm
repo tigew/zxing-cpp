@@ -50,6 +50,8 @@ ZXing::BarcodeFormat BarcodeFormatFromZXIFormat(ZXIFormat format) {
             return ZXing::BarcodeFormat::Telepen;
         case ZXIFormat::LOGMARS:
             return ZXing::BarcodeFormat::LOGMARS;
+        case ZXIFormat::CODE_32:
+            return ZXing::BarcodeFormat::Code32;
         case ZXIFormat::EAN_13:
             return ZXing::BarcodeFormat::EAN13;
         case ZXIFormat::EAN_8:
@@ -149,6 +151,8 @@ ZXIFormat ZXIFormatFromBarcodeFormat(ZXing::BarcodeFormat format) {
             return ZXIFormat::TELEPEN;
         case ZXing::BarcodeFormat::LOGMARS:
             return ZXIFormat::LOGMARS;
+        case ZXing::BarcodeFormat::Code32:
+            return ZXIFormat::CODE_32;
         case ZXing::BarcodeFormat::MaxiCode:
             return ZXIFormat::MAXICODE;
         case ZXing::BarcodeFormat::PDF417:
