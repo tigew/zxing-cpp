@@ -49,7 +49,7 @@ When implementing a new barcode format reader or writer:
 
 ## Current Implementation Status
 
-### Fully Supported Formats (37 formats)
+### Fully Supported Formats (38 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
@@ -64,6 +64,7 @@ When implementing a new barcode format reader or writer:
 | LOGMARS | Yes | No | Yes | Code 39 variant for US military (MIL-STD-1189) |
 | Code32 | Yes | No | Yes | Italian Pharmacode (Code 39 variant), base-32 encoding |
 | Pharmacode | Yes | No | Yes | Laetus Pharmacode, pharmaceutical binary barcode (3-131,070) |
+| PharmacodeTwoTrack | Yes | No | Yes | Laetus 3-state pharmaceutical barcode (4-64,570,080) |
 | Code39 | Yes | Yes | Yes | Includes Extended variant |
 | Code93 | Yes | Yes | Yes | |
 | Code128 | Yes | Yes | Yes | Automatic subset switching |
@@ -99,7 +100,6 @@ When implementing a new barcode format reader or writer:
 
 | Format | Category | Complexity | Notes |
 |--------|----------|------------|-------|
-| Pharmacode Two-Track | Linear | Medium | Pharmaceutical (2D variant) |
 | Pharmazentralnummer | Linear | Low | German pharmaceutical (Code 39 variant) |
 | Channel Code | Linear | Medium | Compact numeric encoding |
 
@@ -639,6 +639,38 @@ cmake -B build -DZXING_ENABLE_NEWFORMAT=OFF
   - Mandatory Modulo 43 check digit (unlike optional in standard Code 39)
   - Density requirements: 3.0 to 9.4 characters per inch
   - Symbology identifier: ]L0
+  - Writer available via libzint integration (ZXING_WRITERS=NEW)
+  - iOS wrapper and C API updated
+
+- [x] **Code32** (Italian Pharmacode / IMH) - Fully implemented with:
+  - Code 39 variant used in Italian pharmaceutical industry
+  - Encodes 8 digits (plus 1 check digit) as 9-character base-32 Code 39
+  - Base-32 alphabet: 0-9, B, C, D, F, G, H, J, K, L, M, N, P, Q, R, S, T, U, V, W, X, Y, Z
+  - "A" prefix not encoded in barcode (added during decode)
+  - Luhn Modulo 10 check digit validation
+  - PZN (Pharmazentralnummer) structure support
+  - Writer available via libzint integration (ZXING_WRITERS=NEW)
+  - iOS wrapper and C API updated
+
+- [x] **Pharmacode** (Laetus Pharmacode) - Fully implemented with:
+  - Binary barcode used in pharmaceutical packaging
+  - Narrow bar at position n contributes 2^n to value
+  - Wide bar at position n contributes 2×2^n to value
+  - Value range: 3 to 131,070 (2-16 bars)
+  - 3:1 wide-to-narrow bar ratio
+  - Right-to-left reading (LSB to MSB)
+  - No check digit (relies on redundant encoding)
+  - Writer available via libzint integration (ZXING_WRITERS=NEW)
+  - iOS wrapper and C API updated
+
+- [x] **PharmacodeTwoTrack** (Laetus Pharmacode Two-Track) - Fully implemented with:
+  - 3-state barcode using bar heights (Full, Ascender, Descender)
+  - Bijective base-3 encoding (digits 1, 2, 3 instead of 0, 1, 2)
+  - Full bar = 1, Descender = 2, Ascender = 3
+  - Value = sum of (digit × 3^position) reading right to left
+  - Value range: 4 to 64,570,080 (2-16 bars)
+  - Bar height classification using 2D image analysis (BitMatrix)
+  - No check digit (relies on redundant encoding)
   - Writer available via libzint integration (ZXING_WRITERS=NEW)
   - iOS wrapper and C API updated
 

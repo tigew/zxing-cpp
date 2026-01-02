@@ -28,6 +28,7 @@
 #include "oned/ODPOSTNETReader.h"
 #include "oned/ODRM4SCCReader.h"
 #include "oned/ODUSPSIMBReader.h"
+#include "oned/ODPharmacodeTwoTrackReader.h"
 #endif
 #ifdef ZXING_WITH_PDF417
 #include "pdf417/PDFReader.h"
@@ -87,6 +88,8 @@ MultiFormatReader::MultiFormatReader(const ReaderOptions& opts) : _opts(opts)
 		_readers.emplace_back(new OneD::USPSIMBReader(opts));
 	if (formats.testFlags(BarcodeFormat::POSTNET | BarcodeFormat::PLANET))
 		_readers.emplace_back(new OneD::POSTNETReader(opts));
+	if (formats.testFlag(BarcodeFormat::PharmacodeTwoTrack))
+		_readers.emplace_back(new OneD::PharmacodeTwoTrackReader(opts));
 #endif
 
 	// At end in "try harder" mode

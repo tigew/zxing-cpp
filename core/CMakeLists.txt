@@ -398,6 +398,8 @@ if (ZXING_READERS AND ZXING_ENABLE_1D)
         src/oned/ODCode32Reader.cpp
         src/oned/ODPharmacodeReader.h
         src/oned/ODPharmacodeReader.cpp
+        src/oned/ODPharmacodeTwoTrackReader.h
+        src/oned/ODPharmacodeTwoTrackReader.cpp
         src/oned/ODMultiUPCEANReader.h
         src/oned/ODMultiUPCEANReader.cpp
         src/oned/ODReader.h
