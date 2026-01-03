@@ -49,7 +49,7 @@ When implementing a new barcode format reader or writer:
 
 ## Current Implementation Status
 
-### Fully Supported Formats (38 formats)
+### Fully Supported Formats (39 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
@@ -65,6 +65,7 @@ When implementing a new barcode format reader or writer:
 | Code32 | Yes | No | Yes | Italian Pharmacode (Code 39 variant), base-32 encoding |
 | Pharmacode | Yes | No | Yes | Laetus Pharmacode, pharmaceutical binary barcode (3-131,070) |
 | PharmacodeTwoTrack | Yes | No | Yes | Laetus 3-state pharmaceutical barcode (4-64,570,080) |
+| PZN | Yes | No | Yes | Pharmazentralnummer (German pharmaceutical), Code 39 variant, Modulo 11 |
 | Code39 | Yes | Yes | Yes | Includes Extended variant |
 | Code93 | Yes | Yes | Yes | |
 | Code128 | Yes | Yes | Yes | Automatic subset switching |
@@ -100,7 +101,6 @@ When implementing a new barcode format reader or writer:
 
 | Format | Category | Complexity | Notes |
 |--------|----------|------------|-------|
-| Pharmazentralnummer | Linear | Low | German pharmaceutical (Code 39 variant) |
 | Channel Code | Linear | Medium | Compact numeric encoding |
 
 ### Priority 2: Code 2 of 5 Variants
@@ -671,6 +671,19 @@ cmake -B build -DZXING_ENABLE_NEWFORMAT=OFF
   - Value range: 4 to 64,570,080 (2-16 bars)
   - Bar height classification using 2D image analysis (BitMatrix)
   - No check digit (relies on redundant encoding)
+  - Writer available via libzint integration (ZXING_WRITERS=NEW)
+  - iOS wrapper and C API updated
+
+- [x] **PZN** (Pharmazentralnummer) - Fully implemented with:
+  - German pharmaceutical identification number (Code 39 variant)
+  - PZN7: 6 data digits + 1 check digit (phased out January 2020)
+  - PZN8: 7 data digits + 1 check digit (current standard)
+  - Modulo 11 check digit algorithm
+  - PZN7 weights: 2, 3, 4, 5, 6, 7 for 6 data digits
+  - PZN8 weights: 1, 2, 3, 4, 5, 6, 7 for 7 data digits
+  - Leading minus sign (-) as PZN identifier in barcode
+  - Human readable output: "PZN-XXXXXXXY"
+  - Check digit 10 = invalid PZN (not assigned)
   - Writer available via libzint integration (ZXING_WRITERS=NEW)
   - iOS wrapper and C API updated
 
