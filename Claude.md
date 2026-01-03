@@ -49,7 +49,7 @@ When implementing a new barcode format reader or writer:
 
 ## Current Implementation Status
 
-### Fully Supported Formats (39 formats)
+### Fully Supported Formats (40 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
@@ -66,6 +66,7 @@ When implementing a new barcode format reader or writer:
 | Pharmacode | Yes | No | Yes | Laetus Pharmacode, pharmaceutical binary barcode (3-131,070) |
 | PharmacodeTwoTrack | Yes | No | Yes | Laetus 3-state pharmaceutical barcode (4-64,570,080) |
 | PZN | Yes | No | Yes | Pharmazentralnummer (German pharmaceutical), Code 39 variant, Modulo 11 |
+| ChannelCode | Yes | No | Yes | ANSI/AIM BC12, compact numeric encoding, channels 3-8 |
 | Code39 | Yes | Yes | Yes | Includes Extended variant |
 | Code93 | Yes | Yes | Yes | |
 | Code128 | Yes | Yes | Yes | Automatic subset switching |
@@ -97,13 +98,7 @@ When implementing a new barcode format reader or writer:
 
 ## Missing Formats to Implement
 
-### Priority 1: Industrial/Linear Codes
-
-| Format | Category | Complexity | Notes |
-|--------|----------|------------|-------|
-| Channel Code | Linear | Medium | Compact numeric encoding |
-
-### Priority 2: Code 2 of 5 Variants
+### Priority 1: Code 2 of 5 Variants
 
 | Format | Category | Complexity | Notes |
 |--------|----------|------------|-------|
@@ -684,6 +679,21 @@ cmake -B build -DZXING_ENABLE_NEWFORMAT=OFF
   - Leading minus sign (-) as PZN identifier in barcode
   - Human readable output: "PZN-XXXXXXXY"
   - Check digit 10 = invalid PZN (not assigned)
+  - Writer available via libzint integration (ZXING_WRITERS=NEW)
+  - iOS wrapper and C API updated
+
+- [x] **ChannelCode** (ANSI/AIM BC12) - Fully implemented with:
+  - Compact numeric barcode for values 0 to 7,742,862
+  - Six channels (3-8) with different capacities:
+    - Channel 3: 0-26 (2 digits)
+    - Channel 4: 0-292 (3 digits)
+    - Channel 5: 0-3493 (4 digits)
+    - Channel 6: 0-44072 (5 digits)
+    - Channel 7: 0-576688 (6 digits)
+    - Channel 8: 0-7742862 (7 digits)
+  - Finder pattern: 9 consecutive bar modules
+  - Self-checking, no check digit required
+  - Bidirectional reading support
   - Writer available via libzint integration (ZXING_WRITERS=NEW)
   - iOS wrapper and C API updated
 

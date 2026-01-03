@@ -62,15 +62,16 @@ enum class BarcodeFormat : uint64_t
 	Pharmacode      = (1ull << 36), ///< Pharmacode (Laetus, pharmaceutical binary barcode)
 	PharmacodeTwoTrack = (1ull << 37), ///< Pharmacode Two-Track (Laetus, 3-state pharmaceutical barcode)
 	PZN             = (1ull << 38), ///< Pharmazentralnummer (German pharmaceutical, Code 39 variant)
+	ChannelCode     = (1ull << 39), ///< Channel Code (ANSI/AIM BC12, compact numeric encoding)
 
 	LinearCodes = Codabar | Code39 | Code93 | Code128 | EAN8 | EAN13 | ITF | DataBar | DataBarExpanded | DataBarLimited
 				  | DXFilmEdge | UPCA | UPCE | AustraliaPost | KIXCode | JapanPost | KoreaPost | RM4SCC | Mailmark | USPSIMB
 				  | DeutschePostLeitcode | DeutschePostIdentcode | Code11 | POSTNET | PLANET | MSI | Telepen | LOGMARS | Code32
-				  | Pharmacode | PharmacodeTwoTrack | PZN,
+				  | Pharmacode | PharmacodeTwoTrack | PZN | ChannelCode,
 	MatrixCodes = Aztec | DataMatrix | MaxiCode | PDF417 | QRCode | MicroQRCode | RMQRCode,
 	Any         = LinearCodes | MatrixCodes,
 
-	_max = PZN, ///> implementation detail, don't use
+	_max = ChannelCode, ///> implementation detail, don't use
 };
 
 ZX_DECLARE_FLAGS(BarcodeFormats, BarcodeFormat)

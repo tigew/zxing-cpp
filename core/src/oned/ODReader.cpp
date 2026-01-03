@@ -24,6 +24,7 @@
 #include "ODLOGMARSReader.h"
 #include "ODCode32Reader.h"
 #include "ODPZNReader.h"
+#include "ODChannelCodeReader.h"
 #include "ODPharmacodeReader.h"
 #include "ODITFReader.h"
 #include "ODKoreaPostReader.h"
@@ -92,6 +93,8 @@ Reader::Reader(const ReaderOptions& opts) : ZXing::Reader(opts)
 		_readers.emplace_back(new Code32Reader(opts));
 	if (formats.testFlag(BarcodeFormat::PZN))
 		_readers.emplace_back(new PZNReader(opts));
+	if (formats.testFlag(BarcodeFormat::ChannelCode))
+		_readers.emplace_back(new ChannelCodeReader(opts));
 	if (formats.testFlag(BarcodeFormat::Pharmacode))
 		_readers.emplace_back(new PharmacodeReader(opts));
 	// Note: AustraliaPost, KIXCode, and JapanPost are registered in MultiFormatReader

@@ -58,6 +58,8 @@ ZXing::BarcodeFormat BarcodeFormatFromZXIFormat(ZXIFormat format) {
             return ZXing::BarcodeFormat::PharmacodeTwoTrack;
         case ZXIFormat::PZN:
             return ZXing::BarcodeFormat::PZN;
+        case ZXIFormat::CHANNEL_CODE:
+            return ZXing::BarcodeFormat::ChannelCode;
         case ZXIFormat::EAN_13:
             return ZXing::BarcodeFormat::EAN13;
         case ZXIFormat::EAN_8:
@@ -165,6 +167,8 @@ ZXIFormat ZXIFormatFromBarcodeFormat(ZXing::BarcodeFormat format) {
             return ZXIFormat::PHARMACODE_TWO_TRACK;
         case ZXing::BarcodeFormat::PZN:
             return ZXIFormat::PZN;
+        case ZXing::BarcodeFormat::ChannelCode:
+            return ZXIFormat::CHANNEL_CODE;
         case ZXing::BarcodeFormat::MaxiCode:
             return ZXIFormat::MAXICODE;
         case ZXing::BarcodeFormat::PDF417:
