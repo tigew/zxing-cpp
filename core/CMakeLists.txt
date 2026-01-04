@@ -400,6 +400,8 @@ if (ZXING_READERS AND ZXING_ENABLE_1D)
         src/oned/ODPZNReader.cpp
         src/oned/ODChannelCodeReader.h
         src/oned/ODChannelCodeReader.cpp
+        src/oned/ODMatrix2of5Reader.h
+        src/oned/ODMatrix2of5Reader.cpp
         src/oned/ODPharmacodeReader.h
         src/oned/ODPharmacodeReader.cpp
         src/oned/ODPharmacodeTwoTrackReader.h

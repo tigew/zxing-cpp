@@ -49,7 +49,7 @@ When implementing a new barcode format reader or writer:
 
 ## Current Implementation Status
 
-### Fully Supported Formats (40 formats)
+### Fully Supported Formats (41 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
@@ -67,6 +67,7 @@ When implementing a new barcode format reader or writer:
 | PharmacodeTwoTrack | Yes | No | Yes | Laetus 3-state pharmaceutical barcode (4-64,570,080) |
 | PZN | Yes | No | Yes | Pharmazentralnummer (German pharmaceutical), Code 39 variant, Modulo 11 |
 | ChannelCode | Yes | No | Yes | ANSI/AIM BC12, compact numeric encoding, channels 3-8 |
+| Matrix2of5 | Yes | No | Yes | Standard 2 of 5, discrete numeric-only encoding |
 | Code39 | Yes | Yes | Yes | Includes Extended variant |
 | Code93 | Yes | Yes | Yes | |
 | Code128 | Yes | Yes | Yes | Automatic subset switching |
@@ -102,7 +103,6 @@ When implementing a new barcode format reader or writer:
 
 | Format | Category | Complexity | Notes |
 |--------|----------|------------|-------|
-| Matrix 2 of 5 | Linear | Low | Also known as Code 25 |
 | Industrial 2 of 5 | Linear | Low | |
 | IATA 2 of 5 | Linear | Low | Airline industry |
 | Datalogic 2 of 5 | Linear | Low | |
@@ -694,6 +694,19 @@ cmake -B build -DZXING_ENABLE_NEWFORMAT=OFF
   - Finder pattern: 9 consecutive bar modules
   - Self-checking, no check digit required
   - Bidirectional reading support
+  - Writer available via libzint integration (ZXING_WRITERS=NEW)
+  - iOS wrapper and C API updated
+
+- [x] **Matrix2of5** (Matrix 2 of 5 / Standard 2 of 5) - Fully implemented with:
+  - Discrete numeric-only barcode (digits 0-9)
+  - Each digit encoded with 6 elements (3 bars + 3 spaces)
+  - 2 of 5 elements (bars and spaces) are wide, 3 are narrow
+  - Start pattern: extra-wide bar (4 units) + 5 narrow elements
+  - Stop pattern: extra-wide bar (4 units) + 4 narrow elements
+  - Inter-character gap (narrow space) between digits
+  - Optional mod 10/3 check digit support
+  - Developed by Nieaf Co. (Netherlands, 1970s)
+  - Used for warehouse sorting, photo finishing, airline tickets
   - Writer available via libzint integration (ZXING_WRITERS=NEW)
   - iOS wrapper and C API updated
 
