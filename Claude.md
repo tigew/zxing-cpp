@@ -49,7 +49,7 @@ When implementing a new barcode format reader or writer:
 
 ## Current Implementation Status
 
-### Fully Supported Formats (41 formats)
+### Fully Supported Formats (42 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
@@ -68,6 +68,7 @@ When implementing a new barcode format reader or writer:
 | PZN | Yes | No | Yes | Pharmazentralnummer (German pharmaceutical), Code 39 variant, Modulo 11 |
 | ChannelCode | Yes | No | Yes | ANSI/AIM BC12, compact numeric encoding, channels 3-8 |
 | Matrix2of5 | Yes | No | Yes | Standard 2 of 5, discrete numeric-only encoding |
+| Industrial2of5 | Yes | No | Yes | Industrial 2 of 5, bars-only encoding |
 | Code39 | Yes | Yes | Yes | Includes Extended variant |
 | Code93 | Yes | Yes | Yes | |
 | Code128 | Yes | Yes | Yes | Automatic subset switching |
@@ -103,7 +104,6 @@ When implementing a new barcode format reader or writer:
 
 | Format | Category | Complexity | Notes |
 |--------|----------|------------|-------|
-| Industrial 2 of 5 | Linear | Low | |
 | IATA 2 of 5 | Linear | Low | Airline industry |
 | Datalogic 2 of 5 | Linear | Low | |
 
@@ -707,6 +707,18 @@ cmake -B build -DZXING_ENABLE_NEWFORMAT=OFF
   - Optional mod 10/3 check digit support
   - Developed by Nieaf Co. (Netherlands, 1970s)
   - Used for warehouse sorting, photo finishing, airline tickets
+  - Writer available via libzint integration (ZXING_WRITERS=NEW)
+  - iOS wrapper and C API updated
+
+- [x] **Industrial2of5** (Industrial 2 of 5 / Standard 2 of 5) - Fully implemented with:
+  - Numeric-only barcode (digits 0-9)
+  - Each digit encoded with 10 elements (5 bars + 5 spaces)
+  - Only bars encode data (2 wide, 3 narrow), spaces are fixed-width (narrow)
+  - Start pattern: wide-bar, narrow-space, wide-bar, narrow-space, narrow-bar, narrow-space
+  - Stop pattern: wide-bar, narrow-space, narrow-bar, narrow-space, wide-bar
+  - Invented 1971 by Identicon Corp and Computer Identics Corp
+  - Used for airline tickets, warehouse sorting, industrial inventory
+  - Optional modulo 10 check digit support
   - Writer available via libzint integration (ZXING_WRITERS=NEW)
   - iOS wrapper and C API updated
 
