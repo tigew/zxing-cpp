@@ -66,15 +66,16 @@ enum class BarcodeFormat : uint64_t
 	Matrix2of5      = (1ull << 40), ///< Matrix 2 of 5 (Standard 2 of 5, discrete numeric encoding)
 	Industrial2of5  = (1ull << 41), ///< Industrial 2 of 5 (Standard 2 of 5, bars-only encoding)
 	IATA2of5        = (1ull << 42), ///< IATA 2 of 5 (Airline 2 of 5, air cargo management)
+	Datalogic2of5   = (1ull << 43), ///< Datalogic 2 of 5 (China Post, Code 2 of 5 Data Logic)
 
 	LinearCodes = Codabar | Code39 | Code93 | Code128 | EAN8 | EAN13 | ITF | DataBar | DataBarExpanded | DataBarLimited
 				  | DXFilmEdge | UPCA | UPCE | AustraliaPost | KIXCode | JapanPost | KoreaPost | RM4SCC | Mailmark | USPSIMB
 				  | DeutschePostLeitcode | DeutschePostIdentcode | Code11 | POSTNET | PLANET | MSI | Telepen | LOGMARS | Code32
-				  | Pharmacode | PharmacodeTwoTrack | PZN | ChannelCode | Matrix2of5 | Industrial2of5 | IATA2of5,
+				  | Pharmacode | PharmacodeTwoTrack | PZN | ChannelCode | Matrix2of5 | Industrial2of5 | IATA2of5 | Datalogic2of5,
 	MatrixCodes = Aztec | DataMatrix | MaxiCode | PDF417 | QRCode | MicroQRCode | RMQRCode,
 	Any         = LinearCodes | MatrixCodes,
 
-	_max = IATA2of5, ///> implementation detail, don't use
+	_max = Datalogic2of5, ///> implementation detail, don't use
 };
 
 ZX_DECLARE_FLAGS(BarcodeFormats, BarcodeFormat)

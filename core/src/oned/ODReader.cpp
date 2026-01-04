@@ -28,6 +28,7 @@
 #include "ODMatrix2of5Reader.h"
 #include "ODIndustrial2of5Reader.h"
 #include "ODIATA2of5Reader.h"
+#include "ODDatalogic2of5Reader.h"
 #include "ODPharmacodeReader.h"
 #include "ODITFReader.h"
 #include "ODKoreaPostReader.h"
@@ -104,6 +105,8 @@ Reader::Reader(const ReaderOptions& opts) : ZXing::Reader(opts)
 		_readers.emplace_back(new Industrial2of5Reader(opts));
 	if (formats.testFlag(BarcodeFormat::IATA2of5))
 		_readers.emplace_back(new IATA2of5Reader(opts));
+	if (formats.testFlag(BarcodeFormat::Datalogic2of5))
+		_readers.emplace_back(new Datalogic2of5Reader(opts));
 	if (formats.testFlag(BarcodeFormat::Pharmacode))
 		_readers.emplace_back(new PharmacodeReader(opts));
 	// Note: AustraliaPost, KIXCode, and JapanPost are registered in MultiFormatReader

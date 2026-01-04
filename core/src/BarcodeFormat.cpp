@@ -60,6 +60,7 @@ static const BarcodeFormatName NAMES[] = {
 	{BarcodeFormat::Matrix2of5, "Matrix2of5"},
 	{BarcodeFormat::Industrial2of5, "Industrial2of5"},
 	{BarcodeFormat::IATA2of5, "IATA2of5"},
+	{BarcodeFormat::Datalogic2of5, "Datalogic2of5"},
 	{BarcodeFormat::MaxiCode, "MaxiCode"},
 	{BarcodeFormat::MicroQRCode, "MicroQRCode"},
 	{BarcodeFormat::PDF417, "PDF417"},

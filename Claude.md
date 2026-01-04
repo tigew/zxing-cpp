@@ -49,7 +49,7 @@ When implementing a new barcode format reader or writer:
 
 ## Current Implementation Status
 
-### Fully Supported Formats (43 formats)
+### Fully Supported Formats (44 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
@@ -70,6 +70,7 @@ When implementing a new barcode format reader or writer:
 | Matrix2of5 | Yes | No | Yes | Standard 2 of 5, discrete numeric-only encoding |
 | Industrial2of5 | Yes | No | Yes | Industrial 2 of 5, bars-only encoding |
 | IATA2of5 | Yes | No | Yes | IATA 2 of 5 (Airline 2 of 5), air cargo management |
+| Datalogic2of5 | Yes | No | Yes | Datalogic 2 of 5 (China Post), Matrix encoding with IATA patterns |
 | Code39 | Yes | Yes | Yes | Includes Extended variant |
 | Code93 | Yes | Yes | Yes | |
 | Code128 | Yes | Yes | Yes | Automatic subset switching |
@@ -100,12 +101,6 @@ When implementing a new barcode format reader or writer:
 ---
 
 ## Missing Formats to Implement
-
-### Priority 1: Code 2 of 5 Variants
-
-| Format | Category | Complexity | Notes |
-|--------|----------|------------|-------|
-| Datalogic 2 of 5 | Linear | Low | |
 
 ### Priority 3: Stacked/Multi-Row Linear
 
