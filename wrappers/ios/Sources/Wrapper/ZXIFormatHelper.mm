@@ -64,6 +64,8 @@ ZXing::BarcodeFormat BarcodeFormatFromZXIFormat(ZXIFormat format) {
             return ZXing::BarcodeFormat::Matrix2of5;
         case ZXIFormat::INDUSTRIAL_2_OF_5:
             return ZXing::BarcodeFormat::Industrial2of5;
+        case ZXIFormat::IATA_2_OF_5:
+            return ZXing::BarcodeFormat::IATA2of5;
         case ZXIFormat::EAN_13:
             return ZXing::BarcodeFormat::EAN13;
         case ZXIFormat::EAN_8:
@@ -177,6 +179,8 @@ ZXIFormat ZXIFormatFromBarcodeFormat(ZXing::BarcodeFormat format) {
             return ZXIFormat::MATRIX_2_OF_5;
         case ZXing::BarcodeFormat::Industrial2of5:
             return ZXIFormat::INDUSTRIAL_2_OF_5;
+        case ZXing::BarcodeFormat::IATA2of5:
+            return ZXIFormat::IATA_2_OF_5;
         case ZXing::BarcodeFormat::MaxiCode:
             return ZXIFormat::MAXICODE;
         case ZXing::BarcodeFormat::PDF417:

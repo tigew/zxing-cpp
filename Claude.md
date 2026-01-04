@@ -49,7 +49,7 @@ When implementing a new barcode format reader or writer:
 
 ## Current Implementation Status
 
-### Fully Supported Formats (42 formats)
+### Fully Supported Formats (43 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
@@ -69,6 +69,7 @@ When implementing a new barcode format reader or writer:
 | ChannelCode | Yes | No | Yes | ANSI/AIM BC12, compact numeric encoding, channels 3-8 |
 | Matrix2of5 | Yes | No | Yes | Standard 2 of 5, discrete numeric-only encoding |
 | Industrial2of5 | Yes | No | Yes | Industrial 2 of 5, bars-only encoding |
+| IATA2of5 | Yes | No | Yes | IATA 2 of 5 (Airline 2 of 5), air cargo management |
 | Code39 | Yes | Yes | Yes | Includes Extended variant |
 | Code93 | Yes | Yes | Yes | |
 | Code128 | Yes | Yes | Yes | Automatic subset switching |
@@ -104,7 +105,6 @@ When implementing a new barcode format reader or writer:
 
 | Format | Category | Complexity | Notes |
 |--------|----------|------------|-------|
-| IATA 2 of 5 | Linear | Low | Airline industry |
 | Datalogic 2 of 5 | Linear | Low | |
 
 ### Priority 3: Stacked/Multi-Row Linear
@@ -718,6 +718,18 @@ cmake -B build -DZXING_ENABLE_NEWFORMAT=OFF
   - Stop pattern: wide-bar, narrow-space, narrow-bar, narrow-space, wide-bar
   - Invented 1971 by Identicon Corp and Computer Identics Corp
   - Used for airline tickets, warehouse sorting, industrial inventory
+  - Optional modulo 10 check digit support
+  - Writer available via libzint integration (ZXING_WRITERS=NEW)
+  - iOS wrapper and C API updated
+
+- [x] **IATA2of5** (IATA 2 of 5 / Airline 2 of 5) - Fully implemented with:
+  - Numeric-only barcode (digits 0-9)
+  - Same digit encoding as Industrial 2 of 5 (10 elements per digit)
+  - Shorter start/stop patterns than Industrial 2 of 5
+  - Start pattern: narrow-bar, narrow-space, narrow-bar, narrow-space (4 elements)
+  - Stop pattern: wide-bar, narrow-space, narrow-bar (3 elements)
+  - Used by International Air Transport Association (IATA)
+  - Used for airline cargo management, baggage handling, air transport logistics
   - Optional modulo 10 check digit support
   - Writer available via libzint integration (ZXING_WRITERS=NEW)
   - iOS wrapper and C API updated
