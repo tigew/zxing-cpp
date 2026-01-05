@@ -49,7 +49,7 @@ When implementing a new barcode format reader or writer:
 
 ## Current Implementation Status
 
-### Fully Supported Formats (45 formats)
+### Fully Supported Formats (46 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
@@ -72,6 +72,7 @@ When implementing a new barcode format reader or writer:
 | IATA2of5 | Yes | No | Yes | IATA 2 of 5 (Airline 2 of 5), air cargo management |
 | Datalogic2of5 | Yes | No | Yes | Datalogic 2 of 5 (China Post), Matrix encoding with IATA patterns |
 | CodablockF | Yes | No | Yes | Stacked Code 128 (2-44 rows), K1/K2 checksum, medical/electronics |
+| Code16K | Yes | No | Yes | Stacked Code 128 (2-16 rows), modulo-107 checksum, 77 ASCII chars |
 | Code39 | Yes | Yes | Yes | Includes Extended variant |
 | Code93 | Yes | Yes | Yes | |
 | Code128 | Yes | Yes | Yes | Automatic subset switching |
@@ -107,7 +108,6 @@ When implementing a new barcode format reader or writer:
 
 | Format | Category | Complexity | Notes |
 |--------|----------|------------|-------|
-| Code 16k | Stacked | High | Stacked Code 128 |
 | Code 49 | Stacked | High | Multi-row alphanumeric |
 | GS1 DataBar Stacked | Stacked | Medium | Already partial via `stacked` option |
 | GS1 DataBar Stacked Omnidirectional | Stacked | Medium | |

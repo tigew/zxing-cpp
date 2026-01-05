@@ -30,6 +30,7 @@
 #include "oned/ODUSPSIMBReader.h"
 #include "oned/ODPharmacodeTwoTrackReader.h"
 #include "oned/ODCodablockFReader.h"
+#include "oned/ODCode16KReader.h"
 #endif
 #ifdef ZXING_WITH_PDF417
 #include "pdf417/PDFReader.h"
@@ -94,6 +95,8 @@ MultiFormatReader::MultiFormatReader(const ReaderOptions& opts) : _opts(opts)
 	// Stacked symbologies need 2D access for multi-row decoding
 	if (formats.testFlag(BarcodeFormat::CodablockF))
 		_readers.emplace_back(new OneD::CodablockFReader(opts));
+	if (formats.testFlag(BarcodeFormat::Code16K))
+		_readers.emplace_back(new OneD::Code16KReader(opts));
 #endif
 
 	// At end in "try harder" mode
