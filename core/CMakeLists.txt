@@ -416,6 +416,8 @@ if (ZXING_READERS AND ZXING_ENABLE_1D)
         src/oned/ODCodablockFReader.cpp
         src/oned/ODCode16KReader.h
         src/oned/ODCode16KReader.cpp
+        src/oned/ODCode49Reader.h
+        src/oned/ODCode49Reader.cpp
         src/oned/ODMultiUPCEANReader.h
         src/oned/ODMultiUPCEANReader.cpp
         src/oned/ODReader.h

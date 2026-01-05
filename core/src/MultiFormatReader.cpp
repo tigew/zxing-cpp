@@ -31,6 +31,7 @@
 #include "oned/ODPharmacodeTwoTrackReader.h"
 #include "oned/ODCodablockFReader.h"
 #include "oned/ODCode16KReader.h"
+#include "oned/ODCode49Reader.h"
 #endif
 #ifdef ZXING_WITH_PDF417
 #include "pdf417/PDFReader.h"
@@ -97,6 +98,8 @@ MultiFormatReader::MultiFormatReader(const ReaderOptions& opts) : _opts(opts)
 		_readers.emplace_back(new OneD::CodablockFReader(opts));
 	if (formats.testFlag(BarcodeFormat::Code16K))
 		_readers.emplace_back(new OneD::Code16KReader(opts));
+	if (formats.testFlag(BarcodeFormat::Code49))
+		_readers.emplace_back(new OneD::Code49Reader(opts));
 #endif
 
 	// At end in "try harder" mode
