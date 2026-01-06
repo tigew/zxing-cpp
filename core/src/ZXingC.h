@@ -125,11 +125,16 @@ typedef uint64_t ZXing_BarcodeFormat;
 #define ZXing_BarcodeFormat_CodablockF      ((ZXing_BarcodeFormat)(1ull << 44))
 #define ZXing_BarcodeFormat_Code16K         ((ZXing_BarcodeFormat)(1ull << 45))
 #define ZXing_BarcodeFormat_Code49          ((ZXing_BarcodeFormat)(1ull << 46))
+#define ZXing_BarcodeFormat_DataBarStacked  ((ZXing_BarcodeFormat)(1ull << 47))
+#define ZXing_BarcodeFormat_DataBarStackedOmnidirectional ((ZXing_BarcodeFormat)(1ull << 48))
+#define ZXing_BarcodeFormat_DataBarExpandedStacked ((ZXing_BarcodeFormat)(1ull << 49))
 
 #define ZXing_BarcodeFormat_LinearCodes (ZXing_BarcodeFormat_Codabar | ZXing_BarcodeFormat_Code39 | ZXing_BarcodeFormat_Code93 \
 	| ZXing_BarcodeFormat_Code128 | ZXing_BarcodeFormat_EAN8 | ZXing_BarcodeFormat_EAN13 \
 	| ZXing_BarcodeFormat_ITF | ZXing_BarcodeFormat_DataBar | ZXing_BarcodeFormat_DataBarExpanded \
-	| ZXing_BarcodeFormat_DataBarLimited | ZXing_BarcodeFormat_DXFilmEdge | ZXing_BarcodeFormat_UPCA \
+	| ZXing_BarcodeFormat_DataBarLimited | ZXing_BarcodeFormat_DataBarStacked \
+	| ZXing_BarcodeFormat_DataBarStackedOmnidirectional | ZXing_BarcodeFormat_DataBarExpandedStacked \
+	| ZXing_BarcodeFormat_DXFilmEdge | ZXing_BarcodeFormat_UPCA \
 	| ZXing_BarcodeFormat_UPCE | ZXing_BarcodeFormat_AustraliaPost | ZXing_BarcodeFormat_KIXCode \
 	| ZXing_BarcodeFormat_JapanPost | ZXing_BarcodeFormat_KoreaPost | ZXing_BarcodeFormat_RM4SCC \
 	| ZXing_BarcodeFormat_Mailmark | ZXing_BarcodeFormat_USPSIMB | ZXing_BarcodeFormat_DeutschePostLeitcode \

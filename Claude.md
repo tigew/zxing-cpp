@@ -49,7 +49,7 @@ When implementing a new barcode format reader or writer:
 
 ## Current Implementation Status
 
-### Fully Supported Formats (47 formats)
+### Fully Supported Formats (50 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
@@ -80,6 +80,9 @@ When implementing a new barcode format reader or writer:
 | DataBar | Yes | No | Yes | GS1 DataBar (formerly RSS-14) |
 | DataBarExpanded | Yes | No | Yes | GS1 DataBar Expanded |
 | DataBarLimited | Yes | No | Yes | Requires C++20 for reading |
+| DataBarStacked | Yes | No | Yes | GS1 DataBar Stacked (RSS-14 Stacked, 2-row variant) |
+| DataBarStackedOmnidirectional | Yes | No | Yes | GS1 DataBar Stacked Omnidirectional (RSS-14 Stacked Omni) |
+| DataBarExpandedStacked | Yes | No | Yes | GS1 DataBar Expanded Stacked (multi-row variant) |
 | DataMatrix | Yes | Yes | Yes | ECC200 |
 | DXFilmEdge | Yes | No | Yes | |
 | EAN-8 | Yes | Yes | Yes | |
@@ -105,15 +108,7 @@ When implementing a new barcode format reader or writer:
 
 ## Missing Formats to Implement
 
-### Priority 3: Stacked/Multi-Row Linear
-
-| Format | Category | Complexity | Notes |
-|--------|----------|------------|-------|
-| GS1 DataBar Stacked | Stacked | Medium | Already partial via `stacked` option |
-| GS1 DataBar Stacked Omnidirectional | Stacked | Medium | |
-| GS1 DataBar Expanded Stacked | Stacked | Medium | Already partial via `stacked` option |
-
-### Priority 4: 2D Matrix Codes
+### Priority 3: 2D Matrix Codes
 
 | Format | Category | Complexity | Notes |
 |--------|----------|------------|-------|
@@ -727,6 +722,30 @@ cmake -B build -DZXING_ENABLE_NEWFORMAT=OFF
   - Used for airline cargo management, baggage handling, air transport logistics
   - Optional modulo 10 check digit support
   - Writer available via libzint integration (ZXING_WRITERS=NEW)
+  - iOS wrapper and C API updated
+
+- [x] **DataBarStacked** (GS1 DataBar Stacked) - Fully implemented with:
+  - RSS-14 Stacked 2-row variant (ISO/IEC 24724:2011)
+  - Auto-detection of stacked vs non-stacked based on row analysis
+  - State-based pair collection across multiple scan lines
+  - Shared decoder with DataBar (ODDataBarReader)
+  - Writer available via libzint integration (ZXING_WRITERS=NEW) as BARCODE_DBAR_STK
+  - iOS wrapper and C API updated
+
+- [x] **DataBarStackedOmnidirectional** (GS1 DataBar Stacked Omnidirectional) - Fully implemented with:
+  - RSS-14 Stacked Omnidirectional variant with taller row height (33 modules)
+  - Better omnidirectional scanning support
+  - Shared format detection and decoder with DataBarStacked
+  - Writer available via libzint integration (ZXING_WRITERS=NEW) as BARCODE_DBAR_OMNSTK
+  - iOS wrapper and C API updated
+
+- [x] **DataBarExpandedStacked** (GS1 DataBar Expanded Stacked) - Fully implemented with:
+  - Multi-row DataBar Expanded variant (2-11 rows)
+  - Auto-detection based on pair y-coordinate analysis
+  - Finder pattern sequence validation across rows
+  - State-based pair collection with checksum validation
+  - Shared decoder with DataBarExpanded (ODDataBarExpandedReader)
+  - Writer available via libzint integration (ZXING_WRITERS=NEW) as BARCODE_DBAR_EXPSTK
   - iOS wrapper and C API updated
 
 ### Pending Phases

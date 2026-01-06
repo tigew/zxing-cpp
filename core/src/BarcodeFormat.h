@@ -70,8 +70,12 @@ enum class BarcodeFormat : uint64_t
 	CodablockF      = (1ull << 44), ///< Codablock F (stacked Code 128, 2-44 rows)
 	Code16K         = (1ull << 45), ///< Code 16K (stacked Code 128, 2-16 rows)
 	Code49          = (1ull << 46), ///< Code 49 (USS-49, stacked 2-8 rows, full ASCII)
+	DataBarStacked  = (1ull << 47), ///< GS1 DataBar Stacked (RSS-14 Stacked, 2-row variant)
+	DataBarStackedOmnidirectional = (1ull << 48), ///< GS1 DataBar Stacked Omnidirectional (RSS-14 Stacked Omni)
+	DataBarExpandedStacked = (1ull << 49), ///< GS1 DataBar Expanded Stacked (multi-row variant)
 
 	LinearCodes = Codabar | Code39 | Code93 | Code128 | EAN8 | EAN13 | ITF | DataBar | DataBarExpanded | DataBarLimited
+				  | DataBarStacked | DataBarStackedOmnidirectional | DataBarExpandedStacked
 				  | DXFilmEdge | UPCA | UPCE | AustraliaPost | KIXCode | JapanPost | KoreaPost | RM4SCC | Mailmark | USPSIMB
 				  | DeutschePostLeitcode | DeutschePostIdentcode | Code11 | POSTNET | PLANET | MSI | Telepen | LOGMARS | Code32
 				  | Pharmacode | PharmacodeTwoTrack | PZN | ChannelCode | Matrix2of5 | Industrial2of5 | IATA2of5 | Datalogic2of5
@@ -79,7 +83,7 @@ enum class BarcodeFormat : uint64_t
 	MatrixCodes = Aztec | DataMatrix | MaxiCode | PDF417 | QRCode | MicroQRCode | RMQRCode,
 	Any         = LinearCodes | MatrixCodes,
 
-	_max = Code49, ///> implementation detail, don't use
+	_max = DataBarExpandedStacked, ///> implementation detail, don't use
 };
 
 ZX_DECLARE_FLAGS(BarcodeFormats, BarcodeFormat)

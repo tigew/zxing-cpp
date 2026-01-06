@@ -75,9 +75,9 @@ Reader::Reader(const ReaderOptions& opts) : ZXing::Reader(opts)
 		_readers.emplace_back(new CodabarReader(opts));
 	if (formats.testFlag(BarcodeFormat::Code11))
 		_readers.emplace_back(new Code11Reader(opts));
-	if (formats.testFlag(BarcodeFormat::DataBar))
+	if (formats.testFlags(BarcodeFormat::DataBar | BarcodeFormat::DataBarStacked | BarcodeFormat::DataBarStackedOmnidirectional))
 		_readers.emplace_back(new DataBarReader(opts));
-	if (formats.testFlag(BarcodeFormat::DataBarExpanded))
+	if (formats.testFlags(BarcodeFormat::DataBarExpanded | BarcodeFormat::DataBarExpandedStacked))
 		_readers.emplace_back(new DataBarExpandedReader(opts));
 	if (formats.testFlag(BarcodeFormat::DataBarLimited))
 		_readers.emplace_back(new DataBarLimitedReader(opts));

@@ -84,6 +84,12 @@ ZXing::BarcodeFormat BarcodeFormatFromZXIFormat(ZXIFormat format) {
             return ZXing::BarcodeFormat::DataBarExpanded;
         case ZXIFormat::DATA_BAR_LIMITED:
             return ZXing::BarcodeFormat::DataBarLimited;
+        case ZXIFormat::DATA_BAR_STACKED:
+            return ZXing::BarcodeFormat::DataBarStacked;
+        case ZXIFormat::DATA_BAR_STACKED_OMNIDIRECTIONAL:
+            return ZXing::BarcodeFormat::DataBarStackedOmnidirectional;
+        case ZXIFormat::DATA_BAR_EXPANDED_STACKED:
+            return ZXing::BarcodeFormat::DataBarExpandedStacked;
         case ZXIFormat::DATA_BAR:
             return ZXing::BarcodeFormat::DataBar;
         case ZXIFormat::DX_FILM_EDGE:
@@ -137,6 +143,12 @@ ZXIFormat ZXIFormatFromBarcodeFormat(ZXing::BarcodeFormat format) {
             return ZXIFormat::DATA_BAR_EXPANDED;
         case ZXing::BarcodeFormat::DataBarLimited:
             return ZXIFormat::DATA_BAR_LIMITED;
+        case ZXing::BarcodeFormat::DataBarStacked:
+            return ZXIFormat::DATA_BAR_STACKED;
+        case ZXing::BarcodeFormat::DataBarStackedOmnidirectional:
+            return ZXIFormat::DATA_BAR_STACKED_OMNIDIRECTIONAL;
+        case ZXing::BarcodeFormat::DataBarExpandedStacked:
+            return ZXIFormat::DATA_BAR_EXPANDED_STACKED;
         case ZXing::BarcodeFormat::DataMatrix:
             return ZXIFormat::DATA_MATRIX;
         case ZXing::BarcodeFormat::DXFilmEdge:
