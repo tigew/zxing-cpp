@@ -128,6 +128,7 @@ typedef uint64_t ZXing_BarcodeFormat;
 #define ZXing_BarcodeFormat_DataBarStacked  ((ZXing_BarcodeFormat)(1ull << 47))
 #define ZXing_BarcodeFormat_DataBarStackedOmnidirectional ((ZXing_BarcodeFormat)(1ull << 48))
 #define ZXing_BarcodeFormat_DataBarExpandedStacked ((ZXing_BarcodeFormat)(1ull << 49))
+#define ZXing_BarcodeFormat_AztecRune       ((ZXing_BarcodeFormat)(1ull << 50))
 
 #define ZXing_BarcodeFormat_LinearCodes (ZXing_BarcodeFormat_Codabar | ZXing_BarcodeFormat_Code39 | ZXing_BarcodeFormat_Code93 \
 	| ZXing_BarcodeFormat_Code128 | ZXing_BarcodeFormat_EAN8 | ZXing_BarcodeFormat_EAN13 \
@@ -146,7 +147,8 @@ typedef uint64_t ZXing_BarcodeFormat;
 	| ZXing_BarcodeFormat_IATA2of5 | ZXing_BarcodeFormat_Datalogic2of5 | ZXing_BarcodeFormat_CodablockF \
 	| ZXing_BarcodeFormat_Code16K | ZXing_BarcodeFormat_Code49)
 
-#define ZXing_BarcodeFormat_MatrixCodes (ZXing_BarcodeFormat_Aztec | ZXing_BarcodeFormat_DataMatrix | ZXing_BarcodeFormat_MaxiCode \
+#define ZXing_BarcodeFormat_MatrixCodes (ZXing_BarcodeFormat_Aztec | ZXing_BarcodeFormat_AztecRune \
+	| ZXing_BarcodeFormat_DataMatrix | ZXing_BarcodeFormat_MaxiCode \
 	| ZXing_BarcodeFormat_PDF417 | ZXing_BarcodeFormat_QRCode | ZXing_BarcodeFormat_MicroQRCode \
 	| ZXing_BarcodeFormat_RMQRCode)
 

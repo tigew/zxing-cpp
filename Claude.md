@@ -49,12 +49,13 @@ When implementing a new barcode format reader or writer:
 
 ## Current Implementation Status
 
-### Fully Supported Formats (50 formats)
+### Fully Supported Formats (51 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
 | AustraliaPost | Yes | No | Yes | 4-state postal, 6 FCC variants (11, 45, 59, 62, 87, 92) |
 | Aztec | Yes | Yes | Yes | Full support |
+| AztecRune | Yes | No | Yes | Compact 11x11 Aztec variant (ISO/IEC 24778:2008 Annex A), encodes 0-255 |
 | Codabar | Yes | Yes | Yes | |
 | Code11 | Yes | No | Yes | Telecommunications (USD-8), check digit C and K |
 | POSTNET | Yes | No | Yes | USPS POSTNET (height-modulated 5-bar encoding) |
@@ -112,7 +113,6 @@ When implementing a new barcode format reader or writer:
 
 | Format | Category | Complexity | Notes |
 |--------|----------|------------|-------|
-| Aztec Runes | Matrix | Medium | Small Aztec variant |
 | Code One | Matrix | High | 2D matrix code |
 | DotCode | Matrix | High | Dot-based matrix |
 | Grid Matrix | Matrix | High | Chinese standard |
@@ -435,12 +435,11 @@ More complex multi-row formats:
 ### Phase 5: 2D Matrix Codes
 Most complex implementations:
 
-1. **Aztec Runes** - Small Aztec variant
-2. **UPNQR** - QR Code variant
-3. **DotCode** - Dot-based matrix
-4. **Code One** - 2D matrix
-5. **Grid Matrix** - Chinese standard
-6. **Han Xin** - Chinese standard
+1. **UPNQR** - QR Code variant
+2. **DotCode** - Dot-based matrix
+3. **Code One** - 2D matrix
+4. **Grid Matrix** - Chinese standard
+5. **Han Xin** - Chinese standard
 
 ---
 
@@ -746,6 +745,17 @@ cmake -B build -DZXING_ENABLE_NEWFORMAT=OFF
   - State-based pair collection with checksum validation
   - Shared decoder with DataBarExpanded (ODDataBarExpandedReader)
   - Writer available via libzint integration (ZXING_WRITERS=NEW) as BARCODE_DBAR_EXPSTK
+  - iOS wrapper and C API updated
+
+- [x] **AztecRune** (Aztec Rune) - Fully implemented with:
+  - Compact 11x11 Aztec variant encoding 0-255 (ISO/IEC 24778:2008 Annex A)
+  - Detection was already present in existing Aztec detector/decoder
+  - Added separate BarcodeFormat::AztecRune for explicit format identification
+  - Runes use symbology identifier `{'z', 'C', 0}` (no ECI support)
+  - Detector XORs mode message with 0b1010 to identify runes
+  - Decoder returns rune value as 3-digit text string
+  - MultiFormatReader registers Aztec reader when AztecRune requested
+  - Writer available via libzint integration (ZXING_WRITERS=NEW) as BARCODE_AZRUNE
   - iOS wrapper and C API updated
 
 ### Pending Phases

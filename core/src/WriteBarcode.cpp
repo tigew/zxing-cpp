@@ -178,6 +178,7 @@ struct BarcodeFormatZXing2Zint
 
 static constexpr BarcodeFormatZXing2Zint barcodeFormatZXing2Zint[] = {
 	{BarcodeFormat::Aztec, BARCODE_AZTEC},
+	{BarcodeFormat::AztecRune, BARCODE_AZRUNE},
 	{BarcodeFormat::Codabar, BARCODE_CODABAR},
 	{BarcodeFormat::Code39, BARCODE_CODE39},
 	{BarcodeFormat::Code93, BARCODE_CODE93},
@@ -250,6 +251,7 @@ static int ParseECLevel(int symbology, std::string_view s)
 
 static constexpr struct { BarcodeFormat format; SymbologyIdentifier si; } barcodeFormat2SymbologyIdentifier[] = {
 	{BarcodeFormat::Aztec, {'z', '0', 3}}, // '1' GS1, '2' AIM
+	{BarcodeFormat::AztecRune, {'z', 'C', 0}}, // Runes cannot have ECI
 	{BarcodeFormat::Codabar, {'F', '0'}}, // if checksum processing were implemented and checksum present and stripped then modifier would be 4
 	// {BarcodeFormat::CodablockF, {'O', '4'}}, // '5' GS1
 	{BarcodeFormat::Code128, {'C', '0'}}, // '1' GS1, '2' AIM

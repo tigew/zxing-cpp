@@ -63,7 +63,7 @@ MultiFormatReader::MultiFormatReader(const ReaderOptions& opts) : _opts(opts)
 		_readers.emplace_back(new DataMatrix::Reader(opts, true));
 #endif
 #ifdef ZXING_WITH_AZTEC
-	if (formats.testFlag(BarcodeFormat::Aztec))
+	if (formats.testFlags(BarcodeFormat::Aztec | BarcodeFormat::AztecRune))
 		_readers.emplace_back(new Aztec::Reader(opts, true));
 #endif
 #ifdef ZXING_WITH_PDF417
