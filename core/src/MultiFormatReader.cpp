@@ -13,6 +13,9 @@
 #ifdef ZXING_WITH_AZTEC
 #include "aztec/AZReader.h"
 #endif
+#ifdef ZXING_WITH_CODEONE
+#include "codeone/C1Reader.h"
+#endif
 #ifdef ZXING_WITH_DATAMATRIX
 #include "datamatrix/DMReader.h"
 #endif
@@ -65,6 +68,10 @@ MultiFormatReader::MultiFormatReader(const ReaderOptions& opts) : _opts(opts)
 #ifdef ZXING_WITH_AZTEC
 	if (formats.testFlags(BarcodeFormat::Aztec | BarcodeFormat::AztecRune))
 		_readers.emplace_back(new Aztec::Reader(opts, true));
+#endif
+#ifdef ZXING_WITH_CODEONE
+	if (formats.testFlag(BarcodeFormat::CodeOne))
+		_readers.emplace_back(new CodeOne::Reader(opts));
 #endif
 #ifdef ZXING_WITH_PDF417
 	if (formats.testFlag(BarcodeFormat::PDF417))

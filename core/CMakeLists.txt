@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 project (ZXing VERSION "2.3.0")
 set (ZXING_SONAME 3) # see https://github.com/zxing-cpp/zxing-cpp/issues/333
 
-foreach(format 1D AZTEC DATAMATRIX MAXICODE PDF417 QRCODE)
+foreach(format 1D AZTEC CODEONE DATAMATRIX MAXICODE PDF417 QRCODE)
     option ("ZXING_ENABLE_${format}" "Enable support for ${format} barcodes" ON)
 endforeach()
 
@@ -50,7 +50,7 @@ set (ZXING_PUBLIC_FLAGS
     $<$<BOOL:${ZXING_EXPERIMENTAL_API}>:-DZXING_EXPERIMENTAL_API>
     $<$<BOOL:${ZXING_WRITERS_NEW}>:-DZXING_USE_ZINT>
 )
-foreach(format 1D AZTEC DATAMATRIX MAXICODE PDF417 QRCODE)
+foreach(format 1D AZTEC CODEONE DATAMATRIX MAXICODE PDF417 QRCODE)
     list (APPEND ZXING_PUBLIC_FLAGS $<$<BOOL:${ZXING_ENABLE_${format}}>:-DZXING_WITH_${format}>)
 endforeach()
 
@@ -283,6 +283,16 @@ if (ZXING_WRITERS_OLD AND ZXING_ENABLE_AZTEC)
         src/aztec/AZToken.cpp
         src/aztec/AZWriter.h
         src/aztec/AZWriter.cpp
+    )
+endif()
+
+if (ZXING_READERS AND ZXING_ENABLE_CODEONE)
+    set (CODEONE_FILES
+        src/codeone/C1Version.h
+        src/codeone/C1Decoder.h
+        src/codeone/C1Decoder.cpp
+        src/codeone/C1Reader.h
+        src/codeone/C1Reader.cpp
     )
 endif()
 
@@ -544,6 +554,7 @@ endif()
 
 source_group (Sources FILES ${COMMON_FILES})
 source_group (Sources\\aztec FILES ${AZTEC_FILES})
+source_group (Sources\\codeone FILES ${CODEONE_FILES})
 source_group (Sources\\datamatrix FILES ${DATAMATRIX_FILES})
 source_group (Sources\\maxicode FILES ${MAXICODE_FILES})
 source_group (Sources\\oned FILES ${ONED_FILES})
@@ -557,6 +568,7 @@ find_package(Threads REQUIRED)
 add_library (ZXing
     ${COMMON_FILES}
     ${AZTEC_FILES}
+    ${CODEONE_FILES}
     ${DATAMATRIX_FILES}
     ${MAXICODE_FILES}
     ${ONED_FILES}

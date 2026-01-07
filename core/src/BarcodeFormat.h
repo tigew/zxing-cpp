@@ -74,6 +74,7 @@ enum class BarcodeFormat : uint64_t
 	DataBarStackedOmnidirectional = (1ull << 48), ///< GS1 DataBar Stacked Omnidirectional (RSS-14 Stacked Omni)
 	DataBarExpandedStacked = (1ull << 49), ///< GS1 DataBar Expanded Stacked (multi-row variant)
 	AztecRune       = (1ull << 50), ///< Aztec Rune (compact 11x11 Aztec variant encoding 0-255)
+	CodeOne         = (1ull << 51), ///< Code One (2D matrix, versions A-H/S/T, AIM USS-Code One)
 
 	LinearCodes = Codabar | Code39 | Code93 | Code128 | EAN8 | EAN13 | ITF | DataBar | DataBarExpanded | DataBarLimited
 				  | DataBarStacked | DataBarStackedOmnidirectional | DataBarExpandedStacked
@@ -81,10 +82,10 @@ enum class BarcodeFormat : uint64_t
 				  | DeutschePostLeitcode | DeutschePostIdentcode | Code11 | POSTNET | PLANET | MSI | Telepen | LOGMARS | Code32
 				  | Pharmacode | PharmacodeTwoTrack | PZN | ChannelCode | Matrix2of5 | Industrial2of5 | IATA2of5 | Datalogic2of5
 				  | CodablockF | Code16K | Code49,
-	MatrixCodes = Aztec | AztecRune | DataMatrix | MaxiCode | PDF417 | QRCode | MicroQRCode | RMQRCode,
+	MatrixCodes = Aztec | AztecRune | CodeOne | DataMatrix | MaxiCode | PDF417 | QRCode | MicroQRCode | RMQRCode,
 	Any         = LinearCodes | MatrixCodes,
 
-	_max = AztecRune, ///> implementation detail, don't use
+	_max = CodeOne, ///> implementation detail, don't use
 };
 
 ZX_DECLARE_FLAGS(BarcodeFormats, BarcodeFormat)

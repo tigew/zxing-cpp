@@ -27,6 +27,7 @@ static const BarcodeFormatName NAMES[] = {
 	{BarcodeFormat::AustraliaPost, "AustraliaPost"},
 	{BarcodeFormat::Aztec, "Aztec"},
 	{BarcodeFormat::AztecRune, "AztecRune"},
+	{BarcodeFormat::CodeOne, "CodeOne"},
 	{BarcodeFormat::Codabar, "Codabar"},
 	{BarcodeFormat::Code39, "Code39"},
 	{BarcodeFormat::Code93, "Code93"},

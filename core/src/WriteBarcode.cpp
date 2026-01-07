@@ -183,6 +183,7 @@ static constexpr BarcodeFormatZXing2Zint barcodeFormatZXing2Zint[] = {
 	{BarcodeFormat::Code39, BARCODE_CODE39},
 	{BarcodeFormat::Code93, BARCODE_CODE93},
 	{BarcodeFormat::Code128, BARCODE_CODE128},
+	{BarcodeFormat::CodeOne, BARCODE_CODEONE},
 	{BarcodeFormat::DataBar, BARCODE_DBAR_OMN},
 	{BarcodeFormat::DataBarExpanded, BARCODE_DBAR_EXP},
 	{BarcodeFormat::DataBarLimited, BARCODE_DBAR_LTD},
@@ -254,6 +255,7 @@ static constexpr struct { BarcodeFormat format; SymbologyIdentifier si; } barcod
 	{BarcodeFormat::AztecRune, {'z', 'C', 0}}, // Runes cannot have ECI
 	{BarcodeFormat::Codabar, {'F', '0'}}, // if checksum processing were implemented and checksum present and stripped then modifier would be 4
 	// {BarcodeFormat::CodablockF, {'O', '4'}}, // '5' GS1
+	{BarcodeFormat::CodeOne, {'X', '0', 3}}, // '1' GS1
 	{BarcodeFormat::Code128, {'C', '0'}}, // '1' GS1, '2' AIM
 	// {BarcodeFormat::Code16K, {'K', '0'}}, // '1' GS1, '2' AIM, '4' D1 PAD
 	{BarcodeFormat::Code39, {'A', '0'}}, // '3' checksum, '4' extended, '7' checksum,extended
