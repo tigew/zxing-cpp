@@ -191,6 +191,7 @@ static constexpr BarcodeFormatZXing2Zint barcodeFormatZXing2Zint[] = {
 	{BarcodeFormat::DataBarStackedOmnidirectional, BARCODE_DBAR_OMNSTK},
 	{BarcodeFormat::DataBarExpandedStacked, BARCODE_DBAR_EXPSTK},
 	{BarcodeFormat::DataMatrix, BARCODE_DATAMATRIX},
+	{BarcodeFormat::DotCode, BARCODE_DOTCODE},
 	{BarcodeFormat::DXFilmEdge, BARCODE_DXFILMEDGE},
 	{BarcodeFormat::EAN8, BARCODE_EAN8},
 	{BarcodeFormat::EAN13, BARCODE_EAN13},
@@ -267,7 +268,7 @@ static constexpr struct { BarcodeFormat format; SymbologyIdentifier si; } barcod
 	{BarcodeFormat::DataBarStackedOmnidirectional, {'e', '0', 0, AIFlag::GS1}},
 	{BarcodeFormat::DataBarExpandedStacked, {'e', '0', 0, AIFlag::GS1}},
 	{BarcodeFormat::DataMatrix, {'d', '1', 3}}, // '2' GS1, '3' AIM
-	// {BarcodeFormat::DotCode, {'J', '0', 3}}, // '1' GS1, '2' AIM
+	{BarcodeFormat::DotCode, {'J', '0', 3}}, // '1' GS1, '2' AIM
 	{BarcodeFormat::DXFilmEdge, {}},
 	{BarcodeFormat::EAN8, {'E', '4'}},
 	{BarcodeFormat::EAN13, {'E', '0'}},
