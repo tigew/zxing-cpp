@@ -12,6 +12,7 @@
 #include "ReaderOptions.h"
 #include "DecoderResult.h"
 #include "DetectorResult.h"
+#include "ECI.h"
 #include "LogMatrix.h"
 #include "QRDecoder.h"
 #include "QRDetector.h"
@@ -20,6 +21,23 @@
 #include <utility>
 
 namespace ZXing::QRCode {
+
+// UPNQR (Slovenian payment QR) detection:
+// - Version 15 (77x77 modules)
+// - EC Level M
+// - ECI 4 (ISO-8859-2)
+static bool IsUPNQR(const DecoderResult& result)
+{
+	if (result.versionNumber() != 15)
+		return false;
+	if (result.ecLevel() != "M")
+		return false;
+	const auto& content = result.content();
+	if (!content.hasECI || content.encodings.empty())
+		return false;
+	// Check if the first encoding is ECI 4 (ISO-8859-2)
+	return content.encodings[0].eci == ECI::ISO8859_2;
+}
 
 Barcode Reader::decode(const BinaryBitmap& image) const
 {
@@ -44,9 +62,15 @@ Barcode Reader::decode(const BinaryBitmap& image) const
 		return {};
 
 	auto decoderResult = Decode(detectorResult.bits());
-	auto format = detectorResult.bits().width() != detectorResult.bits().height() ? BarcodeFormat::RMQRCode
-				  : detectorResult.bits().width() < 21                            ? BarcodeFormat::MicroQRCode
-																				  : BarcodeFormat::QRCode;
+	BarcodeFormat format;
+	if (detectorResult.bits().width() != detectorResult.bits().height())
+		format = BarcodeFormat::RMQRCode;
+	else if (detectorResult.bits().width() < 21)
+		format = BarcodeFormat::MicroQRCode;
+	else if (_opts.hasFormat(BarcodeFormat::UPNQR) && IsUPNQR(decoderResult))
+		format = BarcodeFormat::UPNQR;
+	else
+		format = BarcodeFormat::QRCode;
 
 	return Barcode(std::move(decoderResult), std::move(detectorResult), format);
 }
@@ -86,7 +110,7 @@ Barcodes Reader::decode(const BinaryBitmap& image, int maxSymbols) const
 	std::vector<ConcentricPattern> usedFPs;
 	Barcodes res;
 	
-	if (_opts.hasFormat(BarcodeFormat::QRCode)) {
+	if (_opts.hasFormat(BarcodeFormat::QRCode) || _opts.hasFormat(BarcodeFormat::UPNQR)) {
 		auto allFPSets = GenerateFinderPatternSets(allFPs);
 		for (const auto& fpSet : allFPSets) {
 			if (Contains(usedFPs, fpSet.bl) || Contains(usedFPs, fpSet.tl) || Contains(usedFPs, fpSet.tr))
@@ -103,9 +127,15 @@ Barcodes Reader::decode(const BinaryBitmap& image, int maxSymbols) const
 					usedFPs.push_back(fpSet.tr);
 				}
 				if (decoderResult.isValid(_opts.returnErrors())) {
-					res.emplace_back(std::move(decoderResult), std::move(detectorResult), BarcodeFormat::QRCode);
-					if (maxSymbols && Size(res) == maxSymbols)
-						break;
+					// Check if this is UPNQR (Version 15, EC Level M, ECI 4)
+					bool isUPN = _opts.hasFormat(BarcodeFormat::UPNQR) && IsUPNQR(decoderResult);
+					BarcodeFormat format = isUPN ? BarcodeFormat::UPNQR : BarcodeFormat::QRCode;
+					// Only add if the detected format matches what was requested
+					if (_opts.hasFormat(format)) {
+						res.emplace_back(std::move(decoderResult), std::move(detectorResult), format);
+						if (maxSymbols && Size(res) == maxSymbols)
+							break;
+					}
 				}
 			}
 		}

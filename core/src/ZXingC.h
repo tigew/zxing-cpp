@@ -133,6 +133,7 @@ typedef uint64_t ZXing_BarcodeFormat;
 #define ZXing_BarcodeFormat_DotCode         ((ZXing_BarcodeFormat)(1ull << 52))
 #define ZXing_BarcodeFormat_GridMatrix      ((ZXing_BarcodeFormat)(1ull << 53))
 #define ZXing_BarcodeFormat_HanXin          ((ZXing_BarcodeFormat)(1ull << 54))
+#define ZXing_BarcodeFormat_UPNQR           ((ZXing_BarcodeFormat)(1ull << 55))
 
 #define ZXing_BarcodeFormat_LinearCodes (ZXing_BarcodeFormat_Codabar | ZXing_BarcodeFormat_Code39 | ZXing_BarcodeFormat_Code93 \
 	| ZXing_BarcodeFormat_Code128 | ZXing_BarcodeFormat_EAN8 | ZXing_BarcodeFormat_EAN13 \
@@ -155,7 +156,7 @@ typedef uint64_t ZXing_BarcodeFormat;
 	| ZXing_BarcodeFormat_CodeOne | ZXing_BarcodeFormat_DataMatrix | ZXing_BarcodeFormat_DotCode \
 	| ZXing_BarcodeFormat_GridMatrix | ZXing_BarcodeFormat_HanXin | ZXing_BarcodeFormat_MaxiCode \
 	| ZXing_BarcodeFormat_PDF417 | ZXing_BarcodeFormat_QRCode | ZXing_BarcodeFormat_MicroQRCode \
-	| ZXing_BarcodeFormat_RMQRCode)
+	| ZXing_BarcodeFormat_RMQRCode | ZXing_BarcodeFormat_UPNQR)
 
 #define ZXing_BarcodeFormat_Any (ZXing_BarcodeFormat_LinearCodes | ZXing_BarcodeFormat_MatrixCodes)
 

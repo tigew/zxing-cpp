@@ -122,6 +122,8 @@ ZXing::BarcodeFormat BarcodeFormatFromZXIFormat(ZXIFormat format) {
             return ZXing::BarcodeFormat::MicroQRCode;
         case ZXIFormat::RMQR_CODE:
             return ZXing::BarcodeFormat::RMQRCode;
+        case ZXIFormat::UPN_QR:
+            return ZXing::BarcodeFormat::UPNQR;
         case ZXIFormat::NONE:
             return ZXing::BarcodeFormat::None;
     }
@@ -247,6 +249,8 @@ ZXIFormat ZXIFormatFromBarcodeFormat(ZXing::BarcodeFormat format) {
             return ZXIFormat::MICRO_QR_CODE;
         case ZXing::BarcodeFormat::RMQRCode:
             return ZXIFormat::RMQR_CODE;
+        case ZXing::BarcodeFormat::UPNQR:
+            return ZXIFormat::UPN_QR;
         case ZXing::BarcodeFormat::Any:
             return ZXIFormat::ANY;
     }

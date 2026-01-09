@@ -203,6 +203,7 @@ static constexpr BarcodeFormatZXing2Zint barcodeFormatZXing2Zint[] = {
 	{BarcodeFormat::PDF417, BARCODE_PDF417},
 	{BarcodeFormat::QRCode, BARCODE_QRCODE},
 	{BarcodeFormat::RMQRCode, BARCODE_RMQR},
+	{BarcodeFormat::UPNQR, BARCODE_UPNQR},
 	{BarcodeFormat::UPCA, BARCODE_UPCA},
 	{BarcodeFormat::UPCE, BARCODE_UPCE},
 };
@@ -282,6 +283,7 @@ static constexpr struct { BarcodeFormat format; SymbologyIdentifier si; } barcod
 	{BarcodeFormat::PDF417, {'L', '2', char(-1)}},
 	{BarcodeFormat::QRCode, {'Q', '1', 1}}, // '3' GS1, '5' AIM
 	{BarcodeFormat::RMQRCode, {'Q', '1', 1}}, // '3' GS1, '5' AIM
+	{BarcodeFormat::UPNQR, {'Q', '1', 1}}, // Slovenian payment QR (same as QRCode)
 	{BarcodeFormat::UPCA, {'E', '0'}},
 	{BarcodeFormat::UPCE, {'E', '0'}},
 };

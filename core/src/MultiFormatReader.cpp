@@ -67,7 +67,7 @@ MultiFormatReader::MultiFormatReader(const ReaderOptions& opts) : _opts(opts)
 #endif
 
 #ifdef ZXING_WITH_QRCODE
-	if (formats.testFlags(BarcodeFormat::QRCode | BarcodeFormat::MicroQRCode | BarcodeFormat::RMQRCode))
+	if (formats.testFlags(BarcodeFormat::QRCode | BarcodeFormat::MicroQRCode | BarcodeFormat::RMQRCode | BarcodeFormat::UPNQR))
 		_readers.emplace_back(new QRCode::Reader(opts, true));
 #endif
 #ifdef ZXING_WITH_DATAMATRIX

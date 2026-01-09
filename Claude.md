@@ -49,7 +49,7 @@ When implementing a new barcode format reader or writer:
 
 ## Current Implementation Status
 
-### Fully Supported Formats (55 formats)
+### Fully Supported Formats (56 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
@@ -106,6 +106,7 @@ When implementing a new barcode format reader or writer:
 | PDF417 | Yes | Yes | Yes | Includes Truncated variant |
 | QRCode | Yes | Yes | Yes | |
 | RMQRCode | Yes | No | Yes | Rectangular Micro QR Code |
+| UPNQR | Yes | No | Yes | Slovenian payment QR (Version 15, ECI 4, EC Level M) |
 | UPC-A | Yes | Yes | Yes | |
 | UPC-E | Yes | Yes | Yes | |
 
@@ -113,11 +114,7 @@ When implementing a new barcode format reader or writer:
 
 ## Missing Formats to Implement
 
-### Priority 3: 2D Matrix Codes
-
-| Format | Category | Complexity | Notes |
-|--------|----------|------------|-------|
-| UPNQR | Matrix | Low | Slovenian QR Code variant |
+All barcode formats have been implemented.
 
 ---
 
@@ -801,6 +798,19 @@ cmake -B build -DZXING_ENABLE_NEWFORMAT=OFF
   - Version detection from symbol dimensions: version = (size - 21) / 2
   - Writer available via libzint integration (ZXING_WRITERS=NEW) as BARCODE_HANXIN
   - Symbology identifier: h0 (h2 for GS1)
+  - iOS wrapper and C API updated
+
+- [x] **UPNQR** (UPN QR Code) - Fully implemented with:
+  - Slovenian payment QR code (Bank Association of Slovenia)
+  - QR Code variant with fixed constraints:
+    - Version: 15 (77×77 modules)
+    - Error Correction Level: M
+    - ECI: 4 (ISO-8859-2 / Latin-2)
+    - Encoding: Byte mode only
+  - Detection logic in QR reader identifies UPNQR based on Version/ECI/EC characteristics
+  - Uses existing QR Code reader infrastructure (no separate decoder needed)
+  - Writer available via libzint integration (ZXING_WRITERS=NEW) as BARCODE_UPNQR
+  - Symbology identifier: Q1 (same as QR Code)
   - iOS wrapper and C API updated
 
 ### Pending Phases
