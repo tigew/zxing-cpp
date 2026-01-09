@@ -114,6 +114,8 @@ ZXing::BarcodeFormat BarcodeFormatFromZXIFormat(ZXIFormat format) {
             return ZXing::BarcodeFormat::DotCode;
         case ZXIFormat::GRID_MATRIX:
             return ZXing::BarcodeFormat::GridMatrix;
+        case ZXIFormat::HAN_XIN:
+            return ZXing::BarcodeFormat::HanXin;
         case ZXIFormat::AUSTRALIA_POST:
             return ZXing::BarcodeFormat::AustraliaPost;
         case ZXIFormat::MICRO_QR_CODE:
@@ -141,6 +143,8 @@ ZXIFormat ZXIFormatFromBarcodeFormat(ZXing::BarcodeFormat format) {
             return ZXIFormat::DOT_CODE;
         case ZXing::BarcodeFormat::GridMatrix:
             return ZXIFormat::GRID_MATRIX;
+        case ZXing::BarcodeFormat::HanXin:
+            return ZXIFormat::HAN_XIN;
         case ZXing::BarcodeFormat::AustraliaPost:
             return ZXIFormat::AUSTRALIA_POST;
         case ZXing::BarcodeFormat::Codabar:

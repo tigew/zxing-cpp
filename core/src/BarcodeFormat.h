@@ -77,6 +77,7 @@ enum class BarcodeFormat : uint64_t
 	CodeOne         = (1ull << 51), ///< Code One (2D matrix, versions A-H/S/T, AIM USS-Code One)
 	DotCode         = (1ull << 52), ///< DotCode (2D dot matrix, high-speed industrial printing)
 	GridMatrix      = (1ull << 53), ///< Grid Matrix (2D matrix, Chinese characters, GB/T 21049)
+	HanXin          = (1ull << 54), ///< Han Xin Code (2D matrix, Chinese standard GB/T 21049, ISO/IEC 20830)
 
 	LinearCodes = Codabar | Code39 | Code93 | Code128 | EAN8 | EAN13 | ITF | DataBar | DataBarExpanded | DataBarLimited
 				  | DataBarStacked | DataBarStackedOmnidirectional | DataBarExpandedStacked
@@ -84,10 +85,10 @@ enum class BarcodeFormat : uint64_t
 				  | DeutschePostLeitcode | DeutschePostIdentcode | Code11 | POSTNET | PLANET | MSI | Telepen | LOGMARS | Code32
 				  | Pharmacode | PharmacodeTwoTrack | PZN | ChannelCode | Matrix2of5 | Industrial2of5 | IATA2of5 | Datalogic2of5
 				  | CodablockF | Code16K | Code49,
-	MatrixCodes = Aztec | AztecRune | CodeOne | DataMatrix | DotCode | GridMatrix | MaxiCode | PDF417 | QRCode | MicroQRCode | RMQRCode,
+	MatrixCodes = Aztec | AztecRune | CodeOne | DataMatrix | DotCode | GridMatrix | HanXin | MaxiCode | PDF417 | QRCode | MicroQRCode | RMQRCode,
 	Any         = LinearCodes | MatrixCodes,
 
-	_max = GridMatrix, ///> implementation detail, don't use
+	_max = HanXin, ///> implementation detail, don't use
 };
 
 ZX_DECLARE_FLAGS(BarcodeFormats, BarcodeFormat)

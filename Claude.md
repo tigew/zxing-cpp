@@ -49,7 +49,7 @@ When implementing a new barcode format reader or writer:
 
 ## Current Implementation Status
 
-### Fully Supported Formats (54 formats)
+### Fully Supported Formats (55 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
@@ -89,6 +89,7 @@ When implementing a new barcode format reader or writer:
 | DotCode | Yes | No | Yes | 2D dot matrix for high-speed industrial printing |
 | DXFilmEdge | Yes | No | Yes | |
 | GridMatrix | Yes | No | Yes | 2D matrix (Chinese standard GB/T 21049), 13 versions, Chinese character optimized |
+| HanXin | Yes | No | Yes | 2D matrix (Chinese standard GB/T 21049, ISO/IEC 20830), 84 versions, GB 18030 characters |
 | EAN-8 | Yes | Yes | Yes | |
 | EAN-13 | Yes | Yes | Yes | |
 | ITF | Yes | Yes | Yes | Interleaved 2 of 5, ITF-14 |
@@ -116,7 +117,6 @@ When implementing a new barcode format reader or writer:
 
 | Format | Category | Complexity | Notes |
 |--------|----------|------------|-------|
-| Han Xin | Matrix | High | Chinese standard GB/T 21049 |
 | UPNQR | Matrix | Low | Slovenian QR Code variant |
 
 ---
@@ -787,6 +787,20 @@ cmake -B build -DZXING_ENABLE_NEWFORMAT=OFF
   - Reed-Solomon error correction
   - Optimized for Chinese character encoding
   - Writer available via libzint integration (ZXING_WRITERS=NEW) as BARCODE_GRIDMATRIX
+  - iOS wrapper and C API updated
+
+- [x] **HanXin** (Han Xin Code) - Fully implemented with:
+  - Chinese national standard 2D symbology (GB/T 21049-2007, ISO/IEC 20830)
+  - 84 versions (V1-V84): 23x23 to 189x189 modules (odd dimensions only)
+  - 4 error correction levels (L1-L4): 8%, 15%, 23%, 30% recovery
+  - 7 encoding modes: Numeric, Text, Binary (1-byte), Binary (2-byte), Region Chinese (GB 2312), Double-byte (GB 18030), Four-byte (GB 18030)
+  - Full GB 18030 character set support (including 4-byte characters)
+  - Reed-Solomon error correction using GF(256)
+  - Unique finder patterns at all four corners
+  - Function patterns: Timing, Alignment, Mode information
+  - Version detection from symbol dimensions: version = (size - 21) / 2
+  - Writer available via libzint integration (ZXING_WRITERS=NEW) as BARCODE_HANXIN
+  - Symbology identifier: h0 (h2 for GS1)
   - iOS wrapper and C API updated
 
 ### Pending Phases

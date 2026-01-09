@@ -30,6 +30,7 @@ static const BarcodeFormatName NAMES[] = {
 	{BarcodeFormat::CodeOne, "CodeOne"},
 	{BarcodeFormat::DotCode, "DotCode"},
 	{BarcodeFormat::GridMatrix, "GridMatrix"},
+	{BarcodeFormat::HanXin, "HanXin"},
 	{BarcodeFormat::Codabar, "Codabar"},
 	{BarcodeFormat::Code39, "Code39"},
 	{BarcodeFormat::Code93, "Code93"},

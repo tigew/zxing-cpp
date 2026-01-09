@@ -193,6 +193,7 @@ static constexpr BarcodeFormatZXing2Zint barcodeFormatZXing2Zint[] = {
 	{BarcodeFormat::DataMatrix, BARCODE_DATAMATRIX},
 	{BarcodeFormat::DotCode, BARCODE_DOTCODE},
 	{BarcodeFormat::GridMatrix, BARCODE_GRIDMATRIX},
+	{BarcodeFormat::HanXin, BARCODE_HANXIN},
 	{BarcodeFormat::DXFilmEdge, BARCODE_DXFILMEDGE},
 	{BarcodeFormat::EAN8, BARCODE_EAN8},
 	{BarcodeFormat::EAN13, BARCODE_EAN13},
@@ -273,7 +274,7 @@ static constexpr struct { BarcodeFormat format; SymbologyIdentifier si; } barcod
 	{BarcodeFormat::DXFilmEdge, {}},
 	{BarcodeFormat::EAN8, {'E', '4'}},
 	{BarcodeFormat::EAN13, {'E', '0'}},
-	// {BarcodeFormat::HanXin, {'h', '0', 1}}, // '2' GS1
+	{BarcodeFormat::HanXin, {'h', '0', 1}}, // '2' GS1
 	{BarcodeFormat::ITF, {'I', '0'}}, // '1' check digit
 	{BarcodeFormat::MaxiCode, {'U', '0', 2}}, // '1' mode 2 or 3
 	// {BarcodeFormat::MicroPDF417, {'L', '2', char(-1)}},
@@ -351,10 +352,10 @@ static std::string ECLevelZint2ZXing(const zint_symbol* zint)
 		if (option_1 >= 1 && option_1 <= 4)
 			return {EC_LABELS_QR[option_1 - 1]};
 		break;
-	// case BARCODE_HANXIN:
-	// 	if (option_1 >= 1 && option_1 <= 4)
-	// 		return "L" + std::to_string(option_1);
-	// 	break;
+	case BARCODE_HANXIN:
+		if (option_1 >= 1 && option_1 <= 4)
+			return "L" + std::to_string(option_1);
+		break;
 	default:
 		break;
 	}
