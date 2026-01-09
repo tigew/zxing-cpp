@@ -49,13 +49,14 @@ When implementing a new barcode format reader or writer:
 
 ## Current Implementation Status
 
-### Fully Supported Formats (51 formats)
+### Fully Supported Formats (54 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
 | AustraliaPost | Yes | No | Yes | 4-state postal, 6 FCC variants (11, 45, 59, 62, 87, 92) |
 | Aztec | Yes | Yes | Yes | Full support |
 | AztecRune | Yes | No | Yes | Compact 11x11 Aztec variant (ISO/IEC 24778:2008 Annex A), encodes 0-255 |
+| CodeOne | Yes | No | Yes | 2D matrix code (versions A-H/S/T, AIM USS-Code One) |
 | Codabar | Yes | Yes | Yes | |
 | Code11 | Yes | No | Yes | Telecommunications (USD-8), check digit C and K |
 | POSTNET | Yes | No | Yes | USPS POSTNET (height-modulated 5-bar encoding) |
@@ -85,7 +86,9 @@ When implementing a new barcode format reader or writer:
 | DataBarStackedOmnidirectional | Yes | No | Yes | GS1 DataBar Stacked Omnidirectional (RSS-14 Stacked Omni) |
 | DataBarExpandedStacked | Yes | No | Yes | GS1 DataBar Expanded Stacked (multi-row variant) |
 | DataMatrix | Yes | Yes | Yes | ECC200 |
+| DotCode | Yes | No | Yes | 2D dot matrix for high-speed industrial printing |
 | DXFilmEdge | Yes | No | Yes | |
+| GridMatrix | Yes | No | Yes | 2D matrix (Chinese standard GB/T 21049), 13 versions, Chinese character optimized |
 | EAN-8 | Yes | Yes | Yes | |
 | EAN-13 | Yes | Yes | Yes | |
 | ITF | Yes | Yes | Yes | Interleaved 2 of 5, ITF-14 |
@@ -113,9 +116,6 @@ When implementing a new barcode format reader or writer:
 
 | Format | Category | Complexity | Notes |
 |--------|----------|------------|-------|
-| Code One | Matrix | High | 2D matrix code |
-| DotCode | Matrix | High | Dot-based matrix |
-| Grid Matrix | Matrix | High | Chinese standard |
 | Han Xin | Matrix | High | Chinese standard GB/T 21049 |
 | UPNQR | Matrix | Low | Slovenian QR Code variant |
 
@@ -756,6 +756,37 @@ cmake -B build -DZXING_ENABLE_NEWFORMAT=OFF
   - Decoder returns rune value as 3-digit text string
   - MultiFormatReader registers Aztec reader when AztecRune requested
   - Writer available via libzint integration (ZXING_WRITERS=NEW) as BARCODE_AZRUNE
+  - iOS wrapper and C API updated
+
+- [x] **CodeOne** (Code One) - Fully implemented with:
+  - 2D matrix code (AIM USS-Code One specification)
+  - Versions A-H (16x18 to 148x134 modules) + S (mini) + T (truncated)
+  - Data encoding modes: ASCII, C40, Text, X12, EDIFACT, Base256
+  - Reed-Solomon error correction using GF(256)
+  - Version detection from symbol dimensions
+  - Pure barcode reading support
+  - Writer available via libzint integration (ZXING_WRITERS=NEW) as BARCODE_CODEONE
+  - iOS wrapper and C API updated
+
+- [x] **DotCode** (DotCode) - Fully implemented with:
+  - 2D dot matrix symbology for high-speed industrial printing
+  - Checkerboard dot pattern (dots at alternating positions)
+  - Variable size symbols (minimum 5x5)
+  - Data encoding modes: ASCII, C40, Text, X12, EDIFACT, Base256
+  - Reed-Solomon error correction (approx. 25-30% EC capacity)
+  - Dot density and pattern validation
+  - Writer available via libzint integration (ZXING_WRITERS=NEW) as BARCODE_DOTCODE
+  - iOS wrapper and C API updated
+
+- [x] **GridMatrix** (Grid Matrix) - Fully implemented with:
+  - Chinese national standard 2D symbology (GB/T 21049-2007)
+  - 13 versions (V1-V13): 18x18 to 162x162 modules
+  - 6x6 macromodule structure
+  - 5 error correction levels (L1-L5)
+  - Encoding modes: Numeric, Uppercase, Mixed, Chinese (GB 2312), Binary
+  - Reed-Solomon error correction
+  - Optimized for Chinese character encoding
+  - Writer available via libzint integration (ZXING_WRITERS=NEW) as BARCODE_GRIDMATRIX
   - iOS wrapper and C API updated
 
 ### Pending Phases

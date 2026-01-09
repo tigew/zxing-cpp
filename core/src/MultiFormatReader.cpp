@@ -19,6 +19,9 @@
 #ifdef ZXING_WITH_DOTCODE
 #include "dotcode/DCReader.h"
 #endif
+#ifdef ZXING_WITH_GRIDMATRIX
+#include "gridmatrix/GMReader.h"
+#endif
 #ifdef ZXING_WITH_DATAMATRIX
 #include "datamatrix/DMReader.h"
 #endif
@@ -79,6 +82,10 @@ MultiFormatReader::MultiFormatReader(const ReaderOptions& opts) : _opts(opts)
 #ifdef ZXING_WITH_DOTCODE
 	if (formats.testFlag(BarcodeFormat::DotCode))
 		_readers.emplace_back(new DotCode::Reader(opts));
+#endif
+#ifdef ZXING_WITH_GRIDMATRIX
+	if (formats.testFlag(BarcodeFormat::GridMatrix))
+		_readers.emplace_back(new GridMatrix::Reader(opts));
 #endif
 #ifdef ZXING_WITH_PDF417
 	if (formats.testFlag(BarcodeFormat::PDF417))
