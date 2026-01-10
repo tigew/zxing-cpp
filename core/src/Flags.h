@@ -47,11 +47,11 @@ public:
 		using pointer = Enum*;
 		using reference = Enum&;
 
-		Enum operator*() const noexcept { return Enum(1 << _pos); }
+		Enum operator*() const noexcept { return Enum(Int(1) << _pos); }
 
 		iterator& operator++() noexcept
 		{
-			while (++_pos < BitHacks::HighestBitSet(_flags) && !((1 << _pos) & _flags))
+			while (++_pos < BitHacks::HighestBitSet(_flags) && !((Int(1) << _pos) & _flags))
 				;
 			return *this;
 		}
@@ -98,7 +98,7 @@ public:
 	}
 	inline void clear() noexcept { i = 0; }
 
-	constexpr static Flags all() noexcept { return ~(unsigned(~0) << highestBitSet(Int(Enum::_max))); }
+	constexpr static Flags all() noexcept { return (Int(1) << (highestBitSet(Int(Enum::_max)) + 1)) - 1; }
 
 private:
 //	constexpr static inline Int
