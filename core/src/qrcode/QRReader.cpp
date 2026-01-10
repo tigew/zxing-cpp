@@ -51,7 +51,7 @@ Barcode Reader::decode(const BinaryBitmap& image) const
 		return {};
 
 	DetectorResult detectorResult;
-	if (_opts.hasFormat(BarcodeFormat::QRCode))
+	if (_opts.hasFormat(BarcodeFormat::QRCode) || _opts.hasFormat(BarcodeFormat::UPNQR))
 		detectorResult = DetectPureQR(*binImg);
 	if (_opts.hasFormat(BarcodeFormat::MicroQRCode) && !detectorResult.isValid())
 		detectorResult = DetectPureMQR(*binImg);
@@ -71,6 +71,10 @@ Barcode Reader::decode(const BinaryBitmap& image) const
 		format = BarcodeFormat::UPNQR;
 	else
 		format = BarcodeFormat::QRCode;
+
+	// Only return if the detected format was requested
+	if (!_opts.hasFormat(format))
+		return {};
 
 	return Barcode(std::move(decoderResult), std::move(detectorResult), format);
 }
