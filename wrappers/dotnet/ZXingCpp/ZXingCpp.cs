@@ -152,32 +152,73 @@ internal class Dll
 }
 
 [Flags]
-public enum BarcodeFormats
+public enum BarcodeFormats : ulong
 {
-	None            = 0,         ///< Used as a return value if no valid barcode has been detected
-	Aztec           = (1 << 0),  ///< Aztec
-	Codabar         = (1 << 1),  ///< Codabar
-	Code39          = (1 << 2),  ///< Code39
-	Code93          = (1 << 3),  ///< Code93
-	Code128         = (1 << 4),  ///< Code128
-	DataBar         = (1 << 5),  ///< GS1 DataBar, formerly known as RSS 14
-	DataBarExpanded = (1 << 6),  ///< GS1 DataBar Expanded, formerly known as RSS EXPANDED
-	DataMatrix      = (1 << 7),  ///< DataMatrix
-	EAN8            = (1 << 8),  ///< EAN-8
-	EAN13           = (1 << 9),  ///< EAN-13
-	ITF             = (1 << 10), ///< ITF (Interleaved Two of Five)
-	MaxiCode        = (1 << 11), ///< MaxiCode
-	PDF417          = (1 << 12), ///< PDF417
-	QRCode          = (1 << 13), ///< QR Code
-	UPCA            = (1 << 14), ///< UPC-A
-	UPCE            = (1 << 15), ///< UPC-E
-	MicroQRCode     = (1 << 16), ///< Micro QR Code
-	RMQRCode        = (1 << 17), ///< Rectangular Micro QR Code
-	DXFilmEdge      = (1 << 18), ///< DX Film Edge Barcode
-	DataBarLimited  = (1 << 19), ///< GS1 DataBar Limited
+	None            = 0,             ///< Used as a return value if no valid barcode has been detected
+	Aztec           = (1 << 0),      ///< Aztec
+	Codabar         = (1 << 1),      ///< Codabar
+	Code39          = (1 << 2),      ///< Code39
+	Code93          = (1 << 3),      ///< Code93
+	Code128         = (1 << 4),      ///< Code128
+	DataBar         = (1 << 5),      ///< GS1 DataBar, formerly known as RSS 14
+	DataBarExpanded = (1 << 6),      ///< GS1 DataBar Expanded, formerly known as RSS EXPANDED
+	DataMatrix      = (1 << 7),      ///< DataMatrix
+	EAN8            = (1 << 8),      ///< EAN-8
+	EAN13           = (1 << 9),      ///< EAN-13
+	ITF             = (1 << 10),     ///< ITF (Interleaved Two of Five)
+	MaxiCode        = (1 << 11),     ///< MaxiCode
+	PDF417          = (1 << 12),     ///< PDF417
+	QRCode          = (1 << 13),     ///< QR Code
+	UPCA            = (1 << 14),     ///< UPC-A
+	UPCE            = (1 << 15),     ///< UPC-E
+	MicroQRCode     = (1 << 16),     ///< Micro QR Code
+	RMQRCode        = (1 << 17),     ///< Rectangular Micro QR Code
+	DXFilmEdge      = (1 << 18),     ///< DX Film Edge Barcode
+	DataBarLimited  = (1 << 19),     ///< GS1 DataBar Limited
+	AustraliaPost   = (1 << 20),     ///< Australia Post 4-State
+	KIXCode         = (1 << 21),     ///< Dutch Post KIX Code 4-State
+	JapanPost       = (1 << 22),     ///< Japan Post 4-State
+	KoreaPost       = (1 << 23),     ///< Korea Post
+	RM4SCC          = (1 << 24),     ///< Royal Mail 4-State Customer Code
+	Mailmark        = (1 << 25),     ///< Royal Mail 4-State Mailmark
+	USPSIMB         = (1 << 26),     ///< USPS Intelligent Mail Barcode
+	DeutschePostLeitcode  = (1 << 27), ///< Deutsche Post Leitcode
+	DeutschePostIdentcode = (1 << 28), ///< Deutsche Post Identcode
+	Code11          = (1 << 29),     ///< Code 11
+	POSTNET         = (1 << 30),     ///< USPS POSTNET
+	PLANET          = (1UL << 31),   ///< USPS PLANET
+	MSI             = (1UL << 32),   ///< MSI (Modified Plessey)
+	Telepen         = (1UL << 33),   ///< Telepen
+	LOGMARS         = (1UL << 34),   ///< LOGMARS
+	Code32          = (1UL << 35),   ///< Code 32 (Italian Pharmacode)
+	Pharmacode      = (1UL << 36),   ///< Pharmacode
+	PharmacodeTwoTrack = (1UL << 37), ///< Pharmacode Two-Track
+	PZN             = (1UL << 38),   ///< Pharmazentralnummer
+	ChannelCode     = (1UL << 39),   ///< Channel Code
+	Matrix2of5      = (1UL << 40),   ///< Matrix 2 of 5
+	Industrial2of5  = (1UL << 41),   ///< Industrial 2 of 5
+	IATA2of5        = (1UL << 42),   ///< IATA 2 of 5
+	Datalogic2of5   = (1UL << 43),   ///< Datalogic 2 of 5
+	CodablockF      = (1UL << 44),   ///< Codablock F
+	Code16K         = (1UL << 45),   ///< Code 16K
+	Code49          = (1UL << 46),   ///< Code 49
+	DataBarStacked  = (1UL << 47),   ///< GS1 DataBar Stacked
+	DataBarStackedOmnidirectional = (1UL << 48), ///< GS1 DataBar Stacked Omnidirectional
+	DataBarExpandedStacked = (1UL << 49), ///< GS1 DataBar Expanded Stacked
+	AztecRune       = (1UL << 50),   ///< Aztec Rune
+	CodeOne         = (1UL << 51),   ///< Code One
+	DotCode         = (1UL << 52),   ///< DotCode
+	GridMatrix      = (1UL << 53),   ///< Grid Matrix
+	HanXin          = (1UL << 54),   ///< Han Xin Code
+	UPNQR           = (1UL << 55),   ///< UPN QR Code (Slovenian payment QR)
 
-	LinearCodes = Codabar | Code39 | Code93 | Code128 | EAN8 | EAN13 | ITF | DataBar | DataBarExpanded | DataBarLimited | DXFilmEdge | UPCA | UPCE,
-	MatrixCodes = Aztec | DataMatrix | MaxiCode | PDF417 | QRCode | MicroQRCode | RMQRCode,
+	LinearCodes = Codabar | Code39 | Code93 | Code128 | EAN8 | EAN13 | ITF | DataBar | DataBarExpanded | DataBarLimited
+				| DataBarStacked | DataBarStackedOmnidirectional | DataBarExpandedStacked
+				| DXFilmEdge | UPCA | UPCE | AustraliaPost | KIXCode | JapanPost | KoreaPost | RM4SCC | Mailmark | USPSIMB
+				| DeutschePostLeitcode | DeutschePostIdentcode | Code11 | POSTNET | PLANET | MSI | Telepen | LOGMARS | Code32
+				| Pharmacode | PharmacodeTwoTrack | PZN | ChannelCode | Matrix2of5 | Industrial2of5 | IATA2of5 | Datalogic2of5
+				| CodablockF | Code16K | Code49,
+	MatrixCodes = Aztec | AztecRune | CodeOne | DataMatrix | DotCode | GridMatrix | HanXin | MaxiCode | PDF417 | QRCode | MicroQRCode | RMQRCode | UPNQR,
 	Any         = LinearCodes | MatrixCodes,
 };
 
