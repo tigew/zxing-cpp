@@ -13,6 +13,18 @@
 #ifdef ZXING_WITH_AZTEC
 #include "aztec/AZReader.h"
 #endif
+#ifdef ZXING_WITH_CODEONE
+#include "codeone/C1Reader.h"
+#endif
+#ifdef ZXING_WITH_DOTCODE
+#include "dotcode/DCReader.h"
+#endif
+#ifdef ZXING_WITH_GRIDMATRIX
+#include "gridmatrix/GMReader.h"
+#endif
+#ifdef ZXING_WITH_HANXIN
+#include "hanxin/HXReader.h"
+#endif
 #ifdef ZXING_WITH_DATAMATRIX
 #include "datamatrix/DMReader.h"
 #endif
@@ -21,6 +33,17 @@
 #endif
 #ifdef ZXING_WITH_1D
 #include "oned/ODReader.h"
+#include "oned/ODAustraliaPostReader.h"
+#include "oned/ODJapanPostReader.h"
+#include "oned/ODKIXCodeReader.h"
+#include "oned/ODMailmarkReader.h"
+#include "oned/ODPOSTNETReader.h"
+#include "oned/ODRM4SCCReader.h"
+#include "oned/ODUSPSIMBReader.h"
+#include "oned/ODPharmacodeTwoTrackReader.h"
+#include "oned/ODCodablockFReader.h"
+#include "oned/ODCode16KReader.h"
+#include "oned/ODCode49Reader.h"
 #endif
 #ifdef ZXING_WITH_PDF417
 #include "pdf417/PDFReader.h"
@@ -44,7 +67,7 @@ MultiFormatReader::MultiFormatReader(const ReaderOptions& opts) : _opts(opts)
 #endif
 
 #ifdef ZXING_WITH_QRCODE
-	if (formats.testFlags(BarcodeFormat::QRCode | BarcodeFormat::MicroQRCode | BarcodeFormat::RMQRCode))
+	if (formats.testFlags(BarcodeFormat::QRCode | BarcodeFormat::MicroQRCode | BarcodeFormat::RMQRCode | BarcodeFormat::UPNQR))
 		_readers.emplace_back(new QRCode::Reader(opts, true));
 #endif
 #ifdef ZXING_WITH_DATAMATRIX
@@ -52,8 +75,24 @@ MultiFormatReader::MultiFormatReader(const ReaderOptions& opts) : _opts(opts)
 		_readers.emplace_back(new DataMatrix::Reader(opts, true));
 #endif
 #ifdef ZXING_WITH_AZTEC
-	if (formats.testFlag(BarcodeFormat::Aztec))
+	if (formats.testFlags(BarcodeFormat::Aztec | BarcodeFormat::AztecRune))
 		_readers.emplace_back(new Aztec::Reader(opts, true));
+#endif
+#ifdef ZXING_WITH_CODEONE
+	if (formats.testFlag(BarcodeFormat::CodeOne))
+		_readers.emplace_back(new CodeOne::Reader(opts));
+#endif
+#ifdef ZXING_WITH_DOTCODE
+	if (formats.testFlag(BarcodeFormat::DotCode))
+		_readers.emplace_back(new DotCode::Reader(opts));
+#endif
+#ifdef ZXING_WITH_GRIDMATRIX
+	if (formats.testFlag(BarcodeFormat::GridMatrix))
+		_readers.emplace_back(new GridMatrix::Reader(opts));
+#endif
+#ifdef ZXING_WITH_HANXIN
+	if (formats.testFlag(BarcodeFormat::HanXin))
+		_readers.emplace_back(new HanXin::Reader(opts));
 #endif
 #ifdef ZXING_WITH_PDF417
 	if (formats.testFlag(BarcodeFormat::PDF417))
@@ -62,6 +101,33 @@ MultiFormatReader::MultiFormatReader(const ReaderOptions& opts) : _opts(opts)
 #ifdef ZXING_WITH_MAXICODE
 	if (formats.testFlag(BarcodeFormat::MaxiCode))
 		_readers.emplace_back(new MaxiCode::Reader(opts));
+#endif
+
+	// 4-state postal codes need 2D access for bar height analysis
+#ifdef ZXING_WITH_1D
+	if (formats.testFlag(BarcodeFormat::AustraliaPost))
+		_readers.emplace_back(new OneD::AustraliaPostReader(opts));
+	if (formats.testFlag(BarcodeFormat::JapanPost))
+		_readers.emplace_back(new OneD::JapanPostReader(opts));
+	if (formats.testFlag(BarcodeFormat::KIXCode))
+		_readers.emplace_back(new OneD::KIXCodeReader(opts));
+	if (formats.testFlag(BarcodeFormat::RM4SCC))
+		_readers.emplace_back(new OneD::RM4SCCReader(opts));
+	if (formats.testFlag(BarcodeFormat::Mailmark))
+		_readers.emplace_back(new OneD::MailmarkReader(opts));
+	if (formats.testFlag(BarcodeFormat::USPSIMB))
+		_readers.emplace_back(new OneD::USPSIMBReader(opts));
+	if (formats.testFlags(BarcodeFormat::POSTNET | BarcodeFormat::PLANET))
+		_readers.emplace_back(new OneD::POSTNETReader(opts));
+	if (formats.testFlag(BarcodeFormat::PharmacodeTwoTrack))
+		_readers.emplace_back(new OneD::PharmacodeTwoTrackReader(opts));
+	// Stacked symbologies need 2D access for multi-row decoding
+	if (formats.testFlag(BarcodeFormat::CodablockF))
+		_readers.emplace_back(new OneD::CodablockFReader(opts));
+	if (formats.testFlag(BarcodeFormat::Code16K))
+		_readers.emplace_back(new OneD::Code16KReader(opts));
+	if (formats.testFlag(BarcodeFormat::Code49))
+		_readers.emplace_back(new OneD::Code49Reader(opts));
 #endif
 
 	// At end in "try harder" mode

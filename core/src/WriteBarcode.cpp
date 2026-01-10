@@ -178,14 +178,22 @@ struct BarcodeFormatZXing2Zint
 
 static constexpr BarcodeFormatZXing2Zint barcodeFormatZXing2Zint[] = {
 	{BarcodeFormat::Aztec, BARCODE_AZTEC},
+	{BarcodeFormat::AztecRune, BARCODE_AZRUNE},
 	{BarcodeFormat::Codabar, BARCODE_CODABAR},
 	{BarcodeFormat::Code39, BARCODE_CODE39},
 	{BarcodeFormat::Code93, BARCODE_CODE93},
 	{BarcodeFormat::Code128, BARCODE_CODE128},
+	{BarcodeFormat::CodeOne, BARCODE_CODEONE},
 	{BarcodeFormat::DataBar, BARCODE_DBAR_OMN},
 	{BarcodeFormat::DataBarExpanded, BARCODE_DBAR_EXP},
 	{BarcodeFormat::DataBarLimited, BARCODE_DBAR_LTD},
+	{BarcodeFormat::DataBarStacked, BARCODE_DBAR_STK},
+	{BarcodeFormat::DataBarStackedOmnidirectional, BARCODE_DBAR_OMNSTK},
+	{BarcodeFormat::DataBarExpandedStacked, BARCODE_DBAR_EXPSTK},
 	{BarcodeFormat::DataMatrix, BARCODE_DATAMATRIX},
+	{BarcodeFormat::DotCode, BARCODE_DOTCODE},
+	{BarcodeFormat::GridMatrix, BARCODE_GRIDMATRIX},
+	{BarcodeFormat::HanXin, BARCODE_HANXIN},
 	{BarcodeFormat::DXFilmEdge, BARCODE_DXFILMEDGE},
 	{BarcodeFormat::EAN8, BARCODE_EAN8},
 	{BarcodeFormat::EAN13, BARCODE_EAN13},
@@ -195,6 +203,7 @@ static constexpr BarcodeFormatZXing2Zint barcodeFormatZXing2Zint[] = {
 	{BarcodeFormat::PDF417, BARCODE_PDF417},
 	{BarcodeFormat::QRCode, BARCODE_QRCODE},
 	{BarcodeFormat::RMQRCode, BARCODE_RMQR},
+	{BarcodeFormat::UPNQR, BARCODE_UPNQR},
 	{BarcodeFormat::UPCA, BARCODE_UPCA},
 	{BarcodeFormat::UPCE, BARCODE_UPCE},
 };
@@ -247,8 +256,10 @@ static int ParseECLevel(int symbology, std::string_view s)
 
 static constexpr struct { BarcodeFormat format; SymbologyIdentifier si; } barcodeFormat2SymbologyIdentifier[] = {
 	{BarcodeFormat::Aztec, {'z', '0', 3}}, // '1' GS1, '2' AIM
+	{BarcodeFormat::AztecRune, {'z', 'C', 0}}, // Runes cannot have ECI
 	{BarcodeFormat::Codabar, {'F', '0'}}, // if checksum processing were implemented and checksum present and stripped then modifier would be 4
 	// {BarcodeFormat::CodablockF, {'O', '4'}}, // '5' GS1
+	{BarcodeFormat::CodeOne, {'X', '0', 3}}, // '1' GS1
 	{BarcodeFormat::Code128, {'C', '0'}}, // '1' GS1, '2' AIM
 	// {BarcodeFormat::Code16K, {'K', '0'}}, // '1' GS1, '2' AIM, '4' D1 PAD
 	{BarcodeFormat::Code39, {'A', '0'}}, // '3' checksum, '4' extended, '7' checksum,extended
@@ -256,12 +267,15 @@ static constexpr struct { BarcodeFormat format; SymbologyIdentifier si; } barcod
 	{BarcodeFormat::DataBar, {'e', '0', 0, AIFlag::GS1}},
 	{BarcodeFormat::DataBarExpanded, {'e', '0', 0, AIFlag::GS1}},
 	{BarcodeFormat::DataBarLimited, {'e', '0', 0, AIFlag::GS1}},
+	{BarcodeFormat::DataBarStacked, {'e', '0', 0, AIFlag::GS1}},
+	{BarcodeFormat::DataBarStackedOmnidirectional, {'e', '0', 0, AIFlag::GS1}},
+	{BarcodeFormat::DataBarExpandedStacked, {'e', '0', 0, AIFlag::GS1}},
 	{BarcodeFormat::DataMatrix, {'d', '1', 3}}, // '2' GS1, '3' AIM
-	// {BarcodeFormat::DotCode, {'J', '0', 3}}, // '1' GS1, '2' AIM
+	{BarcodeFormat::DotCode, {'J', '0', 3}}, // '1' GS1, '2' AIM
 	{BarcodeFormat::DXFilmEdge, {}},
 	{BarcodeFormat::EAN8, {'E', '4'}},
 	{BarcodeFormat::EAN13, {'E', '0'}},
-	// {BarcodeFormat::HanXin, {'h', '0', 1}}, // '2' GS1
+	{BarcodeFormat::HanXin, {'h', '0', 1}}, // '2' GS1
 	{BarcodeFormat::ITF, {'I', '0'}}, // '1' check digit
 	{BarcodeFormat::MaxiCode, {'U', '0', 2}}, // '1' mode 2 or 3
 	// {BarcodeFormat::MicroPDF417, {'L', '2', char(-1)}},
@@ -269,6 +283,7 @@ static constexpr struct { BarcodeFormat format; SymbologyIdentifier si; } barcod
 	{BarcodeFormat::PDF417, {'L', '2', char(-1)}},
 	{BarcodeFormat::QRCode, {'Q', '1', 1}}, // '3' GS1, '5' AIM
 	{BarcodeFormat::RMQRCode, {'Q', '1', 1}}, // '3' GS1, '5' AIM
+	{BarcodeFormat::UPNQR, {'Q', '1', 1}}, // Slovenian payment QR (same as QRCode)
 	{BarcodeFormat::UPCA, {'E', '0'}},
 	{BarcodeFormat::UPCE, {'E', '0'}},
 };
@@ -339,10 +354,10 @@ static std::string ECLevelZint2ZXing(const zint_symbol* zint)
 		if (option_1 >= 1 && option_1 <= 4)
 			return {EC_LABELS_QR[option_1 - 1]};
 		break;
-	// case BARCODE_HANXIN:
-	// 	if (option_1 >= 1 && option_1 <= 4)
-	// 		return "L" + std::to_string(option_1);
-	// 	break;
+	case BARCODE_HANXIN:
+		if (option_1 >= 1 && option_1 <= 4)
+			return "L" + std::to_string(option_1);
+		break;
 	default:
 		break;
 	}

@@ -193,11 +193,21 @@ Barcode DataBarReader::decodePattern(int rowNumber, PatternView& next, std::uniq
 	for (const auto& leftPair : prevState->leftPairs)
 		for (const auto& rightPair : prevState->rightPairs)
 			if (ChecksumIsValid(leftPair, rightPair)) {
+				// Determine if this is a stacked variant based on y-coordinates and x-position analysis
+				bool isStacked = std::abs(leftPair.y - rightPair.y) > (leftPair.xStop - leftPair.xStart) / 4 ||
+								 rightPair.xStart < (leftPair.xStart + leftPair.xStop) / 2;
+
+				// Determine format: DataBar, DataBarStacked, or DataBarStackedOmnidirectional
+				// DataBarStacked: reduced height (short rows)
+				// DataBarStackedOmnidirectional: taller rows for better omni scanning
+				// Note: Both are reported as DataBarStacked since we can't easily distinguish row height
+				BarcodeFormat format = isStacked ? BarcodeFormat::DataBarStacked : BarcodeFormat::DataBar;
+
 				// Symbology identifier ISO/IEC 24724:2011 Section 9 and GS1 General Specifications 5.1.3 Figure 5.1.3-2
 				Barcode res{DecoderResult(Content(ByteArray(ConstructText(leftPair, rightPair)), {'e', '0', 0, AIFlag::GS1}))
 								.setLineCount(EstimateLineCount(leftPair, rightPair)),
 							{{}, EstimatePosition(leftPair, rightPair)},
-							BarcodeFormat::DataBar};
+							format};
 
 				prevState->leftPairs.erase(leftPair);
 				prevState->rightPairs.erase(rightPair);

@@ -24,6 +24,56 @@ ZXing::BarcodeFormat BarcodeFormatFromZXIFormat(ZXIFormat format) {
             return ZXing::BarcodeFormat::MaxiCode;
         case ZXIFormat::ITF:
             return ZXing::BarcodeFormat::ITF;
+        case ZXIFormat::JAPAN_POST:
+            return ZXing::BarcodeFormat::JapanPost;
+        case ZXIFormat::KIX_CODE:
+            return ZXing::BarcodeFormat::KIXCode;
+        case ZXIFormat::KOREA_POST:
+            return ZXing::BarcodeFormat::KoreaPost;
+        case ZXIFormat::MAILMARK:
+            return ZXing::BarcodeFormat::Mailmark;
+        case ZXIFormat::RM4SCC:
+            return ZXing::BarcodeFormat::RM4SCC;
+        case ZXIFormat::USPS_IMB:
+            return ZXing::BarcodeFormat::USPSIMB;
+        case ZXIFormat::DEUTSCHE_POST_LEITCODE:
+            return ZXing::BarcodeFormat::DeutschePostLeitcode;
+        case ZXIFormat::DEUTSCHE_POST_IDENTCODE:
+            return ZXing::BarcodeFormat::DeutschePostIdentcode;
+        case ZXIFormat::POSTNET:
+            return ZXing::BarcodeFormat::POSTNET;
+        case ZXIFormat::PLANET:
+            return ZXing::BarcodeFormat::PLANET;
+        case ZXIFormat::MSI:
+            return ZXing::BarcodeFormat::MSI;
+        case ZXIFormat::TELEPEN:
+            return ZXing::BarcodeFormat::Telepen;
+        case ZXIFormat::LOGMARS:
+            return ZXing::BarcodeFormat::LOGMARS;
+        case ZXIFormat::CODE_32:
+            return ZXing::BarcodeFormat::Code32;
+        case ZXIFormat::PHARMACODE:
+            return ZXing::BarcodeFormat::Pharmacode;
+        case ZXIFormat::PHARMACODE_TWO_TRACK:
+            return ZXing::BarcodeFormat::PharmacodeTwoTrack;
+        case ZXIFormat::PZN:
+            return ZXing::BarcodeFormat::PZN;
+        case ZXIFormat::CHANNEL_CODE:
+            return ZXing::BarcodeFormat::ChannelCode;
+        case ZXIFormat::MATRIX_2_OF_5:
+            return ZXing::BarcodeFormat::Matrix2of5;
+        case ZXIFormat::INDUSTRIAL_2_OF_5:
+            return ZXing::BarcodeFormat::Industrial2of5;
+        case ZXIFormat::IATA_2_OF_5:
+            return ZXing::BarcodeFormat::IATA2of5;
+        case ZXIFormat::DATALOGIC_2_OF_5:
+            return ZXing::BarcodeFormat::Datalogic2of5;
+        case ZXIFormat::CODABLOCK_F:
+            return ZXing::BarcodeFormat::CodablockF;
+        case ZXIFormat::CODE_16K:
+            return ZXing::BarcodeFormat::Code16K;
+        case ZXIFormat::CODE_49:
+            return ZXing::BarcodeFormat::Code49;
         case ZXIFormat::EAN_13:
             return ZXing::BarcodeFormat::EAN13;
         case ZXIFormat::EAN_8:
@@ -34,6 +84,12 @@ ZXing::BarcodeFormat BarcodeFormatFromZXIFormat(ZXIFormat format) {
             return ZXing::BarcodeFormat::DataBarExpanded;
         case ZXIFormat::DATA_BAR_LIMITED:
             return ZXing::BarcodeFormat::DataBarLimited;
+        case ZXIFormat::DATA_BAR_STACKED:
+            return ZXing::BarcodeFormat::DataBarStacked;
+        case ZXIFormat::DATA_BAR_STACKED_OMNIDIRECTIONAL:
+            return ZXing::BarcodeFormat::DataBarStackedOmnidirectional;
+        case ZXIFormat::DATA_BAR_EXPANDED_STACKED:
+            return ZXing::BarcodeFormat::DataBarExpandedStacked;
         case ZXIFormat::DATA_BAR:
             return ZXing::BarcodeFormat::DataBar;
         case ZXIFormat::DX_FILM_EDGE:
@@ -46,12 +102,28 @@ ZXing::BarcodeFormat BarcodeFormatFromZXIFormat(ZXIFormat format) {
             return ZXing::BarcodeFormat::Code39;
         case ZXIFormat::CODABAR:
             return ZXing::BarcodeFormat::Codabar;
+        case ZXIFormat::CODE_11:
+            return ZXing::BarcodeFormat::Code11;
         case ZXIFormat::AZTEC:
             return ZXing::BarcodeFormat::Aztec;
+        case ZXIFormat::AZTEC_RUNE:
+            return ZXing::BarcodeFormat::AztecRune;
+        case ZXIFormat::CODE_ONE:
+            return ZXing::BarcodeFormat::CodeOne;
+        case ZXIFormat::DOT_CODE:
+            return ZXing::BarcodeFormat::DotCode;
+        case ZXIFormat::GRID_MATRIX:
+            return ZXing::BarcodeFormat::GridMatrix;
+        case ZXIFormat::HAN_XIN:
+            return ZXing::BarcodeFormat::HanXin;
+        case ZXIFormat::AUSTRALIA_POST:
+            return ZXing::BarcodeFormat::AustraliaPost;
         case ZXIFormat::MICRO_QR_CODE:
             return ZXing::BarcodeFormat::MicroQRCode;
         case ZXIFormat::RMQR_CODE:
             return ZXing::BarcodeFormat::RMQRCode;
+        case ZXIFormat::UPN_QR:
+            return ZXing::BarcodeFormat::UPNQR;
         case ZXIFormat::NONE:
             return ZXing::BarcodeFormat::None;
     }
@@ -65,8 +137,22 @@ ZXIFormat ZXIFormatFromBarcodeFormat(ZXing::BarcodeFormat format) {
             return ZXIFormat::NONE;
         case ZXing::BarcodeFormat::Aztec:
             return ZXIFormat::AZTEC;
+        case ZXing::BarcodeFormat::AztecRune:
+            return ZXIFormat::AZTEC_RUNE;
+        case ZXing::BarcodeFormat::CodeOne:
+            return ZXIFormat::CODE_ONE;
+        case ZXing::BarcodeFormat::DotCode:
+            return ZXIFormat::DOT_CODE;
+        case ZXing::BarcodeFormat::GridMatrix:
+            return ZXIFormat::GRID_MATRIX;
+        case ZXing::BarcodeFormat::HanXin:
+            return ZXIFormat::HAN_XIN;
+        case ZXing::BarcodeFormat::AustraliaPost:
+            return ZXIFormat::AUSTRALIA_POST;
         case ZXing::BarcodeFormat::Codabar:
             return ZXIFormat::CODABAR;
+        case ZXing::BarcodeFormat::Code11:
+            return ZXIFormat::CODE_11;
         case ZXing::BarcodeFormat::Code39:
             return ZXIFormat::CODE_39;
         case ZXing::BarcodeFormat::Code93:
@@ -79,6 +165,12 @@ ZXIFormat ZXIFormatFromBarcodeFormat(ZXing::BarcodeFormat format) {
             return ZXIFormat::DATA_BAR_EXPANDED;
         case ZXing::BarcodeFormat::DataBarLimited:
             return ZXIFormat::DATA_BAR_LIMITED;
+        case ZXing::BarcodeFormat::DataBarStacked:
+            return ZXIFormat::DATA_BAR_STACKED;
+        case ZXing::BarcodeFormat::DataBarStackedOmnidirectional:
+            return ZXIFormat::DATA_BAR_STACKED_OMNIDIRECTIONAL;
+        case ZXing::BarcodeFormat::DataBarExpandedStacked:
+            return ZXIFormat::DATA_BAR_EXPANDED_STACKED;
         case ZXing::BarcodeFormat::DataMatrix:
             return ZXIFormat::DATA_MATRIX;
         case ZXing::BarcodeFormat::DXFilmEdge:
@@ -89,6 +181,56 @@ ZXIFormat ZXIFormatFromBarcodeFormat(ZXing::BarcodeFormat format) {
             return ZXIFormat::EAN_13;
         case ZXing::BarcodeFormat::ITF:
             return ZXIFormat::ITF;
+        case ZXing::BarcodeFormat::JapanPost:
+            return ZXIFormat::JAPAN_POST;
+        case ZXing::BarcodeFormat::KIXCode:
+            return ZXIFormat::KIX_CODE;
+        case ZXing::BarcodeFormat::KoreaPost:
+            return ZXIFormat::KOREA_POST;
+        case ZXing::BarcodeFormat::Mailmark:
+            return ZXIFormat::MAILMARK;
+        case ZXing::BarcodeFormat::RM4SCC:
+            return ZXIFormat::RM4SCC;
+        case ZXing::BarcodeFormat::USPSIMB:
+            return ZXIFormat::USPS_IMB;
+        case ZXing::BarcodeFormat::DeutschePostLeitcode:
+            return ZXIFormat::DEUTSCHE_POST_LEITCODE;
+        case ZXing::BarcodeFormat::DeutschePostIdentcode:
+            return ZXIFormat::DEUTSCHE_POST_IDENTCODE;
+        case ZXing::BarcodeFormat::POSTNET:
+            return ZXIFormat::POSTNET;
+        case ZXing::BarcodeFormat::PLANET:
+            return ZXIFormat::PLANET;
+        case ZXing::BarcodeFormat::MSI:
+            return ZXIFormat::MSI;
+        case ZXing::BarcodeFormat::Telepen:
+            return ZXIFormat::TELEPEN;
+        case ZXing::BarcodeFormat::LOGMARS:
+            return ZXIFormat::LOGMARS;
+        case ZXing::BarcodeFormat::Code32:
+            return ZXIFormat::CODE_32;
+        case ZXing::BarcodeFormat::Pharmacode:
+            return ZXIFormat::PHARMACODE;
+        case ZXing::BarcodeFormat::PharmacodeTwoTrack:
+            return ZXIFormat::PHARMACODE_TWO_TRACK;
+        case ZXing::BarcodeFormat::PZN:
+            return ZXIFormat::PZN;
+        case ZXing::BarcodeFormat::ChannelCode:
+            return ZXIFormat::CHANNEL_CODE;
+        case ZXing::BarcodeFormat::Matrix2of5:
+            return ZXIFormat::MATRIX_2_OF_5;
+        case ZXing::BarcodeFormat::Industrial2of5:
+            return ZXIFormat::INDUSTRIAL_2_OF_5;
+        case ZXing::BarcodeFormat::IATA2of5:
+            return ZXIFormat::IATA_2_OF_5;
+        case ZXing::BarcodeFormat::Datalogic2of5:
+            return ZXIFormat::DATALOGIC_2_OF_5;
+        case ZXing::BarcodeFormat::CodablockF:
+            return ZXIFormat::CODABLOCK_F;
+        case ZXing::BarcodeFormat::Code16K:
+            return ZXIFormat::CODE_16K;
+        case ZXing::BarcodeFormat::Code49:
+            return ZXIFormat::CODE_49;
         case ZXing::BarcodeFormat::MaxiCode:
             return ZXIFormat::MAXICODE;
         case ZXing::BarcodeFormat::PDF417:
@@ -107,6 +249,8 @@ ZXIFormat ZXIFormatFromBarcodeFormat(ZXing::BarcodeFormat format) {
             return ZXIFormat::MICRO_QR_CODE;
         case ZXing::BarcodeFormat::RMQRCode:
             return ZXIFormat::RMQR_CODE;
+        case ZXing::BarcodeFormat::UPNQR:
+            return ZXIFormat::UPN_QR;
         case ZXing::BarcodeFormat::Any:
             return ZXIFormat::ANY;
     }

@@ -10,14 +10,28 @@
 #include "BinaryBitmap.h"
 #include "ReaderOptions.h"
 #include "ODCodabarReader.h"
+#include "ODCode11Reader.h"
 #include "ODCode128Reader.h"
 #include "ODCode39Reader.h"
 #include "ODCode93Reader.h"
 #include "ODDataBarExpandedReader.h"
 #include "ODDataBarLimitedReader.h"
 #include "ODDataBarReader.h"
+#include "ODDeutschePostReader.h"
 #include "ODDXFilmEdgeReader.h"
+#include "ODMSIReader.h"
+#include "ODTelepenReader.h"
+#include "ODLOGMARSReader.h"
+#include "ODCode32Reader.h"
+#include "ODPZNReader.h"
+#include "ODChannelCodeReader.h"
+#include "ODMatrix2of5Reader.h"
+#include "ODIndustrial2of5Reader.h"
+#include "ODIATA2of5Reader.h"
+#include "ODDatalogic2of5Reader.h"
+#include "ODPharmacodeReader.h"
 #include "ODITFReader.h"
+#include "ODKoreaPostReader.h"
 #include "ODMultiUPCEANReader.h"
 #include "Barcode.h"
 
@@ -59,14 +73,44 @@ Reader::Reader(const ReaderOptions& opts) : ZXing::Reader(opts)
 		_readers.emplace_back(new ITFReader(opts));
 	if (formats.testFlag(BarcodeFormat::Codabar))
 		_readers.emplace_back(new CodabarReader(opts));
-	if (formats.testFlag(BarcodeFormat::DataBar))
+	if (formats.testFlag(BarcodeFormat::Code11))
+		_readers.emplace_back(new Code11Reader(opts));
+	if (formats.testFlags(BarcodeFormat::DataBar | BarcodeFormat::DataBarStacked | BarcodeFormat::DataBarStackedOmnidirectional))
 		_readers.emplace_back(new DataBarReader(opts));
-	if (formats.testFlag(BarcodeFormat::DataBarExpanded))
+	if (formats.testFlags(BarcodeFormat::DataBarExpanded | BarcodeFormat::DataBarExpandedStacked))
 		_readers.emplace_back(new DataBarExpandedReader(opts));
 	if (formats.testFlag(BarcodeFormat::DataBarLimited))
 		_readers.emplace_back(new DataBarLimitedReader(opts));
 	if (formats.testFlag(BarcodeFormat::DXFilmEdge))
 		_readers.emplace_back(new DXFilmEdgeReader(opts));
+	if (formats.testFlag(BarcodeFormat::KoreaPost))
+		_readers.emplace_back(new KoreaPostReader(opts));
+	if (formats.testFlags(BarcodeFormat::DeutschePostLeitcode | BarcodeFormat::DeutschePostIdentcode))
+		_readers.emplace_back(new DeutschePostReader(opts));
+	if (formats.testFlag(BarcodeFormat::MSI))
+		_readers.emplace_back(new MSIReader(opts));
+	if (formats.testFlag(BarcodeFormat::Telepen))
+		_readers.emplace_back(new TelepenReader(opts));
+	if (formats.testFlag(BarcodeFormat::LOGMARS))
+		_readers.emplace_back(new LOGMARSReader(opts));
+	if (formats.testFlag(BarcodeFormat::Code32))
+		_readers.emplace_back(new Code32Reader(opts));
+	if (formats.testFlag(BarcodeFormat::PZN))
+		_readers.emplace_back(new PZNReader(opts));
+	if (formats.testFlag(BarcodeFormat::ChannelCode))
+		_readers.emplace_back(new ChannelCodeReader(opts));
+	if (formats.testFlag(BarcodeFormat::Matrix2of5))
+		_readers.emplace_back(new Matrix2of5Reader(opts));
+	if (formats.testFlag(BarcodeFormat::Industrial2of5))
+		_readers.emplace_back(new Industrial2of5Reader(opts));
+	if (formats.testFlag(BarcodeFormat::IATA2of5))
+		_readers.emplace_back(new IATA2of5Reader(opts));
+	if (formats.testFlag(BarcodeFormat::Datalogic2of5))
+		_readers.emplace_back(new Datalogic2of5Reader(opts));
+	if (formats.testFlag(BarcodeFormat::Pharmacode))
+		_readers.emplace_back(new PharmacodeReader(opts));
+	// Note: AustraliaPost, KIXCode, and JapanPost are registered in MultiFormatReader
+	// because they require 2D access for bar height analysis
 }
 
 Reader::~Reader() = default;

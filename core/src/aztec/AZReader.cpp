@@ -34,10 +34,14 @@ Barcodes Reader::decode(const BinaryBitmap& image, int maxSymbols) const
 
 	Barcodes res;
 	for (auto&& detRes : detRess) {
+		// Check if this is a rune (nbLayers == 0 indicates a rune)
+		bool isRune = detRes.nbLayers() == 0;
+		BarcodeFormat format = isRune ? BarcodeFormat::AztecRune : BarcodeFormat::Aztec;
+
 		auto decRes =
 			Decode(detRes).setReaderInit(detRes.readerInit()).setIsMirrored(detRes.isMirrored()).setVersionNumber(detRes.nbLayers());
 		if (decRes.isValid(_opts.returnErrors())) {
-			res.emplace_back(std::move(decRes), std::move(detRes), BarcodeFormat::Aztec);
+			res.emplace_back(std::move(decRes), std::move(detRes), format);
 			if (maxSymbols > 0 && Size(res) >= maxSymbols)
 				break;
 		}

@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 project (ZXing VERSION "2.3.0")
 set (ZXING_SONAME 3) # see https://github.com/zxing-cpp/zxing-cpp/issues/333
 
-foreach(format 1D AZTEC DATAMATRIX MAXICODE PDF417 QRCODE)
+foreach(format 1D AZTEC CODEONE DATAMATRIX DOTCODE GRIDMATRIX HANXIN MAXICODE PDF417 QRCODE)
     option ("ZXING_ENABLE_${format}" "Enable support for ${format} barcodes" ON)
 endforeach()
 
@@ -50,7 +50,7 @@ set (ZXING_PUBLIC_FLAGS
     $<$<BOOL:${ZXING_EXPERIMENTAL_API}>:-DZXING_EXPERIMENTAL_API>
     $<$<BOOL:${ZXING_WRITERS_NEW}>:-DZXING_USE_ZINT>
 )
-foreach(format 1D AZTEC DATAMATRIX MAXICODE PDF417 QRCODE)
+foreach(format 1D AZTEC CODEONE DATAMATRIX DOTCODE GRIDMATRIX HANXIN MAXICODE PDF417 QRCODE)
     list (APPEND ZXING_PUBLIC_FLAGS $<$<BOOL:${ZXING_ENABLE_${format}}>:-DZXING_WITH_${format}>)
 endforeach()
 
@@ -286,6 +286,43 @@ if (ZXING_WRITERS_OLD AND ZXING_ENABLE_AZTEC)
     )
 endif()
 
+if (ZXING_READERS AND ZXING_ENABLE_CODEONE)
+    set (CODEONE_FILES
+        src/codeone/C1Version.h
+        src/codeone/C1Decoder.h
+        src/codeone/C1Decoder.cpp
+        src/codeone/C1Reader.h
+        src/codeone/C1Reader.cpp
+    )
+endif()
+
+if (ZXING_READERS AND ZXING_ENABLE_DOTCODE)
+    set (DOTCODE_FILES
+        src/dotcode/DCDecoder.h
+        src/dotcode/DCDecoder.cpp
+        src/dotcode/DCReader.h
+        src/dotcode/DCReader.cpp
+    )
+endif()
+
+if (ZXING_READERS AND ZXING_ENABLE_GRIDMATRIX)
+    set (GRIDMATRIX_FILES
+        src/gridmatrix/GMDecoder.h
+        src/gridmatrix/GMDecoder.cpp
+        src/gridmatrix/GMReader.h
+        src/gridmatrix/GMReader.cpp
+    )
+endif()
+
+if (ZXING_READERS AND ZXING_ENABLE_HANXIN)
+    set (HANXIN_FILES
+        src/hanxin/HXDecoder.h
+        src/hanxin/HXDecoder.cpp
+        src/hanxin/HXReader.h
+        src/hanxin/HXReader.cpp
+    )
+endif()
+
 
 if ((ZXING_READERS OR ZXING_WRITERS_OLD) AND ZXING_ENABLE_DATAMATRIX)
     set (DATAMATRIX_FILES
@@ -346,8 +383,12 @@ if ((ZXING_READERS OR ZXING_WRITERS_OLD) AND ZXING_ENABLE_1D)
 endif()
 if (ZXING_READERS AND ZXING_ENABLE_1D)
     set (ONED_FILES ${ONED_FILES}
+        src/oned/ODAustraliaPostReader.h
+        src/oned/ODAustraliaPostReader.cpp
         src/oned/ODCodabarReader.h
         src/oned/ODCodabarReader.cpp
+        src/oned/ODCode11Reader.h
+        src/oned/ODCode11Reader.cpp
         src/oned/ODCode39Reader.h
         src/oned/ODCode39Reader.cpp
         src/oned/ODCode93Reader.h
@@ -368,6 +409,52 @@ if (ZXING_READERS AND ZXING_ENABLE_1D)
         src/oned/ODDXFilmEdgeReader.cpp
         src/oned/ODITFReader.h
         src/oned/ODITFReader.cpp
+        src/oned/ODJapanPostReader.h
+        src/oned/ODJapanPostReader.cpp
+        src/oned/ODKIXCodeReader.h
+        src/oned/ODKIXCodeReader.cpp
+        src/oned/ODKoreaPostReader.h
+        src/oned/ODKoreaPostReader.cpp
+        src/oned/ODRM4SCCReader.h
+        src/oned/ODRM4SCCReader.cpp
+        src/oned/ODMailmarkReader.h
+        src/oned/ODMailmarkReader.cpp
+        src/oned/ODUSPSIMBReader.h
+        src/oned/ODUSPSIMBReader.cpp
+        src/oned/ODDeutschePostReader.h
+        src/oned/ODDeutschePostReader.cpp
+        src/oned/ODPOSTNETReader.h
+        src/oned/ODPOSTNETReader.cpp
+        src/oned/ODMSIReader.h
+        src/oned/ODMSIReader.cpp
+        src/oned/ODTelepenReader.h
+        src/oned/ODTelepenReader.cpp
+        src/oned/ODLOGMARSReader.h
+        src/oned/ODLOGMARSReader.cpp
+        src/oned/ODCode32Reader.h
+        src/oned/ODCode32Reader.cpp
+        src/oned/ODPZNReader.h
+        src/oned/ODPZNReader.cpp
+        src/oned/ODChannelCodeReader.h
+        src/oned/ODChannelCodeReader.cpp
+        src/oned/ODMatrix2of5Reader.h
+        src/oned/ODMatrix2of5Reader.cpp
+        src/oned/ODIndustrial2of5Reader.h
+        src/oned/ODIndustrial2of5Reader.cpp
+        src/oned/ODIATA2of5Reader.h
+        src/oned/ODIATA2of5Reader.cpp
+        src/oned/ODDatalogic2of5Reader.h
+        src/oned/ODDatalogic2of5Reader.cpp
+        src/oned/ODPharmacodeReader.h
+        src/oned/ODPharmacodeReader.cpp
+        src/oned/ODPharmacodeTwoTrackReader.h
+        src/oned/ODPharmacodeTwoTrackReader.cpp
+        src/oned/ODCodablockFReader.h
+        src/oned/ODCodablockFReader.cpp
+        src/oned/ODCode16KReader.h
+        src/oned/ODCode16KReader.cpp
+        src/oned/ODCode49Reader.h
+        src/oned/ODCode49Reader.cpp
         src/oned/ODMultiUPCEANReader.h
         src/oned/ODMultiUPCEANReader.cpp
         src/oned/ODReader.h
@@ -494,6 +581,10 @@ endif()
 
 source_group (Sources FILES ${COMMON_FILES})
 source_group (Sources\\aztec FILES ${AZTEC_FILES})
+source_group (Sources\\codeone FILES ${CODEONE_FILES})
+source_group (Sources\\dotcode FILES ${DOTCODE_FILES})
+source_group (Sources\\gridmatrix FILES ${GRIDMATRIX_FILES})
+source_group (Sources\\hanxin FILES ${HANXIN_FILES})
 source_group (Sources\\datamatrix FILES ${DATAMATRIX_FILES})
 source_group (Sources\\maxicode FILES ${MAXICODE_FILES})
 source_group (Sources\\oned FILES ${ONED_FILES})
@@ -507,6 +598,10 @@ find_package(Threads REQUIRED)
 add_library (ZXing
     ${COMMON_FILES}
     ${AZTEC_FILES}
+    ${CODEONE_FILES}
+    ${DOTCODE_FILES}
+    ${GRIDMATRIX_FILES}
+    ${HANXIN_FILES}
     ${DATAMATRIX_FILES}
     ${MAXICODE_FILES}
     ${ONED_FILES}

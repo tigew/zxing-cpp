@@ -8,6 +8,7 @@
 
 #include "Flags.h"
 
+#include <cstdint>
 #include <string>
 #include <string_view>
 
@@ -16,7 +17,7 @@ namespace ZXing {
 /**
 * Enumerates barcode formats known to this package.
 */
-enum class BarcodeFormat
+enum class BarcodeFormat : uint64_t
 {
 	// The values are an implementation detail. The c++ use-case (ZXing::Flags) could have been designed such that it
 	// would not have been necessary to explicitly set the values to single bit constants. This has been done to ease
@@ -42,13 +43,53 @@ enum class BarcodeFormat
 	RMQRCode        = (1 << 17), ///< Rectangular Micro QR Code
 	DXFilmEdge      = (1 << 18), ///< DX Film Edge Barcode
 	DataBarLimited  = (1 << 19), ///< GS1 DataBar Limited
+	AustraliaPost   = (1 << 20), ///< Australia Post 4-State (Standard Customer, Reply Paid, Routing, Redirection)
+	KIXCode         = (1 << 21), ///< Dutch Post KIX Code 4-State (Netherlands postal)
+	JapanPost       = (1 << 22), ///< Japan Post 4-State Customer Code (Kasutama Barcode)
+	KoreaPost       = (1 << 23), ///< Korea Post Barcode (Korean Postal Authority Code)
+	RM4SCC          = (1 << 24), ///< Royal Mail 4-State Customer Code (UK postal)
+	Mailmark        = (1 << 25), ///< Royal Mail 4-State Mailmark (UK postal, Types C and L)
+	USPSIMB         = (1 << 26), ///< USPS Intelligent Mail Barcode (OneCode, 4CB)
+	DeutschePostLeitcode  = (1 << 27), ///< Deutsche Post Leitcode (14 digits, German routing)
+	DeutschePostIdentcode = (1 << 28), ///< Deutsche Post Identcode (12 digits, German identification)
+	Code11          = (1 << 29), ///< Code 11 (USD-8, telecommunications)
+	POSTNET         = (1 << 30), ///< USPS POSTNET (Postal Numeric Encoding Technique)
+	PLANET          = (1ull << 31), ///< USPS PLANET (Postal Alpha Numeric Encoding Technique)
+	MSI             = (1ull << 32), ///< MSI (Modified Plessey, inventory/warehousing)
+	Telepen         = (1ull << 33), ///< Telepen (Full ASCII, developed by SB Electronic Systems)
+	LOGMARS         = (1ull << 34), ///< LOGMARS (Code 39 variant for US military, MIL-STD-1189)
+	Code32          = (1ull << 35), ///< Code 32 (Italian Pharmacode, Code 39 variant for pharmaceuticals)
+	Pharmacode      = (1ull << 36), ///< Pharmacode (Laetus, pharmaceutical binary barcode)
+	PharmacodeTwoTrack = (1ull << 37), ///< Pharmacode Two-Track (Laetus, 3-state pharmaceutical barcode)
+	PZN             = (1ull << 38), ///< Pharmazentralnummer (German pharmaceutical, Code 39 variant)
+	ChannelCode     = (1ull << 39), ///< Channel Code (ANSI/AIM BC12, compact numeric encoding)
+	Matrix2of5      = (1ull << 40), ///< Matrix 2 of 5 (Standard 2 of 5, discrete numeric encoding)
+	Industrial2of5  = (1ull << 41), ///< Industrial 2 of 5 (Standard 2 of 5, bars-only encoding)
+	IATA2of5        = (1ull << 42), ///< IATA 2 of 5 (Airline 2 of 5, air cargo management)
+	Datalogic2of5   = (1ull << 43), ///< Datalogic 2 of 5 (China Post, Code 2 of 5 Data Logic)
+	CodablockF      = (1ull << 44), ///< Codablock F (stacked Code 128, 2-44 rows)
+	Code16K         = (1ull << 45), ///< Code 16K (stacked Code 128, 2-16 rows)
+	Code49          = (1ull << 46), ///< Code 49 (USS-49, stacked 2-8 rows, full ASCII)
+	DataBarStacked  = (1ull << 47), ///< GS1 DataBar Stacked (RSS-14 Stacked, 2-row variant)
+	DataBarStackedOmnidirectional = (1ull << 48), ///< GS1 DataBar Stacked Omnidirectional (RSS-14 Stacked Omni)
+	DataBarExpandedStacked = (1ull << 49), ///< GS1 DataBar Expanded Stacked (multi-row variant)
+	AztecRune       = (1ull << 50), ///< Aztec Rune (compact 11x11 Aztec variant encoding 0-255)
+	CodeOne         = (1ull << 51), ///< Code One (2D matrix, versions A-H/S/T, AIM USS-Code One)
+	DotCode         = (1ull << 52), ///< DotCode (2D dot matrix, high-speed industrial printing)
+	GridMatrix      = (1ull << 53), ///< Grid Matrix (2D matrix, Chinese characters, GB/T 21049)
+	HanXin          = (1ull << 54), ///< Han Xin Code (2D matrix, Chinese standard GB/T 21049, ISO/IEC 20830)
+	UPNQR           = (1ull << 55), ///< UPN QR Code (Slovenian payment QR, Version 15, ECI 4, EC level M)
 
 	LinearCodes = Codabar | Code39 | Code93 | Code128 | EAN8 | EAN13 | ITF | DataBar | DataBarExpanded | DataBarLimited
-				  | DXFilmEdge | UPCA | UPCE,
-	MatrixCodes = Aztec | DataMatrix | MaxiCode | PDF417 | QRCode | MicroQRCode | RMQRCode,
+				  | DataBarStacked | DataBarStackedOmnidirectional | DataBarExpandedStacked
+				  | DXFilmEdge | UPCA | UPCE | AustraliaPost | KIXCode | JapanPost | KoreaPost | RM4SCC | Mailmark | USPSIMB
+				  | DeutschePostLeitcode | DeutschePostIdentcode | Code11 | POSTNET | PLANET | MSI | Telepen | LOGMARS | Code32
+				  | Pharmacode | PharmacodeTwoTrack | PZN | ChannelCode | Matrix2of5 | Industrial2of5 | IATA2of5 | Datalogic2of5
+				  | CodablockF | Code16K | Code49,
+	MatrixCodes = Aztec | AztecRune | CodeOne | DataMatrix | DotCode | GridMatrix | HanXin | MaxiCode | PDF417 | QRCode | MicroQRCode | RMQRCode | UPNQR,
 	Any         = LinearCodes | MatrixCodes,
 
-	_max = DataBarLimited, ///> implementation detail, don't use
+	_max = UPNQR, ///> implementation detail, don't use
 };
 
 ZX_DECLARE_FLAGS(BarcodeFormats, BarcodeFormat)

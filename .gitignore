@@ -5,6 +5,10 @@
 *.a
 compile_commands.json
 
+# CMake build directories
+build/
+out/
+
 # QtCreator
 CMakeLists.txt.user
 
