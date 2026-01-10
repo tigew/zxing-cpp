@@ -370,6 +370,8 @@ if (ZXING_READERS AND ZXING_ENABLE_MAXICODE)
         src/maxicode/MCBitMatrixParser.cpp
         src/maxicode/MCDecoder.h
         src/maxicode/MCDecoder.cpp
+        src/maxicode/MCDetector.h
+        src/maxicode/MCDetector.cpp
         src/maxicode/MCReader.h
         src/maxicode/MCReader.cpp
     )

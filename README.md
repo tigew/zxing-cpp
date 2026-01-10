@@ -124,8 +124,8 @@ The library supports reading **all 56 barcode formats** listed below:
 ### Notes
 
 **Reading:**
-* All 56 formats listed above are supported for reading.
-* MaxiCode has partial support (requires unrotated, unskewed images).
+* All 56 formats listed above are fully supported for reading.
+* All formats support rotation, skew, and perspective correction.
 * Building with C++17 instead of C++20 disables DataBar Limited reading and reduces DataMatrix multi-symbol detection.
 
 **Writing:**
@@ -180,14 +180,89 @@ As an example, have a look at [`ZXingWriter.cpp`](example/ZXingWriter.cpp). That
 ## Build Instructions
 These are the generic instructions to build the library on Windows/macOS/Linux. For details on how to build the individual wrappers, follow the links above.
 
-1. Make sure [CMake](https://cmake.org) version 3.16 or newer is installed. The python module requires 3.18 or higher.
-2. Make sure a sufficiently C++20 compliant compiler is installed (minimum VS 2019 16.10? / gcc 11 / clang 12?).
-3. See the cmake `ZXING_...` options to enable the testing code, python wrapper, etc.
+### Requirements
 
-```
+1. Make sure [CMake](https://cmake.org) version 3.16 or newer is installed. The python module requires 3.18 or higher.
+2. Make sure a sufficiently C++20 compliant compiler is installed (minimum VS 2019 16.10 / gcc 11 / clang 12).
+   - **Note:** C++17 is supported but disables some features (DataBar Limited, improved DataMatrix multi-symbol detection).
+
+### Basic Build (All Formats Enabled)
+
+By default, all 56 barcode formats are enabled for reading:
+
+```bash
 git clone https://github.com/zxing-cpp/zxing-cpp.git --recursive --single-branch --depth 1
 cmake -S zxing-cpp -B zxing-cpp.release -DCMAKE_BUILD_TYPE=Release
 cmake --build zxing-cpp.release -j8 --config Release
+```
+
+### Build Options
+
+#### Format Control
+
+All barcode formats are **enabled by default**. To disable specific formats:
+
+```bash
+cmake -S zxing-cpp -B build \
+  -DZXING_ENABLE_MAXICODE=OFF \
+  -DZXING_ENABLE_AZTEC=OFF \
+  -DZXING_ENABLE_QRCODE=OFF
+```
+
+Available format options (all default to `ON`):
+- `ZXING_ENABLE_1D` - All 1D formats (Code 39, Code 128, EAN, UPC, etc.)
+- `ZXING_ENABLE_AZTEC` - Aztec and Aztec Rune
+- `ZXING_ENABLE_CODEONE` - Code One
+- `ZXING_ENABLE_DATAMATRIX` - DataMatrix
+- `ZXING_ENABLE_DOTCODE` - DotCode
+- `ZXING_ENABLE_GRIDMATRIX` - Grid Matrix
+- `ZXING_ENABLE_HANXIN` - Han Xin Code
+- `ZXING_ENABLE_MAXICODE` - MaxiCode
+- `ZXING_ENABLE_PDF417` - PDF417
+- `ZXING_ENABLE_QRCODE` - QR Code, Micro QR Code, and rMQR Code
+
+#### Reader/Writer Control
+
+```bash
+# Readers (enabled by default)
+cmake -DZXING_READERS=ON  # or OFF to disable all reading
+
+# Writers (disabled by default)
+cmake -DZXING_WRITERS=OFF  # Default: no writer support
+cmake -DZXING_WRITERS=ON   # Enable standard writers (13 formats)
+cmake -DZXING_WRITERS=OLD  # Same as ON
+cmake -DZXING_WRITERS=NEW  # Enable extended writers via libzint (requires ZXING_EXPERIMENTAL_API=ON)
+cmake -DZXING_WRITERS=BOTH # Enable both standard and libzint writers
+```
+
+#### Advanced Options
+
+```bash
+# Enable experimental API (required for NEW/BOTH writers and WriteBarcode API)
+cmake -DZXING_EXPERIMENTAL_API=ON
+
+# Build examples
+cmake -DBUILD_EXAMPLES=ON
+
+# Build testing code
+cmake -DBUILD_TESTING=ON
+
+# Build shared library (default is static)
+cmake -DBUILD_SHARED_LIBS=ON
+```
+
+### Complete Build with All Features
+
+To build with full reading and writing support for all formats:
+
+```bash
+cmake -S zxing-cpp -B build \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DZXING_READERS=ON \
+  -DZXING_WRITERS=BOTH \
+  -DZXING_EXPERIMENTAL_API=ON \
+  -DBUILD_EXAMPLES=ON
+cmake --build build -j8 --config Release
 ```
 
 [Note: binary packages are available for/as
