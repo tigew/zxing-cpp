@@ -3,12 +3,13 @@ cmake_minimum_required(VERSION 3.16)
 project (ZXing VERSION "2.3.0")
 set (ZXING_SONAME 3) # see https://github.com/zxing-cpp/zxing-cpp/issues/333
 
-foreach(format 1D AZTEC CODEONE DATAMATRIX DOTCODE GRIDMATRIX HANXIN MAXICODE PDF417 QRCODE)
+# High-level 2D format options (single-format categories)
+foreach(format CODEONE DATAMATRIX DOTCODE GRIDMATRIX HANXIN MAXICODE PDF417)
     option ("ZXING_ENABLE_${format}" "Enable support for ${format} barcodes" ON)
 endforeach()
 
-# Fine-grained 1D format control (all default to ON)
-# Product Codes
+# Fine-grained per-format control (all default to ON)
+# 1D Product Codes
 option (ZXING_ENABLE_EAN8 "Enable EAN-8" ON)
 option (ZXING_ENABLE_EAN13 "Enable EAN-13" ON)
 option (ZXING_ENABLE_UPCA "Enable UPC-A" ON)
@@ -78,30 +79,6 @@ option (ZXING_ENABLE_AZTECRUNE "Enable Aztec Rune" ON)
 # Other 2D Codes
 option (ZXING_ENABLE_UPNQR "Enable UPN QR (Slovenian payment)" ON)
 
-# Backward compatibility: if master switches are OFF, disable all related formats
-if (NOT ZXING_ENABLE_1D)
-    foreach(fmt EAN8 EAN13 UPCA UPCE CODE39 CODE93 CODE128 CODABAR ITF CODE11 MSI TELEPEN LOGMARS
-                DXFILMEDGE CHANNELCODE DATABAR DATABAREXPANDED DATABARLIMITED DATABARSTACKED
-                DATABARSTACKEDOMNIDIRECTIONAL DATABAREXPANDEDSTACKED AUSTRALIAPOST KIXCODE JAPANPOST
-                KOREAPOST RM4SCC MAILMARK USPSIMB DEUTSCHEPOSTLEITCODE DEUTSCHEPOSTIDENTCODE POSTNET
-                PLANET CODE32 PHARMACODE PHARMACODETWOTRACK PZN MATRIX2OF5 INDUSTRIAL2OF5 IATA2OF5
-                DATALOGIC2OF5 CODABLOCKF CODE16K CODE49)
-        set (ZXING_ENABLE_${fmt} OFF)
-    endforeach()
-endif()
-
-if (NOT ZXING_ENABLE_QRCODE)
-    set (ZXING_ENABLE_QRCODE OFF)
-    set (ZXING_ENABLE_MICROQRCODE OFF)
-    set (ZXING_ENABLE_RMQRCODE OFF)
-    set (ZXING_ENABLE_UPNQR OFF)
-endif()
-
-if (NOT ZXING_ENABLE_AZTEC)
-    set (ZXING_ENABLE_AZTEC OFF)
-    set (ZXING_ENABLE_AZTECRUNE OFF)
-endif()
-
 if (BUILD_SHARED_LIBS)
     set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 endif()
@@ -145,7 +122,8 @@ set (ZXING_PUBLIC_FLAGS
     $<$<BOOL:${ZXING_EXPERIMENTAL_API}>:-DZXING_EXPERIMENTAL_API>
     $<$<BOOL:${ZXING_WRITERS_NEW}>:-DZXING_USE_ZINT>
 )
-foreach(format 1D AZTEC CODEONE DATAMATRIX DOTCODE GRIDMATRIX HANXIN MAXICODE PDF417 QRCODE)
+# Add public flags for single-format 2D categories
+foreach(format CODEONE DATAMATRIX DOTCODE GRIDMATRIX HANXIN MAXICODE PDF417)
     list (APPEND ZXING_PUBLIC_FLAGS $<$<BOOL:${ZXING_ENABLE_${format}}>:-DZXING_WITH_${format}>)
 endforeach()
 
@@ -489,7 +467,7 @@ endif()
 
 
 # Common 1D files - always included if any 1D format is enabled
-if ((ZXING_READERS OR ZXING_WRITERS_OLD) AND ZXING_ENABLE_1D)
+if (ZXING_READERS OR ZXING_WRITERS_OLD)
     set (ONED_FILES
         src/oned/ODReader.h
         src/oned/ODReader.cpp
@@ -498,7 +476,7 @@ if ((ZXING_READERS OR ZXING_WRITERS_OLD) AND ZXING_ENABLE_1D)
 endif()
 
 # EAN/UPC common files
-if ((ZXING_READERS OR ZXING_WRITERS_OLD) AND ZXING_ENABLE_1D AND
+if ((ZXING_READERS OR ZXING_WRITERS_OLD) AND
     (ZXING_ENABLE_EAN8 OR ZXING_ENABLE_EAN13 OR ZXING_ENABLE_UPCA OR ZXING_ENABLE_UPCE))
     set (ONED_FILES ${ONED_FILES}
         src/oned/ODUPCEANCommon.h
@@ -507,7 +485,7 @@ if ((ZXING_READERS OR ZXING_WRITERS_OLD) AND ZXING_ENABLE_1D AND
 endif()
 
 # EAN/UPC Reader
-if (ZXING_READERS AND ZXING_ENABLE_1D AND
+if (ZXING_READERS AND
     (ZXING_ENABLE_EAN8 OR ZXING_ENABLE_EAN13 OR ZXING_ENABLE_UPCA OR ZXING_ENABLE_UPCE))
     set (ONED_FILES ${ONED_FILES}
         src/oned/ODMultiUPCEANReader.h
@@ -802,7 +780,7 @@ if (ZXING_READERS AND ZXING_ENABLE_CODE49)
         src/oned/ODCode49Reader.cpp
     )
 endif()
-if (ZXING_WRITERS_OLD AND ZXING_ENABLE_1D)
+if (ZXING_WRITERS_OLD)
     set (ONED_FILES ${ONED_FILES}
         src/oned/ODCodabarWriter.h
         src/oned/ODCodabarWriter.cpp

@@ -202,14 +202,7 @@ cmake --build zxing-cpp.release -j8 --config Release
 
 All 56 barcode formats are **enabled by default**. You can disable individual formats to reduce binary size and improve scanning performance.
 
-**Master Switches** (control multiple formats):
-```bash
-cmake -DZXING_ENABLE_1D=OFF        # Disable all 43 1D formats
-cmake -DZXING_ENABLE_QRCODE=OFF    # Disable QR Code, Micro QR, rMQR, UPN QR
-cmake -DZXING_ENABLE_AZTEC=OFF     # Disable Aztec and Aztec Rune
-```
-
-**Fine-Grained Control** - Individual format options (all default to `ON`):
+**Individual format options** (all default to `ON`):
 
 <details>
 <summary><b>1D Product Codes (4 formats)</b></summary>
@@ -307,23 +300,21 @@ cmake -DZXING_ENABLE_AZTEC=OFF     # Disable Aztec and Aztec Rune
 - `ZXING_ENABLE_UPNQR` - UPN QR (Slovenian payment)
 </details>
 
-**Example** - Build with only retail formats (EAN/UPC + QR Code):
+**Example** - Build with only QR Code and Data Matrix:
 ```bash
 cmake -S zxing-cpp -B build \
-  -DZXING_ENABLE_1D=OFF \
-  -DZXING_ENABLE_EAN8=ON \
-  -DZXING_ENABLE_EAN13=ON \
-  -DZXING_ENABLE_UPCA=ON \
-  -DZXING_ENABLE_UPCE=ON \
   -DZXING_ENABLE_QRCODE=ON \
-  -DZXING_ENABLE_AZTEC=OFF \
-  -DZXING_ENABLE_DATAMATRIX=OFF \
+  -DZXING_ENABLE_MICROQRCODE=ON \
+  -DZXING_ENABLE_RMQRCODE=ON \
+  -DZXING_ENABLE_DATAMATRIX=ON \
+  -DZXING_ENABLE_EAN8=OFF \
+  -DZXING_ENABLE_EAN13=OFF \
+  -DZXING_ENABLE_UPCA=OFF \
+  -DZXING_ENABLE_CODE39=OFF \
+  -DZXING_ENABLE_CODE128=OFF \
   -DZXING_ENABLE_PDF417=OFF \
-  -DZXING_ENABLE_MAXICODE=OFF \
-  -DZXING_ENABLE_CODEONE=OFF \
-  -DZXING_ENABLE_DOTCODE=OFF \
-  -DZXING_ENABLE_GRIDMATRIX=OFF \
-  -DZXING_ENABLE_HANXIN=OFF
+  -DZXING_ENABLE_AZTEC=OFF
+# (disable other unwanted formats as needed)
 ```
 
 #### Reader/Writer Control
