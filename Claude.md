@@ -813,12 +813,12 @@ cmake -B build -DZXING_ENABLE_NEWFORMAT=OFF
   - Symbology identifier: Q1 (same as QR Code)
   - iOS wrapper and C API updated
 
-### Pending Phases
-- [ ] Phase 1: Low-Complexity Linear Codes
-- [ ] Phase 2: Code 39 Variants
-- [ ] Phase 3: Postal Codes (Australia Post first)
-- [ ] Phase 4: Stacked Linear Codes
-- [ ] Phase 5: 2D Matrix Codes
+### Completed Phases
+- [x] Phase 1: Low-Complexity Linear Codes (Code11, MSI, Pharmacode, Matrix2of5, Industrial2of5, IATA2of5, Datalogic2of5)
+- [x] Phase 2: Code 39 Variants (LOGMARS, Code32, PZN)
+- [x] Phase 3: Postal Codes (AustraliaPost, JapanPost, KIXCode, KoreaPost, RM4SCC, Mailmark, USPSIMB, DeutschePostLeitcode, DeutschePostIdentcode, POSTNET, PLANET)
+- [x] Phase 4: Stacked Linear Codes (DataBarStacked, DataBarStackedOmnidirectional, DataBarExpandedStacked, CodablockF, Code16K, Code49)
+- [x] Phase 5: 2D Matrix Codes (AztecRune, CodeOne, DotCode, GridMatrix, HanXin, UPNQR)
 
 ### Implementation Checklist Template
 For each new format, complete these steps:
