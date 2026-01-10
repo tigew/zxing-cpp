@@ -200,26 +200,131 @@ cmake --build zxing-cpp.release -j8 --config Release
 
 #### Format Control
 
-All barcode formats are **enabled by default**. To disable specific formats:
+All 56 barcode formats are **enabled by default**. You can disable individual formats to reduce binary size and improve scanning performance.
 
+**Master Switches** (control multiple formats):
 ```bash
-cmake -S zxing-cpp -B build \
-  -DZXING_ENABLE_MAXICODE=OFF \
-  -DZXING_ENABLE_AZTEC=OFF \
-  -DZXING_ENABLE_QRCODE=OFF
+cmake -DZXING_ENABLE_1D=OFF        # Disable all 43 1D formats
+cmake -DZXING_ENABLE_QRCODE=OFF    # Disable QR Code, Micro QR, rMQR, UPN QR
+cmake -DZXING_ENABLE_AZTEC=OFF     # Disable Aztec and Aztec Rune
 ```
 
-Available format options (all default to `ON`):
-- `ZXING_ENABLE_1D` - All 1D formats (Code 39, Code 128, EAN, UPC, etc.)
-- `ZXING_ENABLE_AZTEC` - Aztec and Aztec Rune
-- `ZXING_ENABLE_CODEONE` - Code One
+**Fine-Grained Control** - Individual format options (all default to `ON`):
+
+<details>
+<summary><b>1D Product Codes (4 formats)</b></summary>
+
+- `ZXING_ENABLE_EAN8` - EAN-8
+- `ZXING_ENABLE_EAN13` - EAN-13
+- `ZXING_ENABLE_UPCA` - UPC-A
+- `ZXING_ENABLE_UPCE` - UPC-E
+</details>
+
+<details>
+<summary><b>1D Industrial Codes (11 formats)</b></summary>
+
+- `ZXING_ENABLE_CODE39` - Code 39
+- `ZXING_ENABLE_CODE93` - Code 93
+- `ZXING_ENABLE_CODE128` - Code 128
+- `ZXING_ENABLE_CODABAR` - Codabar
+- `ZXING_ENABLE_ITF` - ITF (Interleaved 2 of 5)
+- `ZXING_ENABLE_CODE11` - Code 11
+- `ZXING_ENABLE_MSI` - MSI
+- `ZXING_ENABLE_TELEPEN` - Telepen
+- `ZXING_ENABLE_LOGMARS` - LOGMARS
+- `ZXING_ENABLE_DXFILMEDGE` - DX Film Edge
+- `ZXING_ENABLE_CHANNELCODE` - Channel Code
+</details>
+
+<details>
+<summary><b>DataBar Family (6 formats)</b></summary>
+
+- `ZXING_ENABLE_DATABAR` - DataBar (RSS-14)
+- `ZXING_ENABLE_DATABAREXPANDED` - DataBar Expanded
+- `ZXING_ENABLE_DATABARLIMITED` - DataBar Limited
+- `ZXING_ENABLE_DATABARSTACKED` - DataBar Stacked
+- `ZXING_ENABLE_DATABARSTACKEDOMNIDIRECTIONAL` - DataBar Stacked Omnidirectional
+- `ZXING_ENABLE_DATABAREXPANDEDSTACKED` - DataBar Expanded Stacked
+</details>
+
+<details>
+<summary><b>Postal Codes (11 formats)</b></summary>
+
+- `ZXING_ENABLE_AUSTRALIAPOST` - Australia Post
+- `ZXING_ENABLE_KIXCODE` - KIX Code (Dutch Post)
+- `ZXING_ENABLE_JAPANPOST` - Japan Post
+- `ZXING_ENABLE_KOREAPOST` - Korea Post
+- `ZXING_ENABLE_RM4SCC` - RM4SCC (Royal Mail)
+- `ZXING_ENABLE_MAILMARK` - Mailmark (Royal Mail)
+- `ZXING_ENABLE_USPSIMB` - USPS Intelligent Mail
+- `ZXING_ENABLE_DEUTSCHEPOSTLEITCODE` - Deutsche Post Leitcode
+- `ZXING_ENABLE_DEUTSCHEPOSTIDENTCODE` - Deutsche Post Identcode
+- `ZXING_ENABLE_POSTNET` - POSTNET
+- `ZXING_ENABLE_PLANET` - PLANET
+</details>
+
+<details>
+<summary><b>Pharmaceutical Codes (4 formats)</b></summary>
+
+- `ZXING_ENABLE_CODE32` - Code 32 (Italian Pharmacode)
+- `ZXING_ENABLE_PHARMACODE` - Pharmacode
+- `ZXING_ENABLE_PHARMACODETWOTRACK` - Pharmacode Two-Track
+- `ZXING_ENABLE_PZN` - PZN (German Pharmaceutical)
+</details>
+
+<details>
+<summary><b>2-of-5 Family (4 formats)</b></summary>
+
+- `ZXING_ENABLE_MATRIX2OF5` - Matrix 2 of 5
+- `ZXING_ENABLE_INDUSTRIAL2OF5` - Industrial 2 of 5
+- `ZXING_ENABLE_IATA2OF5` - IATA 2 of 5
+- `ZXING_ENABLE_DATALOGIC2OF5` - Datalogic 2 of 5
+</details>
+
+<details>
+<summary><b>Stacked 1D Codes (3 formats)</b></summary>
+
+- `ZXING_ENABLE_CODABLOCKF` - Codablock-F
+- `ZXING_ENABLE_CODE16K` - Code 16K
+- `ZXING_ENABLE_CODE49` - Code 49
+</details>
+
+<details>
+<summary><b>2D Matrix Codes (13 formats)</b></summary>
+
+- `ZXING_ENABLE_QRCODE` - QR Code
+- `ZXING_ENABLE_MICROQRCODE` - Micro QR Code
+- `ZXING_ENABLE_RMQRCODE` - rMQR Code (Rectangular Micro QR)
+- `ZXING_ENABLE_AZTEC` - Aztec
+- `ZXING_ENABLE_AZTECRUNE` - Aztec Rune
 - `ZXING_ENABLE_DATAMATRIX` - DataMatrix
+- `ZXING_ENABLE_PDF417` - PDF417
+- `ZXING_ENABLE_MAXICODE` - MaxiCode
+- `ZXING_ENABLE_CODEONE` - Code One
 - `ZXING_ENABLE_DOTCODE` - DotCode
 - `ZXING_ENABLE_GRIDMATRIX` - Grid Matrix
 - `ZXING_ENABLE_HANXIN` - Han Xin Code
-- `ZXING_ENABLE_MAXICODE` - MaxiCode
-- `ZXING_ENABLE_PDF417` - PDF417
-- `ZXING_ENABLE_QRCODE` - QR Code, Micro QR Code, and rMQR Code
+- `ZXING_ENABLE_UPNQR` - UPN QR (Slovenian payment)
+</details>
+
+**Example** - Build with only retail formats (EAN/UPC + QR Code):
+```bash
+cmake -S zxing-cpp -B build \
+  -DZXING_ENABLE_1D=OFF \
+  -DZXING_ENABLE_EAN8=ON \
+  -DZXING_ENABLE_EAN13=ON \
+  -DZXING_ENABLE_UPCA=ON \
+  -DZXING_ENABLE_UPCE=ON \
+  -DZXING_ENABLE_QRCODE=ON \
+  -DZXING_ENABLE_AZTEC=OFF \
+  -DZXING_ENABLE_DATAMATRIX=OFF \
+  -DZXING_ENABLE_PDF417=OFF \
+  -DZXING_ENABLE_MAXICODE=OFF \
+  -DZXING_ENABLE_CODEONE=OFF \
+  -DZXING_ENABLE_DOTCODE=OFF \
+  -DZXING_ENABLE_GRIDMATRIX=OFF \
+  -DZXING_ENABLE_HANXIN=OFF
+```
 
 #### Reader/Writer Control
 

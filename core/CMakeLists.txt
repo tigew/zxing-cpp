@@ -7,6 +7,101 @@ foreach(format 1D AZTEC CODEONE DATAMATRIX DOTCODE GRIDMATRIX HANXIN MAXICODE PD
     option ("ZXING_ENABLE_${format}" "Enable support for ${format} barcodes" ON)
 endforeach()
 
+# Fine-grained 1D format control (all default to ON)
+# Product Codes
+option (ZXING_ENABLE_EAN8 "Enable EAN-8" ON)
+option (ZXING_ENABLE_EAN13 "Enable EAN-13" ON)
+option (ZXING_ENABLE_UPCA "Enable UPC-A" ON)
+option (ZXING_ENABLE_UPCE "Enable UPC-E" ON)
+
+# Industrial Codes
+option (ZXING_ENABLE_CODE39 "Enable Code 39" ON)
+option (ZXING_ENABLE_CODE93 "Enable Code 93" ON)
+option (ZXING_ENABLE_CODE128 "Enable Code 128" ON)
+option (ZXING_ENABLE_CODABAR "Enable Codabar" ON)
+option (ZXING_ENABLE_ITF "Enable ITF (Interleaved 2 of 5)" ON)
+option (ZXING_ENABLE_CODE11 "Enable Code 11" ON)
+option (ZXING_ENABLE_MSI "Enable MSI" ON)
+option (ZXING_ENABLE_TELEPEN "Enable Telepen" ON)
+option (ZXING_ENABLE_LOGMARS "Enable LOGMARS" ON)
+option (ZXING_ENABLE_DXFILMEDGE "Enable DX Film Edge" ON)
+option (ZXING_ENABLE_CHANNELCODE "Enable Channel Code" ON)
+
+# DataBar Family
+option (ZXING_ENABLE_DATABAR "Enable DataBar (RSS-14)" ON)
+option (ZXING_ENABLE_DATABAREXPANDED "Enable DataBar Expanded" ON)
+option (ZXING_ENABLE_DATABARLIMITED "Enable DataBar Limited" ON)
+option (ZXING_ENABLE_DATABARSTACKED "Enable DataBar Stacked" ON)
+option (ZXING_ENABLE_DATABARSTACKEDOMNIDIRECTIONAL "Enable DataBar Stacked Omnidirectional" ON)
+option (ZXING_ENABLE_DATABAREXPANDEDSTACKED "Enable DataBar Expanded Stacked" ON)
+
+# Postal Codes
+option (ZXING_ENABLE_AUSTRALIAPOST "Enable Australia Post" ON)
+option (ZXING_ENABLE_KIXCODE "Enable KIX Code (Dutch Post)" ON)
+option (ZXING_ENABLE_JAPANPOST "Enable Japan Post" ON)
+option (ZXING_ENABLE_KOREAPOST "Enable Korea Post" ON)
+option (ZXING_ENABLE_RM4SCC "Enable RM4SCC (Royal Mail)" ON)
+option (ZXING_ENABLE_MAILMARK "Enable Mailmark (Royal Mail)" ON)
+option (ZXING_ENABLE_USPSIMB "Enable USPS Intelligent Mail" ON)
+option (ZXING_ENABLE_DEUTSCHEPOSTLEITCODE "Enable Deutsche Post Leitcode" ON)
+option (ZXING_ENABLE_DEUTSCHEPOSTIDENTCODE "Enable Deutsche Post Identcode" ON)
+option (ZXING_ENABLE_POSTNET "Enable POSTNET" ON)
+option (ZXING_ENABLE_PLANET "Enable PLANET" ON)
+
+# Pharmaceutical Codes
+option (ZXING_ENABLE_CODE32 "Enable Code 32 (Italian Pharmacode)" ON)
+option (ZXING_ENABLE_PHARMACODE "Enable Pharmacode" ON)
+option (ZXING_ENABLE_PHARMACODETWOTRACK "Enable Pharmacode Two-Track" ON)
+option (ZXING_ENABLE_PZN "Enable PZN (German Pharmaceutical)" ON)
+
+# 2-of-5 Family
+option (ZXING_ENABLE_MATRIX2OF5 "Enable Matrix 2 of 5" ON)
+option (ZXING_ENABLE_INDUSTRIAL2OF5 "Enable Industrial 2 of 5" ON)
+option (ZXING_ENABLE_IATA2OF5 "Enable IATA 2 of 5" ON)
+option (ZXING_ENABLE_DATALOGIC2OF5 "Enable Datalogic 2 of 5" ON)
+
+# Stacked 1D Codes
+option (ZXING_ENABLE_CODABLOCKF "Enable Codablock-F" ON)
+option (ZXING_ENABLE_CODE16K "Enable Code 16K" ON)
+option (ZXING_ENABLE_CODE49 "Enable Code 49" ON)
+
+# Fine-grained 2D format control (all default to ON)
+# QR Code Family
+option (ZXING_ENABLE_QRCODE "Enable QR Code" ON)
+option (ZXING_ENABLE_MICROQRCODE "Enable Micro QR Code" ON)
+option (ZXING_ENABLE_RMQRCODE "Enable rMQR Code (Rectangular Micro QR)" ON)
+
+# Aztec Family
+option (ZXING_ENABLE_AZTEC "Enable Aztec" ON)
+option (ZXING_ENABLE_AZTECRUNE "Enable Aztec Rune" ON)
+
+# Other 2D Codes
+option (ZXING_ENABLE_UPNQR "Enable UPN QR (Slovenian payment)" ON)
+
+# Backward compatibility: if master switches are OFF, disable all related formats
+if (NOT ZXING_ENABLE_1D)
+    foreach(fmt EAN8 EAN13 UPCA UPCE CODE39 CODE93 CODE128 CODABAR ITF CODE11 MSI TELEPEN LOGMARS
+                DXFILMEDGE CHANNELCODE DATABAR DATABAREXPANDED DATABARLIMITED DATABARSTACKED
+                DATABARSTACKEDOMNIDIRECTIONAL DATABAREXPANDEDSTACKED AUSTRALIAPOST KIXCODE JAPANPOST
+                KOREAPOST RM4SCC MAILMARK USPSIMB DEUTSCHEPOSTLEITCODE DEUTSCHEPOSTIDENTCODE POSTNET
+                PLANET CODE32 PHARMACODE PHARMACODETWOTRACK PZN MATRIX2OF5 INDUSTRIAL2OF5 IATA2OF5
+                DATALOGIC2OF5 CODABLOCKF CODE16K CODE49)
+        set (ZXING_ENABLE_${fmt} OFF)
+    endforeach()
+endif()
+
+if (NOT ZXING_ENABLE_QRCODE)
+    set (ZXING_ENABLE_QRCODE OFF)
+    set (ZXING_ENABLE_MICROQRCODE OFF)
+    set (ZXING_ENABLE_RMQRCODE OFF)
+    set (ZXING_ENABLE_UPNQR OFF)
+endif()
+
+if (NOT ZXING_ENABLE_AZTEC)
+    set (ZXING_ENABLE_AZTEC OFF)
+    set (ZXING_ENABLE_AZTECRUNE OFF)
+endif()
+
 if (BUILD_SHARED_LIBS)
     set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 endif()
@@ -52,6 +147,21 @@ set (ZXING_PUBLIC_FLAGS
 )
 foreach(format 1D AZTEC CODEONE DATAMATRIX DOTCODE GRIDMATRIX HANXIN MAXICODE PDF417 QRCODE)
     list (APPEND ZXING_PUBLIC_FLAGS $<$<BOOL:${ZXING_ENABLE_${format}}>:-DZXING_WITH_${format}>)
+endforeach()
+
+# Add public flags for individual 1D formats
+foreach(fmt EAN8 EAN13 UPCA UPCE CODE39 CODE93 CODE128 CODABAR ITF CODE11 MSI TELEPEN LOGMARS
+            DXFILMEDGE CHANNELCODE DATABAR DATABAREXPANDED DATABARLIMITED DATABARSTACKED
+            DATABARSTACKEDOMNIDIRECTIONAL DATABAREXPANDEDSTACKED AUSTRALIAPOST KIXCODE JAPANPOST
+            KOREAPOST RM4SCC MAILMARK USPSIMB DEUTSCHEPOSTLEITCODE DEUTSCHEPOSTIDENTCODE POSTNET
+            PLANET CODE32 PHARMACODE PHARMACODETWOTRACK PZN MATRIX2OF5 INDUSTRIAL2OF5 IATA2OF5
+            DATALOGIC2OF5 CODABLOCKF CODE16K CODE49)
+    list (APPEND ZXING_PUBLIC_FLAGS $<$<BOOL:${ZXING_ENABLE_${fmt}}>:-DZXING_WITH_${fmt}>)
+endforeach()
+
+# Add public flags for individual 2D formats
+foreach(fmt QRCODE MICROQRCODE RMQRCODE AZTEC AZTECRUNE UPNQR)
+    list (APPEND ZXING_PUBLIC_FLAGS $<$<BOOL:${ZXING_ENABLE_${fmt}}>:-DZXING_WITH_${fmt}>)
 endforeach()
 
 if (WINRT)
@@ -378,94 +488,318 @@ if (ZXING_READERS AND ZXING_ENABLE_MAXICODE)
 endif()
 
 
+# Common 1D files - always included if any 1D format is enabled
 if ((ZXING_READERS OR ZXING_WRITERS_OLD) AND ZXING_ENABLE_1D)
     set (ONED_FILES
-        src/oned/ODUPCEANCommon.h
-        src/oned/ODUPCEANCommon.cpp
-        src/oned/ODCode93Patterns.h
-        src/oned/ODCode128Patterns.h
-        src/oned/ODCode128Patterns.cpp
+        src/oned/ODReader.h
+        src/oned/ODReader.cpp
+        src/oned/ODRowReader.h
     )
 endif()
-if (ZXING_READERS AND ZXING_ENABLE_1D)
+
+# EAN/UPC common files
+if ((ZXING_READERS OR ZXING_WRITERS_OLD) AND ZXING_ENABLE_1D AND
+    (ZXING_ENABLE_EAN8 OR ZXING_ENABLE_EAN13 OR ZXING_ENABLE_UPCA OR ZXING_ENABLE_UPCE))
     set (ONED_FILES ${ONED_FILES}
-        src/oned/ODAustraliaPostReader.h
-        src/oned/ODAustraliaPostReader.cpp
-        src/oned/ODCodabarReader.h
-        src/oned/ODCodabarReader.cpp
-        src/oned/ODCode11Reader.h
-        src/oned/ODCode11Reader.cpp
+        src/oned/ODUPCEANCommon.h
+        src/oned/ODUPCEANCommon.cpp
+    )
+endif()
+
+# EAN/UPC Reader
+if (ZXING_READERS AND ZXING_ENABLE_1D AND
+    (ZXING_ENABLE_EAN8 OR ZXING_ENABLE_EAN13 OR ZXING_ENABLE_UPCA OR ZXING_ENABLE_UPCE))
+    set (ONED_FILES ${ONED_FILES}
+        src/oned/ODMultiUPCEANReader.h
+        src/oned/ODMultiUPCEANReader.cpp
+    )
+endif()
+
+# Code 39
+if (ZXING_READERS AND ZXING_ENABLE_CODE39)
+    set (ONED_FILES ${ONED_FILES}
         src/oned/ODCode39Reader.h
         src/oned/ODCode39Reader.cpp
+    )
+endif()
+
+# Code 93
+if (ZXING_READERS AND ZXING_ENABLE_CODE93)
+    set (ONED_FILES ${ONED_FILES}
+        src/oned/ODCode93Patterns.h
         src/oned/ODCode93Reader.h
         src/oned/ODCode93Reader.cpp
+    )
+endif()
+
+# Code 128
+if (ZXING_READERS AND ZXING_ENABLE_CODE128)
+    set (ONED_FILES ${ONED_FILES}
+        src/oned/ODCode128Patterns.h
+        src/oned/ODCode128Patterns.cpp
         src/oned/ODCode128Reader.h
         src/oned/ODCode128Reader.cpp
+    )
+endif()
+
+# Codabar
+if (ZXING_READERS AND ZXING_ENABLE_CODABAR)
+    set (ONED_FILES ${ONED_FILES}
+        src/oned/ODCodabarReader.h
+        src/oned/ODCodabarReader.cpp
+    )
+endif()
+
+# ITF
+if (ZXING_READERS AND ZXING_ENABLE_ITF)
+    set (ONED_FILES ${ONED_FILES}
+        src/oned/ODITFReader.h
+        src/oned/ODITFReader.cpp
+    )
+endif()
+
+# Code 11
+if (ZXING_READERS AND ZXING_ENABLE_CODE11)
+    set (ONED_FILES ${ONED_FILES}
+        src/oned/ODCode11Reader.h
+        src/oned/ODCode11Reader.cpp
+    )
+endif()
+
+# MSI
+if (ZXING_READERS AND ZXING_ENABLE_MSI)
+    set (ONED_FILES ${ONED_FILES}
+        src/oned/ODMSIReader.h
+        src/oned/ODMSIReader.cpp
+    )
+endif()
+
+# Telepen
+if (ZXING_READERS AND ZXING_ENABLE_TELEPEN)
+    set (ONED_FILES ${ONED_FILES}
+        src/oned/ODTelepenReader.h
+        src/oned/ODTelepenReader.cpp
+    )
+endif()
+
+# LOGMARS
+if (ZXING_READERS AND ZXING_ENABLE_LOGMARS)
+    set (ONED_FILES ${ONED_FILES}
+        src/oned/ODLOGMARSReader.h
+        src/oned/ODLOGMARSReader.cpp
+    )
+endif()
+
+# DX Film Edge
+if (ZXING_READERS AND ZXING_ENABLE_DXFILMEDGE)
+    set (ONED_FILES ${ONED_FILES}
+        src/oned/ODDXFilmEdgeReader.h
+        src/oned/ODDXFilmEdgeReader.cpp
+    )
+endif()
+
+# Channel Code
+if (ZXING_READERS AND ZXING_ENABLE_CHANNELCODE)
+    set (ONED_FILES ${ONED_FILES}
+        src/oned/ODChannelCodeReader.h
+        src/oned/ODChannelCodeReader.cpp
+    )
+endif()
+
+# DataBar common files
+if (ZXING_READERS AND
+    (ZXING_ENABLE_DATABAR OR ZXING_ENABLE_DATABAREXPANDED OR ZXING_ENABLE_DATABARLIMITED OR
+     ZXING_ENABLE_DATABARSTACKED OR ZXING_ENABLE_DATABARSTACKEDOMNIDIRECTIONAL OR ZXING_ENABLE_DATABAREXPANDEDSTACKED))
+    set (ONED_FILES ${ONED_FILES}
         src/oned/ODDataBarCommon.h
         src/oned/ODDataBarCommon.cpp
+    )
+endif()
+
+# DataBar
+if (ZXING_READERS AND
+    (ZXING_ENABLE_DATABAR OR ZXING_ENABLE_DATABARSTACKED OR ZXING_ENABLE_DATABARSTACKEDOMNIDIRECTIONAL))
+    set (ONED_FILES ${ONED_FILES}
         src/oned/ODDataBarReader.h
         src/oned/ODDataBarReader.cpp
+    )
+endif()
+
+# DataBar Expanded
+if (ZXING_READERS AND (ZXING_ENABLE_DATABAREXPANDED OR ZXING_ENABLE_DATABAREXPANDEDSTACKED))
+    set (ONED_FILES ${ONED_FILES}
         src/oned/ODDataBarExpandedBitDecoder.h
         src/oned/ODDataBarExpandedBitDecoder.cpp
         src/oned/ODDataBarExpandedReader.h
         src/oned/ODDataBarExpandedReader.cpp
+    )
+endif()
+
+# DataBar Limited
+if (ZXING_READERS AND ZXING_ENABLE_DATABARLIMITED)
+    set (ONED_FILES ${ONED_FILES}
         src/oned/ODDataBarLimitedReader.h
         src/oned/ODDataBarLimitedReader.cpp
-        src/oned/ODDXFilmEdgeReader.h
-        src/oned/ODDXFilmEdgeReader.cpp
-        src/oned/ODITFReader.h
-        src/oned/ODITFReader.cpp
+    )
+endif()
+
+# Australia Post
+if (ZXING_READERS AND ZXING_ENABLE_AUSTRALIAPOST)
+    set (ONED_FILES ${ONED_FILES}
+        src/oned/ODAustraliaPostReader.h
+        src/oned/ODAustraliaPostReader.cpp
+    )
+endif()
+
+# Japan Post
+if (ZXING_READERS AND ZXING_ENABLE_JAPANPOST)
+    set (ONED_FILES ${ONED_FILES}
         src/oned/ODJapanPostReader.h
         src/oned/ODJapanPostReader.cpp
+    )
+endif()
+
+# KIX Code
+if (ZXING_READERS AND ZXING_ENABLE_KIXCODE)
+    set (ONED_FILES ${ONED_FILES}
         src/oned/ODKIXCodeReader.h
         src/oned/ODKIXCodeReader.cpp
+    )
+endif()
+
+# Korea Post
+if (ZXING_READERS AND ZXING_ENABLE_KOREAPOST)
+    set (ONED_FILES ${ONED_FILES}
         src/oned/ODKoreaPostReader.h
         src/oned/ODKoreaPostReader.cpp
+    )
+endif()
+
+# RM4SCC
+if (ZXING_READERS AND ZXING_ENABLE_RM4SCC)
+    set (ONED_FILES ${ONED_FILES}
         src/oned/ODRM4SCCReader.h
         src/oned/ODRM4SCCReader.cpp
+    )
+endif()
+
+# Mailmark
+if (ZXING_READERS AND ZXING_ENABLE_MAILMARK)
+    set (ONED_FILES ${ONED_FILES}
         src/oned/ODMailmarkReader.h
         src/oned/ODMailmarkReader.cpp
+    )
+endif()
+
+# USPS IMB
+if (ZXING_READERS AND ZXING_ENABLE_USPSIMB)
+    set (ONED_FILES ${ONED_FILES}
         src/oned/ODUSPSIMBReader.h
         src/oned/ODUSPSIMBReader.cpp
+    )
+endif()
+
+# Deutsche Post
+if (ZXING_READERS AND (ZXING_ENABLE_DEUTSCHEPOSTLEITCODE OR ZXING_ENABLE_DEUTSCHEPOSTIDENTCODE))
+    set (ONED_FILES ${ONED_FILES}
         src/oned/ODDeutschePostReader.h
         src/oned/ODDeutschePostReader.cpp
+    )
+endif()
+
+# POSTNET
+if (ZXING_READERS AND ZXING_ENABLE_POSTNET)
+    set (ONED_FILES ${ONED_FILES}
         src/oned/ODPOSTNETReader.h
         src/oned/ODPOSTNETReader.cpp
-        src/oned/ODMSIReader.h
-        src/oned/ODMSIReader.cpp
-        src/oned/ODTelepenReader.h
-        src/oned/ODTelepenReader.cpp
-        src/oned/ODLOGMARSReader.h
-        src/oned/ODLOGMARSReader.cpp
+    )
+endif()
+
+# Code 32
+if (ZXING_READERS AND ZXING_ENABLE_CODE32)
+    set (ONED_FILES ${ONED_FILES}
         src/oned/ODCode32Reader.h
         src/oned/ODCode32Reader.cpp
+    )
+endif()
+
+# PZN
+if (ZXING_READERS AND ZXING_ENABLE_PZN)
+    set (ONED_FILES ${ONED_FILES}
         src/oned/ODPZNReader.h
         src/oned/ODPZNReader.cpp
-        src/oned/ODChannelCodeReader.h
-        src/oned/ODChannelCodeReader.cpp
-        src/oned/ODMatrix2of5Reader.h
-        src/oned/ODMatrix2of5Reader.cpp
-        src/oned/ODIndustrial2of5Reader.h
-        src/oned/ODIndustrial2of5Reader.cpp
-        src/oned/ODIATA2of5Reader.h
-        src/oned/ODIATA2of5Reader.cpp
-        src/oned/ODDatalogic2of5Reader.h
-        src/oned/ODDatalogic2of5Reader.cpp
+    )
+endif()
+
+# Pharmacode
+if (ZXING_READERS AND ZXING_ENABLE_PHARMACODE)
+    set (ONED_FILES ${ONED_FILES}
         src/oned/ODPharmacodeReader.h
         src/oned/ODPharmacodeReader.cpp
+    )
+endif()
+
+# Pharmacode Two-Track
+if (ZXING_READERS AND ZXING_ENABLE_PHARMACODETWOTRACK)
+    set (ONED_FILES ${ONED_FILES}
         src/oned/ODPharmacodeTwoTrackReader.h
         src/oned/ODPharmacodeTwoTrackReader.cpp
+    )
+endif()
+
+# Matrix 2 of 5
+if (ZXING_READERS AND ZXING_ENABLE_MATRIX2OF5)
+    set (ONED_FILES ${ONED_FILES}
+        src/oned/ODMatrix2of5Reader.h
+        src/oned/ODMatrix2of5Reader.cpp
+    )
+endif()
+
+# Industrial 2 of 5
+if (ZXING_READERS AND ZXING_ENABLE_INDUSTRIAL2OF5)
+    set (ONED_FILES ${ONED_FILES}
+        src/oned/ODIndustrial2of5Reader.h
+        src/oned/ODIndustrial2of5Reader.cpp
+    )
+endif()
+
+# IATA 2 of 5
+if (ZXING_READERS AND ZXING_ENABLE_IATA2OF5)
+    set (ONED_FILES ${ONED_FILES}
+        src/oned/ODIATA2of5Reader.h
+        src/oned/ODIATA2of5Reader.cpp
+    )
+endif()
+
+# Datalogic 2 of 5
+if (ZXING_READERS AND ZXING_ENABLE_DATALOGIC2OF5)
+    set (ONED_FILES ${ONED_FILES}
+        src/oned/ODDatalogic2of5Reader.h
+        src/oned/ODDatalogic2of5Reader.cpp
+    )
+endif()
+
+# Codablock-F
+if (ZXING_READERS AND ZXING_ENABLE_CODABLOCKF)
+    set (ONED_FILES ${ONED_FILES}
         src/oned/ODCodablockFReader.h
         src/oned/ODCodablockFReader.cpp
+    )
+endif()
+
+# Code 16K
+if (ZXING_READERS AND ZXING_ENABLE_CODE16K)
+    set (ONED_FILES ${ONED_FILES}
         src/oned/ODCode16KReader.h
         src/oned/ODCode16KReader.cpp
+    )
+endif()
+
+# Code 49
+if (ZXING_READERS AND ZXING_ENABLE_CODE49)
+    set (ONED_FILES ${ONED_FILES}
         src/oned/ODCode49Reader.h
         src/oned/ODCode49Reader.cpp
-        src/oned/ODMultiUPCEANReader.h
-        src/oned/ODMultiUPCEANReader.cpp
-        src/oned/ODReader.h
-        src/oned/ODReader.cpp
-        src/oned/ODRowReader.h
     )
 endif()
 if (ZXING_WRITERS_OLD AND ZXING_ENABLE_1D)
