@@ -11,13 +11,27 @@
 
 ---
 
+## FIXES APPLIED
+
+### ✅ Bug #4 FIXED: CodeOne Decoder Now Uses Correct GF(128)
+
+**Files changed:**
+- `core/src/GenericGF.h` - Added `CodeOneField128()` declaration
+- `core/src/GenericGF.cpp` - Implemented `GenericGF::CodeOneField128()` with primitive polynomial x^7 + x^3 + 1 (0x89)
+- `core/src/codeone/C1Decoder.cpp:105` - Changed from `GenericGF::MaxiCodeField64()` to `GenericGF::CodeOneField128()`
+
+**Result:** CodeOne decoder now uses the correct GF(128) field for Reed-Solomon error correction as documented.
+
+---
+
 ## CRITICAL BUGS
 
-### Bug #4: CodeOne Decoder Uses Wrong Galois Field (GF(64) instead of GF(128))
+### Bug #4: CodeOne Decoder Uses Wrong Galois Field (GF(64) instead of GF(128)) - ✅ FIXED
 
 **Severity:** CRITICAL - Causes incorrect error correction
+**Status:** ✅ FIXED (see FIXES APPLIED section above)
 
-**Location:**
+**Original Location:**
 - `core/src/codeone/C1Decoder.cpp:95-106`
 
 **Description:**
@@ -101,6 +115,7 @@ BarcodeFormat format = isStacked ? BarcodeFormat::DataBarStacked : BarcodeFormat
 ### Bug #6: DotCode Decoder Uses GF(256) Approximation for GF(113)
 
 **Severity:** MEDIUM - Suboptimal error correction
+**Status:** DOCUMENTED (requires substantial refactoring to fix properly)
 
 **Location:**
 - `core/src/dotcode/DCDecoder.cpp:120-131`
@@ -121,15 +136,28 @@ if (!ReedSolomonDecode(GenericGF::DataMatrixField256(), codewordsInt, eccCount))
 - Some correctable errors may not be corrected
 - Decoder may fail on barcodes with higher error rates that should be recoverable
 
+**Why not fixed:**
+- GF(113) is a **prime field** (113 is prime), not a power-of-2 field
+- GenericGF only supports power-of-2 fields (GF(2^n) like GF(64), GF(128), GF(256))
+- Prime fields require ModulusGF (see PDF417 implementation with GF(929))
+- ReedSolomonDecode() only works with GenericGF, not ModulusGF
+- Fixing this requires:
+  1. Creating a ModulusGF field for GF(113) with generator 3
+  2. Implementing a separate RS decoder for ModulusGF (like PDF417's DecodeErrorCorrection)
+  3. Refactoring DotCode decoder to use the new ModulusGF-based RS decoder
+- This is substantial work beyond the scope of bug fixes
+
 **Recommendation:**
-- Implement proper GF(113) support in GenericGF
-- Update DotCode decoder to use correct field
+- Document as known limitation
+- Consider future enhancement to add proper prime field support
+- Current approximation allows decoder to function, though not optimally
 
 ---
 
 ### Bug #7: GridMatrix Decoder Uses GF(256) Approximation for GF(929)
 
 **Severity:** MEDIUM - Suboptimal error correction
+**Status:** DOCUMENTED (requires substantial refactoring to fix properly)
 
 **Location:**
 - `core/src/gridmatrix/GMDecoder.cpp:75-186`
@@ -150,10 +178,22 @@ if (!ReedSolomonDecode(GenericGF::DataMatrixField256(), codewordsInt, eccCount))
 - Some correctable errors may not be corrected
 - Decoder may fail on barcodes with higher error rates that should be recoverable
 
+**Why not fixed:**
+- GF(929) is a **prime field** (929 is prime), not a power-of-2 field
+- PDF417 uses GF(929) but via **ModulusGF**, not GenericGF (see `core/src/pdf417/PDFModulusGF.h`)
+- GenericGF only supports power-of-2 fields (GF(2^n))
+- ReedSolomonDecode() only works with GenericGF, not ModulusGF
+- PDF417 has its own complete RS decoder implementation (`pdf417/PDFScanningDecoder.cpp:461-515`)
+- Fixing this requires:
+  1. Creating a ModulusGF field for GF(929) with generator 3 (can reuse PDF417's field)
+  2. Implementing a separate RS decoder for ModulusGF or extracting/generalizing PDF417's
+  3. Refactoring GridMatrix decoder to use the new ModulusGF-based RS decoder
+- This is substantial work beyond the scope of bug fixes
+
 **Recommendation:**
-- PDF417 likely already uses GF(929) - check if GenericGF has this field
-- If not, implement proper GF(929) support
-- Update GridMatrix decoder to use correct field
+- Document as known limitation
+- Consider future enhancement to generalize PDF417's ModulusGF RS decoder
+- Current approximation allows decoder to function, though not optimally
 
 ---
 

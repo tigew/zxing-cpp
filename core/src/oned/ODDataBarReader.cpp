@@ -200,7 +200,13 @@ Barcode DataBarReader::decodePattern(int rowNumber, PatternView& next, std::uniq
 				// Determine format: DataBar, DataBarStacked, or DataBarStackedOmnidirectional
 				// DataBarStacked: reduced height (short rows)
 				// DataBarStackedOmnidirectional: taller rows for better omni scanning
-				// Note: Both are reported as DataBarStacked since we can't easily distinguish row height
+				//
+				// KNOWN LIMITATION: DataBarStackedOmnidirectional is never returned
+				// Both stacked variants are reported as DataBarStacked since we cannot reliably
+				// distinguish row height from image analysis alone. This means:
+				// - Users filtering for DataBarStackedOmnidirectional will get no matches
+				// - Both stacked variants will be identified as DataBarStacked
+				// This is a documented limitation of the current implementation.
 				BarcodeFormat format = isStacked ? BarcodeFormat::DataBarStacked : BarcodeFormat::DataBar;
 
 				// Symbology identifier ISO/IEC 24724:2011 Section 9 and GS1 General Specifications 5.1.3 Figure 5.1.3-2

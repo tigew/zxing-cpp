@@ -71,6 +71,13 @@ GenericGF::MailmarkField64()
 	return inst;
 }
 
+const GenericGF &
+GenericGF::CodeOneField128()
+{
+	static const GenericGF inst(0x89, 128, 1); // x^7 + x^3 + 1
+	return inst;
+}
+
 
 /**
 * Create a representation of GF(size) using the given primitive polynomial.
