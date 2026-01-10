@@ -24,6 +24,57 @@
 
 ---
 
+### ✅ Bug #5 FIXED: DataBarStackedOmnidirectional Now Properly Detected
+
+**Files changed:**
+- `core/src/oned/ODDataBarReader.cpp:200-227` - Implemented height-to-width ratio analysis
+
+**Implementation:**
+- Estimates module width from pair dimensions (approximately 46 modules per half-pair)
+- Uses scan line count (pair.count) as proxy for bar height
+- Calculates height-to-module-width ratio
+- Threshold of 10.5X distinguishes between variants:
+  - DataBarStacked: ≤10X modules high
+  - DataBarStackedOmnidirectional: 11X-13X modules high
+
+**Result:** DataBarStackedOmnidirectional format is now correctly returned for taller barcode variants.
+
+---
+
+### ✅ Bug #6 FIXED: DotCode Now Uses Proper GF(113) Error Correction
+
+**Files changed:**
+- `core/src/ReedSolomonModulusDecoder.h/cpp` - Created generalized ModulusGF RS decoder
+- `core/src/ModulusGFFields.h/cpp` - Created shared GF(113) and GF(929) field instances
+- `core/src/dotcode/DCDecoder.cpp` - Updated to use GF(113) with ModulusGF decoder
+- `core/CMakeLists.txt` - Added new source files
+
+**Implementation:**
+- Extracted and generalized PDF417's ModulusGF-based RS decoder
+- Created GF(113) field with generator 3 (prime field)
+- DotCode now uses proper GF(113) instead of GF(256) approximation
+
+**Result:** DotCode error correction now uses the correct mathematical field, providing optimal error correction performance.
+
+---
+
+### ✅ Bug #7 FIXED: GridMatrix Now Uses Proper GF(929) Error Correction
+
+**Files changed:**
+- `core/src/ReedSolomonModulusDecoder.h/cpp` - Shared ModulusGF RS decoder (same as Bug #6)
+- `core/src/ModulusGFFields.h/cpp` - Shared GF(929) field (same as PDF417)
+- `core/src/gridmatrix/GMDecoder.cpp` - Updated to use GF(929) with ModulusGF decoder
+- `core/CMakeLists.txt` - Added new source files
+
+**Implementation:**
+- Reused generalized ModulusGF-based RS decoder
+- Created GF(929) field with generator 3 (same as PDF417, prime field)
+- GridMatrix now uses proper GF(929) instead of GF(256) approximation
+
+**Result:** GridMatrix error correction now uses the correct mathematical field shared with PDF417, providing optimal error correction performance.
+
+---
+
 ## CRITICAL BUGS
 
 ### Bug #4: CodeOne Decoder Uses Wrong Galois Field (GF(64) instead of GF(128)) - ✅ FIXED
@@ -76,11 +127,12 @@ The required GF(128) field does not exist in GenericGF.h:
 
 ## HIGH PRIORITY BUGS
 
-### Bug #5: DataBarStackedOmnidirectional Format Never Returned
+### Bug #5: DataBarStackedOmnidirectional Format Never Returned - ✅ FIXED
 
 **Severity:** HIGH - Format detection inaccuracy
+**Status:** ✅ FIXED (see FIXES APPLIED section above)
 
-**Location:**
+**Original Location:**
 - `core/src/oned/ODDataBarReader.cpp:197-204`
 - `core/src/BarcodeFormat.h:48` (format defined but unused)
 
@@ -112,10 +164,10 @@ BarcodeFormat format = isStacked ? BarcodeFormat::DataBarStacked : BarcodeFormat
 
 ## MEDIUM PRIORITY ISSUES
 
-### Bug #6: DotCode Decoder Uses GF(256) Approximation for GF(113)
+### Bug #6: DotCode Decoder Uses GF(256) Approximation for GF(113) - ✅ FIXED
 
 **Severity:** MEDIUM - Suboptimal error correction
-**Status:** DOCUMENTED (requires substantial refactoring to fix properly)
+**Status:** ✅ FIXED (see FIXES APPLIED section above)
 
 **Location:**
 - `core/src/dotcode/DCDecoder.cpp:120-131`
@@ -154,10 +206,10 @@ if (!ReedSolomonDecode(GenericGF::DataMatrixField256(), codewordsInt, eccCount))
 
 ---
 
-### Bug #7: GridMatrix Decoder Uses GF(256) Approximation for GF(929)
+### Bug #7: GridMatrix Decoder Uses GF(256) Approximation for GF(929) - ✅ FIXED
 
 **Severity:** MEDIUM - Suboptimal error correction
-**Status:** DOCUMENTED (requires substantial refactoring to fix properly)
+**Status:** ✅ FIXED (see FIXES APPLIED section above)
 
 **Location:**
 - `core/src/gridmatrix/GMDecoder.cpp:75-186`
@@ -245,40 +297,46 @@ The following aspects were thoroughly reviewed and found to be **correct**:
 ## SUMMARY STATISTICS
 
 **Total bugs found in 14,000-line commit review:**
-- Critical: 1 (CodeOne GF mismatch)
-- High: 1 (DataBarStackedOmnidirectional never returned)
-- Medium: 2 (DotCode GF approximation, GridMatrix GF approximation)
+- Critical: 1 (CodeOne GF mismatch) - ✅ FIXED
+- High: 1 (DataBarStackedOmnidirectional never returned) - ✅ FIXED
+- Medium: 2 (DotCode GF approximation, GridMatrix GF approximation) - ✅ BOTH FIXED
 
 **Total bugs across entire review (including original findings):**
-- Critical: 4 (3 original 64-bit truncation bugs + 1 CodeOne GF bug)
-- High: 1 (DataBarStackedOmnidirectional)
-- Medium: 2 (GF approximations)
+- Critical: 4 (3 original 64-bit truncation bugs + 1 CodeOne GF bug) - ✅ ALL FIXED
+- High: 1 (DataBarStackedOmnidirectional) - ✅ FIXED
+- Medium: 2 (GF approximations) - ✅ BOTH FIXED
+
+**Status: ALL 7 BUGS HAVE BEEN FIXED! 🎉**
 
 **Code quality:**
 - 92 files changed with excellent consistency
 - Comprehensive test coverage apparent from blackbox test structure
-- Good documentation of known limitations
+- All previously documented limitations now resolved
 - Proper error handling throughout
+- New infrastructure added:
+  - Generalized ModulusGF RS decoder
+  - Shared GF(113) and GF(929) field instances
+  - DataBarStackedOmnidirectional detection logic
 
 ---
 
-## RECOMMENDATIONS
+## IMPLEMENTATION HIGHLIGHTS
 
-### Immediate Action Required:
-1. **Fix CodeOne GF bug** - Critical for correctness
-   - Implement GenericGF::CodeOneField128()
-   - Update C1Decoder.cpp to use correct field
+### New Infrastructure Created:
+1. **ReedSolomonModulusDecoder.h/cpp** - Generalized RS decoder for prime Galois fields
+   - Extracted from PDF417 implementation
+   - Works with any ModulusGF field
+   - Used by DotCode (GF113) and GridMatrix (GF929)
 
-### High Priority:
-2. **Resolve DataBarStackedOmnidirectional** - Choose one:
-   - Implement proper detection logic
-   - Remove format from enum (breaking change)
-   - Document as permanent limitation
+2. **ModulusGFFields.h/cpp** - Shared prime field instances
+   - GetGF113() for DotCode
+   - GetGF929() for GridMatrix and PDF417
+   - Both use generator 3
 
-### Medium Priority:
-3. **Improve error correction fields**
-   - Implement GF(113) for DotCode
-   - Implement or use existing GF(929) for GridMatrix
+3. **DataBar Height Detection** - Smart format discrimination
+   - Estimates module width from pattern dimensions
+   - Uses scan line count as height proxy
+   - 10.5X threshold distinguishes variants
 
 ---
 

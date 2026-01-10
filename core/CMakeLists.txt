@@ -189,6 +189,10 @@ if (ZXING_READERS)
         src/Reader.h
         src/ReedSolomonDecoder.h
         src/ReedSolomonDecoder.cpp
+        src/ReedSolomonModulusDecoder.h
+        src/ReedSolomonModulusDecoder.cpp
+        src/ModulusGFFields.h
+        src/ModulusGFFields.cpp
         src/RegressionLine.h
         src/Result.h # [[deprecated]]
         src/ResultPoint.h

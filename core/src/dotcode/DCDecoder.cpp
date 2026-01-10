@@ -9,8 +9,8 @@
 #include "ByteArray.h"
 #include "Content.h"
 #include "DecoderResult.h"
-#include "GenericGF.h"
-#include "ReedSolomonDecoder.h"
+#include "ModulusGFFields.h"
+#include "ReedSolomonModulusDecoder.h"
 #include "ZXAlgorithms.h"
 
 #include <algorithm>
@@ -126,9 +126,10 @@ static bool CorrectErrors(ByteArray& codewords, int ecCodewords)
 
 	std::vector<int> codewordsInt(codewords.begin(), codewords.end());
 
-	// DotCode uses a custom Reed-Solomon over GF(113)
-	// For now, use GF(256) as an approximation
-	if (!ReedSolomonDecode(GenericGF::DataMatrixField256(), codewordsInt, ecCodewords))
+	// DotCode uses Reed-Solomon over GF(113), a prime field
+	// This requires ModulusGF and a specialized decoder
+	int nbErrors = 0;
+	if (!ReedSolomonDecodeModulus(GetGF113(), codewordsInt, ecCodewords, nbErrors))
 		return false;
 
 	for (size_t i = 0; i < codewords.size(); ++i) {
