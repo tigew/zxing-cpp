@@ -35,20 +35,102 @@ Thanks a lot for your contribution!
 
 ## Supported Formats
 
-| Linear product  | Linear industrial | Matrix             |
-|-----------------|-------------------|--------------------|
-| UPC-A           | Code 39           | QR Code            |
-| UPC-E           | Code 93           | Micro QR Code      |
-| EAN-8           | Code 128          | rMQR Code          |
-| EAN-13          | Codabar           | Aztec              |
-| DataBar         | DataBar Expanded  | DataMatrix         |
-| DataBar Limited | DX Film Edge      | PDF417             |
-|                 | ITF               | MaxiCode (partial) |
+The library supports reading **all 56 barcode formats** listed below:
 
-[Note:]
- * DataBar used to be called RSS.
- * DataBar, DX Film Edge, MaxiCode, Micro QR Code and rMQR Code are not supported for writing (unless the library is configured `ZXING_WRITERS=NEW` and `ZXING_EXPERIMENTAL_API=ON`).
- * Building with only C++17 (see [CMakeLists.txt](https://github.com/zxing-cpp/zxing-cpp/blob/d4b0f502775857f257d13efd25fb840ece1bca3e/CMakeLists.txt#L45)) changes the behavior of the library: it then lacks support for DataBarLimited and multi-symbol and position independent detection for DataMatrix.
+### 1D Product Codes
+| Format | Description |
+|--------|-------------|
+| UPC-A | Universal Product Code (12 digits) |
+| UPC-E | UPC-E (6-digit compressed format) |
+| EAN-8 | European Article Number (8 digits) |
+| EAN-13 | European Article Number (13 digits) |
+| DataBar | GS1 DataBar (formerly RSS-14) |
+| DataBar Expanded | GS1 DataBar Expanded |
+| DataBar Limited | GS1 DataBar Limited |
+| DataBar Stacked | GS1 DataBar Stacked (2-row variant) |
+| DataBar Stacked Omnidirectional | GS1 DataBar Stacked Omni |
+| DataBar Expanded Stacked | GS1 DataBar Expanded Stacked |
+
+### 1D Industrial Codes
+| Format | Description |
+|--------|-------------|
+| Code 39 | Code 39 (including Extended variant) |
+| Code 93 | Code 93 |
+| Code 128 | Code 128 (with automatic subset switching) |
+| Codabar | Codabar |
+| ITF | Interleaved 2 of 5 (ITF-14) |
+| Code 11 | Code 11 (USD-8, telecommunications) |
+| MSI | MSI (Modified Plessey) |
+| Telepen | Telepen (Full ASCII) |
+| LOGMARS | LOGMARS (Code 39 variant, US military) |
+| DX Film Edge | DX Film Edge Barcode |
+| Channel Code | ANSI/AIM BC12 (compact numeric) |
+
+### Postal Codes (4-State)
+| Format | Description |
+|--------|-------------|
+| Australia Post | Australia Post 4-State (Standard, Reply Paid, Routing, Redirection) |
+| KIX Code | Dutch Post KIX Code 4-State |
+| Japan Post | Japan Post 4-State (Kasutama Barcode) |
+| Korea Post | Korea Post Barcode |
+| RM4SCC | Royal Mail 4-State Customer Code (UK) |
+| Mailmark | Royal Mail 4-State Mailmark (UK, Types C & L) |
+| USPS IMB | USPS Intelligent Mail Barcode (OneCode, 4CB) |
+| POSTNET | USPS POSTNET |
+| PLANET | USPS PLANET |
+| Deutsche Post Leitcode | Deutsche Post Leitcode (14 digits, German routing) |
+| Deutsche Post Identcode | Deutsche Post Identcode (12 digits, German ID) |
+
+### Pharmaceutical Codes
+| Format | Description |
+|--------|-------------|
+| Code 32 | Code 32 (Italian Pharmacode) |
+| Pharmacode | Pharmacode (Laetus, binary) |
+| Pharmacode Two-Track | Pharmacode Two-Track (Laetus, 3-state) |
+| PZN | Pharmazentralnummer (German pharmaceutical) |
+
+### 2-of-5 Family
+| Format | Description |
+|--------|-------------|
+| Matrix 2 of 5 | Matrix 2 of 5 (Standard 2 of 5) |
+| Industrial 2 of 5 | Industrial 2 of 5 (bars-only) |
+| IATA 2 of 5 | IATA 2 of 5 (Airline, air cargo) |
+| Datalogic 2 of 5 | Datalogic 2 of 5 (China Post) |
+
+### Stacked Linear Codes
+| Format | Description |
+|--------|-------------|
+| Codablock-F | Codablock F (stacked Code 128, 2-44 rows) |
+| Code 16K | Code 16K (stacked Code 128, 2-16 rows) |
+| Code 49 | Code 49 (USS-49, stacked 2-8 rows) |
+
+### 2D Matrix Codes
+| Format | Description |
+|--------|-------------|
+| QR Code | QR Code |
+| Micro QR Code | Micro QR Code |
+| rMQR Code | Rectangular Micro QR Code |
+| Aztec | Aztec |
+| Aztec Rune | Aztec Rune (compact 11x11, encodes 0-255) |
+| DataMatrix | DataMatrix (ECC200) |
+| PDF417 | PDF417 (including Truncated variant) |
+| MaxiCode | MaxiCode (partial support) |
+| Code One | Code One (2D matrix, versions A-H/S/T) |
+| DotCode | DotCode (2D dot matrix, high-speed printing) |
+| Grid Matrix | Grid Matrix (Chinese standard GB/T 21049) |
+| Han Xin Code | Han Xin Code (Chinese standard, ISO/IEC 20830) |
+| UPN QR | UPN QR Code (Slovenian payment QR) |
+
+### Notes
+
+**Reading:**
+* All 56 formats listed above are supported for reading.
+* MaxiCode has partial support (requires unrotated, unskewed images).
+* Building with C++17 instead of C++20 disables DataBar Limited reading and reduces DataMatrix multi-symbol detection.
+
+**Writing:**
+* Standard writers (default): Aztec, Codabar, Code 39, Code 93, Code 128, DataMatrix, EAN-8, EAN-13, ITF, PDF417, QR Code, UPC-A, UPC-E.
+* Extended writers (with `ZXING_WRITERS=NEW` and `ZXING_EXPERIMENTAL_API=ON`): All formats except DataBar variants, DX Film Edge, MaxiCode, Micro QR Code, and rMQR Code.
 
 ## Getting Started
 
