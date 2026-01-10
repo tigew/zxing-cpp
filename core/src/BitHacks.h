@@ -141,23 +141,40 @@ inline uint32_t Reverse(uint32_t v)
 #endif
 }
 
-inline int CountBitsSet(uint32_t v)
+template<typename T, typename = std::enable_if_t<std::is_integral_v<T>>>
+inline int CountBitsSet(T v)
 {
 #ifdef __cpp_lib_bitops
-	return std::popcount(v);
-#elif defined(ZX_HAS_GCC_BUILTINS)
-	return __builtin_popcount(v);
+	return std::popcount(static_cast<std::make_unsigned_t<T>>(v));
 #else
-	v = v - ((v >> 1) & 0x55555555);							// reuse input as temporary
-	v = (v & 0x33333333) + ((v >> 2) & 0x33333333);				// temp
-	return (((v + (v >> 4)) & 0xF0F0F0F) * 0x1010101) >> 24;	// count
+	if constexpr (sizeof(v) <= 4) {
+#ifdef ZX_HAS_GCC_BUILTINS
+		return __builtin_popcount(v);
+#else
+		v = v - ((v >> 1) & 0x55555555);							// reuse input as temporary
+		v = (v & 0x33333333) + ((v >> 2) & 0x33333333);				// temp
+		return (((v + (v >> 4)) & 0xF0F0F0F) * 0x1010101) >> 24;	// count
+#endif
+	} else {
+#ifdef ZX_HAS_GCC_BUILTINS
+		return __builtin_popcountll(v);
+#else
+		// Count lower and upper 32 bits separately
+		return CountBitsSet(static_cast<uint32_t>(v)) + CountBitsSet(static_cast<uint32_t>(v >> 32));
+#endif
+	}
 #endif
 }
 
 // this is the same as log base 2 of v
-inline int HighestBitSet(uint32_t v)
+template<typename T, typename = std::enable_if_t<std::is_integral_v<T>>>
+inline int HighestBitSet(T v)
 {
-	return 31 - NumberOfLeadingZeros(v);
+	if constexpr (sizeof(v) <= 4) {
+		return 31 - NumberOfLeadingZeros(v);
+	} else {
+		return 63 - NumberOfLeadingZeros(v);
+	}
 }
 
 // shift a whole array of bits by offset bits to the right (thinking of the array as a contiguous stream of bits

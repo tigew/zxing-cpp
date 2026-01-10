@@ -198,10 +198,33 @@ Barcode DataBarReader::decodePattern(int rowNumber, PatternView& next, std::uniq
 								 rightPair.xStart < (leftPair.xStart + leftPair.xStop) / 2;
 
 				// Determine format: DataBar, DataBarStacked, or DataBarStackedOmnidirectional
-				// DataBarStacked: reduced height (short rows)
-				// DataBarStackedOmnidirectional: taller rows for better omni scanning
-				// Note: Both are reported as DataBarStacked since we can't easily distinguish row height
-				BarcodeFormat format = isStacked ? BarcodeFormat::DataBarStacked : BarcodeFormat::DataBar;
+				BarcodeFormat format = BarcodeFormat::DataBar;
+				if (isStacked) {
+					// For stacked variants, distinguish between DataBarStacked and DataBarStackedOmnidirectional
+					// by estimating bar height from the scan line count.
+					//
+					// DataBarStacked: reduced height (≤10X modules high, where X is module width)
+					// DataBarStackedOmnidirectional: taller rows (11X-13X modules high)
+					//
+					// The 'count' field indicates how many scan lines detected this pair, which is
+					// proportional to the bar height. We use this to estimate the height-to-width ratio.
+
+					// Estimate module width in pixels: each half-pair is approximately 46 modules
+					// (8 char + 5 finder + 8 char + guards ≈ 46 modules total width)
+					float moduleWidth = (leftPair.xStop - leftPair.xStart) / 46.0f;
+
+					// The count is roughly the number of scan lines that detected this pair
+					// Use an average count from both pairs for stability
+					float avgCount = (leftPair.count + rightPair.count) / 2.0f;
+
+					// Estimate height-to-module-width ratio
+					// DataBarStacked: ≤10X, DataBarStackedOmnidirectional: 11X-13X
+					// Use 10.5X as threshold (midpoint between the two variants)
+					float heightRatio = avgCount / moduleWidth;
+
+					format = (heightRatio > 10.5f) ? BarcodeFormat::DataBarStackedOmnidirectional
+												   : BarcodeFormat::DataBarStacked;
+				}
 
 				// Symbology identifier ISO/IEC 24724:2011 Section 9 and GS1 General Specifications 5.1.3 Figure 5.1.3-2
 				Barcode res{DecoderResult(Content(ByteArray(ConstructText(leftPair, rightPair)), {'e', '0', 0, AIFlag::GS1}))

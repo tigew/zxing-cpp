@@ -102,7 +102,7 @@ static bool CorrectErrors(ByteArray& codewords, const Version& version)
 	std::vector<int> codewordsInt(codewords.begin(), codewords.end());
 
 	// Code One uses GF(128) for error correction
-	if (!ReedSolomonDecode(GenericGF::MaxiCodeField64(), codewordsInt, version.ecCodewords))
+	if (!ReedSolomonDecode(GenericGF::CodeOneField128(), codewordsInt, version.ecCodewords))
 		return false;
 
 	for (size_t i = 0; i < codewords.size(); ++i) {

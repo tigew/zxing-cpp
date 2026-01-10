@@ -9,8 +9,8 @@
 #include "ByteArray.h"
 #include "Content.h"
 #include "DecoderResult.h"
-#include "GenericGF.h"
-#include "ReedSolomonDecoder.h"
+#include "ModulusGFFields.h"
+#include "ReedSolomonModulusDecoder.h"
 #include "ZXAlgorithms.h"
 
 #include <algorithm>
@@ -174,6 +174,7 @@ static ByteArray ExtractCodewords(const BitMatrix& bits, int version)
 
 /**
  * Perform Reed-Solomon error correction.
+ * Grid Matrix uses GF(929), same as PDF417.
  */
 static bool CorrectErrors(ByteArray& codewords, int ecCodewords)
 {
@@ -182,8 +183,10 @@ static bool CorrectErrors(ByteArray& codewords, int ecCodewords)
 
 	std::vector<int> codewordsInt(codewords.begin(), codewords.end());
 
-	// Grid Matrix uses GF(929), but we approximate with GF(256)
-	if (!ReedSolomonDecode(GenericGF::DataMatrixField256(), codewordsInt, ecCodewords))
+	// Grid Matrix uses Reed-Solomon over GF(929), a prime field (same as PDF417)
+	// This requires ModulusGF and a specialized decoder
+	int nbErrors = 0;
+	if (!ReedSolomonDecodeModulus(GetGF929(), codewordsInt, ecCodewords, nbErrors))
 		return false;
 
 	for (size_t i = 0; i < codewords.size(); ++i) {
