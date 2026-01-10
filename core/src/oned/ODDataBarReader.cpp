@@ -13,9 +13,10 @@
 #include "GTIN.h"
 #include "ODDataBarCommon.h"
 #include "Barcode.h"
+#include "ZXAlgorithms.h"
 
 #include <cmath>
-#include <unordered_set>
+#include <vector>
 
 namespace ZXing::OneD {
 
@@ -146,8 +147,8 @@ static std::string ConstructText(Pair leftPair, Pair rightPair)
 
 struct State : public RowReader::DecodingState
 {
-	std::unordered_set<Pair, PairHash> leftPairs;
-	std::unordered_set<Pair, PairHash> rightPairs;
+	std::vector<Pair> leftPairs;
+	std::vector<Pair> rightPairs;
 };
 
 Barcode DataBarReader::decodePattern(int rowNumber, PatternView& next, std::unique_ptr<RowReader::DecodingState>& state) const
@@ -176,7 +177,14 @@ Barcode DataBarReader::decodePattern(int rowNumber, PatternView& next, std::uniq
 		if (IsLeftPair(next)) {
 			if (auto leftPair = ReadPair(next, false)) {
 				leftPair.y = rowNumber;
-				prevState->leftPairs.insert(leftPair);
+				// Track count across scanlines for height estimation
+				if (auto i = Find(prevState->leftPairs, leftPair); i != prevState->leftPairs.end()) {
+					i->count++;
+					// Update y-coordinate to latest scanline
+					i->y = rowNumber;
+				} else {
+					prevState->leftPairs.push_back(leftPair);
+				}
 				next.shift(FULL_PAIR_SIZE - 1);
 			}
 		}
@@ -184,7 +192,14 @@ Barcode DataBarReader::decodePattern(int rowNumber, PatternView& next, std::uniq
 		if (next.shift(1) && IsRightPair(next)) {
 			if (auto rightPair = ReadPair(next, true)) {
 				rightPair.y = rowNumber;
-				prevState->rightPairs.insert(rightPair);
+				// Track count across scanlines for height estimation
+				if (auto i = Find(prevState->rightPairs, rightPair); i != prevState->rightPairs.end()) {
+					i->count++;
+					// Update y-coordinate to latest scanline
+					i->y = rowNumber;
+				} else {
+					prevState->rightPairs.push_back(rightPair);
+				}
 				next.shift(FULL_PAIR_SIZE + 2);
 			}
 		}
@@ -232,8 +247,11 @@ Barcode DataBarReader::decodePattern(int rowNumber, PatternView& next, std::uniq
 							{{}, EstimatePosition(leftPair, rightPair)},
 							format};
 
-				prevState->leftPairs.erase(leftPair);
-				prevState->rightPairs.erase(rightPair);
+				// Remove used pairs from state
+				prevState->leftPairs.erase(std::remove(prevState->leftPairs.begin(), prevState->leftPairs.end(), leftPair),
+										   prevState->leftPairs.end());
+				prevState->rightPairs.erase(std::remove(prevState->rightPairs.begin(), prevState->rightPairs.end(), rightPair),
+											prevState->rightPairs.end());
 				return res;
 			}
 #endif

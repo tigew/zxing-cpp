@@ -9,8 +9,8 @@
 #include "ByteArray.h"
 #include "Content.h"
 #include "DecoderResult.h"
-#include "ModulusGFFields.h"
-#include "ReedSolomonModulusDecoder.h"
+#include "GenericGF.h"
+#include "ReedSolomonDecoder.h"
 #include "ZXAlgorithms.h"
 
 #include <algorithm>
@@ -117,7 +117,9 @@ static ByteArray ExtractCodewords(const BitMatrix& bits)
 
 /**
  * Perform Reed-Solomon error correction.
- * DotCode uses GF(113) for error correction.
+ * DotCode uses 8-bit codewords (0-255) with GF(256) for error correction.
+ * NOTE: Some specifications incorrectly state GF(113), but the codeword encoding
+ * (ASCII mode uses 130-229, control codes use 230-241, 254) requires full 8-bit range.
  */
 static bool CorrectErrors(ByteArray& codewords, int ecCodewords)
 {
@@ -126,10 +128,9 @@ static bool CorrectErrors(ByteArray& codewords, int ecCodewords)
 
 	std::vector<int> codewordsInt(codewords.begin(), codewords.end());
 
-	// DotCode uses Reed-Solomon over GF(113), a prime field
-	// This requires ModulusGF and a specialized decoder
-	int nbErrors = 0;
-	if (!ReedSolomonDecodeModulus(GetGF113(), codewordsInt, ecCodewords, nbErrors))
+	// DotCode uses standard Reed-Solomon over GF(256) for 8-bit codewords
+	// Using DataMatrix field which is the standard GF(256) with polynomial 0x12D
+	if (!ReedSolomonDecode(GenericGF::DataMatrixField256(), codewordsInt, ecCodewords))
 		return false;
 
 	for (size_t i = 0; i < codewords.size(); ++i) {
