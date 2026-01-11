@@ -78,6 +78,7 @@ enum class BarcodeFormat : uint64_t
 	UPCA            = (1ull << 52), ///< UPC-A
 	UPCE            = (1ull << 53), ///< UPC-E
 	UPNQR           = (1ull << 54), ///< UPN QR Code (Slovenian payment QR, Version 15, ECI 4, EC level M)
+	USPSIMB         = (1ull << 55), ///< USPS Intelligent Mail Barcode (OneCode, 4CB)
 
 	LinearCodes = Codabar | Code39 | Code93 | Code128 | EAN8 | EAN13 | ITF | DataBar | DataBarExpanded | DataBarLimited
 				  | DataBarStacked | DataBarStackedOmnidirectional | DataBarExpandedStacked
@@ -88,7 +89,7 @@ enum class BarcodeFormat : uint64_t
 	MatrixCodes = Aztec | AztecRune | CodeOne | DataMatrix | DotCode | GridMatrix | HanXin | MaxiCode | PDF417 | QRCode | MicroQRCode | RMQRCode | UPNQR,
 	Any         = LinearCodes | MatrixCodes,
 
-	_max = UPNQR, ///> implementation detail, don't use
+	_max = USPSIMB, ///> implementation detail, don't use
 };
 
 ZX_DECLARE_FLAGS(BarcodeFormats, BarcodeFormat)

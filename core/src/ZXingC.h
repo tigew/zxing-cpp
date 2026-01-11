@@ -133,6 +133,7 @@ typedef uint64_t ZXing_BarcodeFormat;
 #define ZXing_BarcodeFormat_UPCA            ((ZXing_BarcodeFormat)(1ull << 52))
 #define ZXing_BarcodeFormat_UPCE            ((ZXing_BarcodeFormat)(1ull << 53))
 #define ZXing_BarcodeFormat_UPNQR           ((ZXing_BarcodeFormat)(1ull << 54))
+#define ZXing_BarcodeFormat_USPSIMB         ((ZXing_BarcodeFormat)(1ull << 55))
 
 #define ZXing_BarcodeFormat_LinearCodes (ZXing_BarcodeFormat_Codabar | ZXing_BarcodeFormat_Code39 | ZXing_BarcodeFormat_Code93 \
 	| ZXing_BarcodeFormat_Code128 | ZXing_BarcodeFormat_EAN8 | ZXing_BarcodeFormat_EAN13 \
