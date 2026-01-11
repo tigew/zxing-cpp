@@ -110,7 +110,7 @@ ZXing::BarcodeFormat BarcodeFormatFromZXIFormat(ZXIFormat format) {
             return ZXing::BarcodeFormat::AztecRune;
         case ZXIFormat::CODE_ONE:
             return ZXing::BarcodeFormat::CodeOne;
-        case ZXIFormat::DOT_CODE:
+        case ZXIFormat::DOTCODE:
             return ZXing::BarcodeFormat::DotCode;
         case ZXIFormat::GRID_MATRIX:
             return ZXing::BarcodeFormat::GridMatrix;
@@ -122,7 +122,7 @@ ZXing::BarcodeFormat BarcodeFormatFromZXIFormat(ZXIFormat format) {
             return ZXing::BarcodeFormat::MicroQRCode;
         case ZXIFormat::RMQR_CODE:
             return ZXing::BarcodeFormat::RMQRCode;
-        case ZXIFormat::UPN_QR:
+        case ZXIFormat::UPNQR:
             return ZXing::BarcodeFormat::UPNQR;
         case ZXIFormat::NONE:
             return ZXing::BarcodeFormat::None;
@@ -142,7 +142,7 @@ ZXIFormat ZXIFormatFromBarcodeFormat(ZXing::BarcodeFormat format) {
         case ZXing::BarcodeFormat::CodeOne:
             return ZXIFormat::CODE_ONE;
         case ZXing::BarcodeFormat::DotCode:
-            return ZXIFormat::DOT_CODE;
+            return ZXIFormat::DOTCODE;
         case ZXing::BarcodeFormat::GridMatrix:
             return ZXIFormat::GRID_MATRIX;
         case ZXing::BarcodeFormat::HanXin:
@@ -250,7 +250,7 @@ ZXIFormat ZXIFormatFromBarcodeFormat(ZXing::BarcodeFormat format) {
         case ZXing::BarcodeFormat::RMQRCode:
             return ZXIFormat::RMQR_CODE;
         case ZXing::BarcodeFormat::UPNQR:
-            return ZXIFormat::UPN_QR;
+            return ZXIFormat::UPNQR;
         case ZXing::BarcodeFormat::Any:
             return ZXIFormat::ANY;
     }
