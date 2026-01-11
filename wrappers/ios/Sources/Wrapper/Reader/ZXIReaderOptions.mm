@@ -4,9 +4,12 @@
 
 #import "ZXIReaderOptions.h"
 #import "ReaderOptions.h"
+#import "BarcodeFormat.h"
+#import "ZXIFormatHelper.h"
 
 @interface ZXIReaderOptions()
 @property(nonatomic) ZXing::ReaderOptions cppOpts;
+@property(nonatomic, strong) NSArray<NSNumber*> *formatsArray;
 @end
 
 @implementation ZXIReaderOptions
@@ -14,7 +17,28 @@
 -(instancetype)init {
     self = [super init];
     self.cppOpts = ZXing::ReaderOptions();
+    self.formatsArray = @[];
     return self;
+}
+
+-(NSArray<NSNumber*>*)formats {
+    return self.formatsArray;
+}
+
+-(void)setFormats:(NSArray<NSNumber*>*)formats {
+    self.formatsArray = formats;
+
+    // Convert NSNumber array to ZXing::BarcodeFormats bitmask
+    ZXing::BarcodeFormats combinedFormats = ZXing::BarcodeFormat::None;
+    for (NSNumber *formatNumber in formats) {
+        // Each NSNumber contains the raw value of a ZXIFormat enum
+        // Use the helper function to convert to the correct BarcodeFormat bit flag
+        ZXIFormat zxiFormat = static_cast<ZXIFormat>([formatNumber integerValue]);
+        ZXing::BarcodeFormat nativeFormat = BarcodeFormatFromZXIFormat(zxiFormat);
+        combinedFormats |= nativeFormat;
+    }
+
+    self.cppOpts = self.cppOpts.setFormats(combinedFormats);
 }
 
 -(BOOL)tryHarder {
