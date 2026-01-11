@@ -36,7 +36,18 @@ Barcodes Reader::decode(const BinaryBitmap& image, int maxSymbols) const
 	for (auto&& detRes : detRess) {
 		// Check if this is a rune (nbLayers == 0 indicates a rune)
 		bool isRune = detRes.nbLayers() == 0;
-		BarcodeFormat format = isRune ? BarcodeFormat::AztecRune : BarcodeFormat::Aztec;
+		BarcodeFormat format;
+#if defined(ZXING_ENABLE_AZTECRUNE) && defined(ZXING_ENABLE_AZTEC)
+		format = isRune ? BarcodeFormat::AztecRune : BarcodeFormat::Aztec;
+#elif defined(ZXING_ENABLE_AZTECRUNE)
+		format = BarcodeFormat::AztecRune;
+		if (!isRune) continue; // Skip non-rune codes if only rune is enabled
+#elif defined(ZXING_ENABLE_AZTEC)
+		format = BarcodeFormat::Aztec;
+		if (isRune) continue; // Skip rune codes if only aztec is enabled
+#else
+		format = BarcodeFormat::None;
+#endif
 
 		auto decRes =
 			Decode(detRes).setReaderInit(detRes.readerInit()).setIsMirrored(detRes.isMirrored()).setVersionNumber(detRes.nbLayers());
