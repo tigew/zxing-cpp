@@ -200,9 +200,12 @@ cmake --build zxing-cpp.release -j8 --config Release
 
 #### Format Control
 
-All 56 barcode formats are **enabled by default**. You can disable individual formats to reduce binary size and improve scanning performance.
+**Master Switch:**
+- `ZXING_ENABLE_ALL` (default: `ON`) - Sets the default for all format flags
 
-**Individual format options** (all default to `ON`):
+When `ZXING_ENABLE_ALL=ON`, all formats are enabled by default. When `ZXING_ENABLE_ALL=OFF`, all formats are disabled by default. Individual format flags can then override this default.
+
+**Individual format options** (all default to `${ZXING_ENABLE_ALL}`):
 
 <details>
 <summary><b>1D Product Codes (4 formats)</b></summary>
@@ -283,13 +286,10 @@ All 56 barcode formats are **enabled by default**. You can disable individual fo
 </details>
 
 <details>
-<summary><b>2D Matrix Codes (13 formats)</b></summary>
+<summary><b>2D Matrix Codes (9 controllable formats)</b></summary>
 
-- `ZXING_ENABLE_QRCODE` - QR Code
-- `ZXING_ENABLE_MICROQRCODE` - Micro QR Code
-- `ZXING_ENABLE_RMQRCODE` - rMQR Code (Rectangular Micro QR)
-- `ZXING_ENABLE_AZTEC` - Aztec
-- `ZXING_ENABLE_AZTECRUNE` - Aztec Rune
+- `ZXING_ENABLE_QRCODE` - QR Code (includes Micro QR, rMQR, UPN QR variants)
+- `ZXING_ENABLE_AZTEC` - Aztec (includes Aztec Rune variant)
 - `ZXING_ENABLE_DATAMATRIX` - DataMatrix
 - `ZXING_ENABLE_PDF417` - PDF417
 - `ZXING_ENABLE_MAXICODE` - MaxiCode
@@ -297,24 +297,32 @@ All 56 barcode formats are **enabled by default**. You can disable individual fo
 - `ZXING_ENABLE_DOTCODE` - DotCode
 - `ZXING_ENABLE_GRIDMATRIX` - Grid Matrix
 - `ZXING_ENABLE_HANXIN` - Han Xin Code
-- `ZXING_ENABLE_UPNQR` - UPN QR (Slovenian payment)
 </details>
 
-**Example** - Build with only QR Code and Data Matrix:
+**Examples:**
+
+Build with only QR Code and Data Matrix:
 ```bash
 cmake -S zxing-cpp -B build \
+  -DZXING_ENABLE_ALL=OFF \
   -DZXING_ENABLE_QRCODE=ON \
-  -DZXING_ENABLE_MICROQRCODE=ON \
-  -DZXING_ENABLE_RMQRCODE=ON \
-  -DZXING_ENABLE_DATAMATRIX=ON \
-  -DZXING_ENABLE_EAN8=OFF \
-  -DZXING_ENABLE_EAN13=OFF \
-  -DZXING_ENABLE_UPCA=OFF \
-  -DZXING_ENABLE_CODE39=OFF \
-  -DZXING_ENABLE_CODE128=OFF \
-  -DZXING_ENABLE_PDF417=OFF \
-  -DZXING_ENABLE_AZTEC=OFF
-# (disable other unwanted formats as needed)
+  -DZXING_ENABLE_DATAMATRIX=ON
+```
+
+Build with all formats except postal codes:
+```bash
+cmake -S zxing-cpp -B build \
+  -DZXING_ENABLE_AUSTRALIAPOST=OFF \
+  -DZXING_ENABLE_KIXCODE=OFF \
+  -DZXING_ENABLE_JAPANPOST=OFF \
+  -DZXING_ENABLE_KOREAPOST=OFF \
+  -DZXING_ENABLE_RM4SCC=OFF \
+  -DZXING_ENABLE_MAILMARK=OFF \
+  -DZXING_ENABLE_USPSIMB=OFF \
+  -DZXING_ENABLE_DEUTSCHEPOSTLEITCODE=OFF \
+  -DZXING_ENABLE_DEUTSCHEPOSTIDENTCODE=OFF \
+  -DZXING_ENABLE_POSTNET=OFF \
+  -DZXING_ENABLE_PLANET=OFF
 ```
 
 #### Reader/Writer Control

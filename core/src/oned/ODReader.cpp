@@ -9,30 +9,79 @@
 
 #include "BinaryBitmap.h"
 #include "ReaderOptions.h"
+#include "ODRowReader.h" // Required for complete definition of RowReader (needed for destructor)
+#ifdef ZXING_ENABLE_CODABAR
 #include "ODCodabarReader.h"
+#endif
+#ifdef ZXING_ENABLE_CODE11
 #include "ODCode11Reader.h"
+#endif
+#ifdef ZXING_ENABLE_CODE128
 #include "ODCode128Reader.h"
+#endif
+#ifdef ZXING_ENABLE_CODE39
 #include "ODCode39Reader.h"
+#endif
+#ifdef ZXING_ENABLE_CODE93
 #include "ODCode93Reader.h"
+#endif
+#ifdef ZXING_ENABLE_DATABAREXPANDED
 #include "ODDataBarExpandedReader.h"
+#endif
+#ifdef ZXING_ENABLE_DATABARLIMITED
 #include "ODDataBarLimitedReader.h"
+#endif
+#ifdef ZXING_ENABLE_DATABAR
 #include "ODDataBarReader.h"
+#endif
+#if defined(ZXING_ENABLE_DEUTSCHEPOSTLEITCODE) || defined(ZXING_ENABLE_DEUTSCHEPOSTIDENTCODE)
 #include "ODDeutschePostReader.h"
+#endif
+#ifdef ZXING_ENABLE_DXFILMEDGE
 #include "ODDXFilmEdgeReader.h"
+#endif
+#ifdef ZXING_ENABLE_MSI
 #include "ODMSIReader.h"
+#endif
+#ifdef ZXING_ENABLE_TELEPEN
 #include "ODTelepenReader.h"
+#endif
+#ifdef ZXING_ENABLE_LOGMARS
 #include "ODLOGMARSReader.h"
+#endif
+#ifdef ZXING_ENABLE_CODE32
 #include "ODCode32Reader.h"
+#endif
+#ifdef ZXING_ENABLE_PZN
 #include "ODPZNReader.h"
+#endif
+#ifdef ZXING_ENABLE_CHANNELCODE
 #include "ODChannelCodeReader.h"
+#endif
+#ifdef ZXING_ENABLE_MATRIX2OF5
 #include "ODMatrix2of5Reader.h"
+#endif
+#ifdef ZXING_ENABLE_INDUSTRIAL2OF5
 #include "ODIndustrial2of5Reader.h"
+#endif
+#ifdef ZXING_ENABLE_IATA2OF5
 #include "ODIATA2of5Reader.h"
+#endif
+#ifdef ZXING_ENABLE_DATALOGIC2OF5
 #include "ODDatalogic2of5Reader.h"
+#endif
+#ifdef ZXING_ENABLE_PHARMACODE
 #include "ODPharmacodeReader.h"
+#endif
+#ifdef ZXING_ENABLE_ITF
 #include "ODITFReader.h"
+#endif
+#ifdef ZXING_ENABLE_KOREAPOST
 #include "ODKoreaPostReader.h"
+#endif
+#if defined(ZXING_ENABLE_EAN8) || defined(ZXING_ENABLE_EAN13) || defined(ZXING_ENABLE_UPCA) || defined(ZXING_ENABLE_UPCE)
 #include "ODMultiUPCEANReader.h"
+#endif
 #include "Barcode.h"
 
 #include <algorithm>
@@ -60,55 +109,103 @@ Reader::Reader(const ReaderOptions& opts) : ZXing::Reader(opts)
 
 	auto formats = opts.formats().empty() ? BarcodeFormat::Any : opts.formats();
 
+#if defined(ZXING_ENABLE_EAN8) || defined(ZXING_ENABLE_EAN13) || defined(ZXING_ENABLE_UPCA) || defined(ZXING_ENABLE_UPCE)
 	if (formats.testFlags(BarcodeFormat::EAN13 | BarcodeFormat::UPCA | BarcodeFormat::EAN8 | BarcodeFormat::UPCE))
 		_readers.emplace_back(new MultiUPCEANReader(opts));
+#endif
 
+#ifdef ZXING_ENABLE_CODE39
 	if (formats.testFlag(BarcodeFormat::Code39))
 		_readers.emplace_back(new Code39Reader(opts));
+#endif
+#ifdef ZXING_ENABLE_CODE93
 	if (formats.testFlag(BarcodeFormat::Code93))
 		_readers.emplace_back(new Code93Reader(opts));
+#endif
+#ifdef ZXING_ENABLE_CODE128
 	if (formats.testFlag(BarcodeFormat::Code128))
 		_readers.emplace_back(new Code128Reader(opts));
+#endif
+#ifdef ZXING_ENABLE_ITF
 	if (formats.testFlag(BarcodeFormat::ITF))
 		_readers.emplace_back(new ITFReader(opts));
+#endif
+#ifdef ZXING_ENABLE_CODABAR
 	if (formats.testFlag(BarcodeFormat::Codabar))
 		_readers.emplace_back(new CodabarReader(opts));
+#endif
+#ifdef ZXING_ENABLE_CODE11
 	if (formats.testFlag(BarcodeFormat::Code11))
 		_readers.emplace_back(new Code11Reader(opts));
+#endif
+#ifdef ZXING_ENABLE_DATABAR
 	if (formats.testFlags(BarcodeFormat::DataBar | BarcodeFormat::DataBarStacked | BarcodeFormat::DataBarStackedOmnidirectional))
 		_readers.emplace_back(new DataBarReader(opts));
+#endif
+#ifdef ZXING_ENABLE_DATABAREXPANDED
 	if (formats.testFlags(BarcodeFormat::DataBarExpanded | BarcodeFormat::DataBarExpandedStacked))
 		_readers.emplace_back(new DataBarExpandedReader(opts));
+#endif
+#ifdef ZXING_ENABLE_DATABARLIMITED
 	if (formats.testFlag(BarcodeFormat::DataBarLimited))
 		_readers.emplace_back(new DataBarLimitedReader(opts));
+#endif
+#ifdef ZXING_ENABLE_DXFILMEDGE
 	if (formats.testFlag(BarcodeFormat::DXFilmEdge))
 		_readers.emplace_back(new DXFilmEdgeReader(opts));
+#endif
+#ifdef ZXING_ENABLE_KOREAPOST
 	if (formats.testFlag(BarcodeFormat::KoreaPost))
 		_readers.emplace_back(new KoreaPostReader(opts));
+#endif
+#if defined(ZXING_ENABLE_DEUTSCHEPOSTLEITCODE) || defined(ZXING_ENABLE_DEUTSCHEPOSTIDENTCODE)
 	if (formats.testFlags(BarcodeFormat::DeutschePostLeitcode | BarcodeFormat::DeutschePostIdentcode))
 		_readers.emplace_back(new DeutschePostReader(opts));
+#endif
+#ifdef ZXING_ENABLE_MSI
 	if (formats.testFlag(BarcodeFormat::MSI))
 		_readers.emplace_back(new MSIReader(opts));
+#endif
+#ifdef ZXING_ENABLE_TELEPEN
 	if (formats.testFlag(BarcodeFormat::Telepen))
 		_readers.emplace_back(new TelepenReader(opts));
+#endif
+#ifdef ZXING_ENABLE_LOGMARS
 	if (formats.testFlag(BarcodeFormat::LOGMARS))
 		_readers.emplace_back(new LOGMARSReader(opts));
+#endif
+#ifdef ZXING_ENABLE_CODE32
 	if (formats.testFlag(BarcodeFormat::Code32))
 		_readers.emplace_back(new Code32Reader(opts));
+#endif
+#ifdef ZXING_ENABLE_PZN
 	if (formats.testFlag(BarcodeFormat::PZN))
 		_readers.emplace_back(new PZNReader(opts));
+#endif
+#ifdef ZXING_ENABLE_CHANNELCODE
 	if (formats.testFlag(BarcodeFormat::ChannelCode))
 		_readers.emplace_back(new ChannelCodeReader(opts));
+#endif
+#ifdef ZXING_ENABLE_MATRIX2OF5
 	if (formats.testFlag(BarcodeFormat::Matrix2of5))
 		_readers.emplace_back(new Matrix2of5Reader(opts));
+#endif
+#ifdef ZXING_ENABLE_INDUSTRIAL2OF5
 	if (formats.testFlag(BarcodeFormat::Industrial2of5))
 		_readers.emplace_back(new Industrial2of5Reader(opts));
+#endif
+#ifdef ZXING_ENABLE_IATA2OF5
 	if (formats.testFlag(BarcodeFormat::IATA2of5))
 		_readers.emplace_back(new IATA2of5Reader(opts));
+#endif
+#ifdef ZXING_ENABLE_DATALOGIC2OF5
 	if (formats.testFlag(BarcodeFormat::Datalogic2of5))
 		_readers.emplace_back(new Datalogic2of5Reader(opts));
+#endif
+#ifdef ZXING_ENABLE_PHARMACODE
 	if (formats.testFlag(BarcodeFormat::Pharmacode))
 		_readers.emplace_back(new PharmacodeReader(opts));
+#endif
 	// Note: AustraliaPost, KIXCode, and JapanPost are registered in MultiFormatReader
 	// because they require 2D access for bar height analysis
 }

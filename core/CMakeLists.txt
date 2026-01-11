@@ -3,81 +3,77 @@ cmake_minimum_required(VERSION 3.16)
 project (ZXing VERSION "2.3.0")
 set (ZXING_SONAME 3) # see https://github.com/zxing-cpp/zxing-cpp/issues/333
 
-# High-level 2D format options (single-format categories)
+# Master switch to enable/disable all formats by default
+option (ZXING_ENABLE_ALL "Enable all barcode formats by default" ON)
+
+# Per-format control - individual formats can override ZXING_ENABLE_ALL
+# 2D formats (single-format categories)
 foreach(format CODEONE DATAMATRIX DOTCODE GRIDMATRIX HANXIN MAXICODE PDF417)
-    option ("ZXING_ENABLE_${format}" "Enable support for ${format} barcodes" ON)
+    option ("ZXING_ENABLE_${format}" "Enable support for ${format} barcodes" ${ZXING_ENABLE_ALL})
 endforeach()
 
-# Fine-grained per-format control (all default to ON)
 # 1D Product Codes
-option (ZXING_ENABLE_EAN8 "Enable EAN-8" ON)
-option (ZXING_ENABLE_EAN13 "Enable EAN-13" ON)
-option (ZXING_ENABLE_UPCA "Enable UPC-A" ON)
-option (ZXING_ENABLE_UPCE "Enable UPC-E" ON)
+option (ZXING_ENABLE_EAN8 "Enable EAN-8" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_EAN13 "Enable EAN-13" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_UPCA "Enable UPC-A" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_UPCE "Enable UPC-E" ${ZXING_ENABLE_ALL})
 
 # Industrial Codes
-option (ZXING_ENABLE_CODE39 "Enable Code 39" ON)
-option (ZXING_ENABLE_CODE93 "Enable Code 93" ON)
-option (ZXING_ENABLE_CODE128 "Enable Code 128" ON)
-option (ZXING_ENABLE_CODABAR "Enable Codabar" ON)
-option (ZXING_ENABLE_ITF "Enable ITF (Interleaved 2 of 5)" ON)
-option (ZXING_ENABLE_CODE11 "Enable Code 11" ON)
-option (ZXING_ENABLE_MSI "Enable MSI" ON)
-option (ZXING_ENABLE_TELEPEN "Enable Telepen" ON)
-option (ZXING_ENABLE_LOGMARS "Enable LOGMARS" ON)
-option (ZXING_ENABLE_DXFILMEDGE "Enable DX Film Edge" ON)
-option (ZXING_ENABLE_CHANNELCODE "Enable Channel Code" ON)
+option (ZXING_ENABLE_CODE39 "Enable Code 39" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_CODE93 "Enable Code 93" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_CODE128 "Enable Code 128" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_CODABAR "Enable Codabar" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_ITF "Enable ITF (Interleaved 2 of 5)" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_CODE11 "Enable Code 11" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_MSI "Enable MSI" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_TELEPEN "Enable Telepen" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_LOGMARS "Enable LOGMARS" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_DXFILMEDGE "Enable DX Film Edge" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_CHANNELCODE "Enable Channel Code" ${ZXING_ENABLE_ALL})
 
 # DataBar Family
-option (ZXING_ENABLE_DATABAR "Enable DataBar (RSS-14)" ON)
-option (ZXING_ENABLE_DATABAREXPANDED "Enable DataBar Expanded" ON)
-option (ZXING_ENABLE_DATABARLIMITED "Enable DataBar Limited" ON)
-option (ZXING_ENABLE_DATABARSTACKED "Enable DataBar Stacked" ON)
-option (ZXING_ENABLE_DATABARSTACKEDOMNIDIRECTIONAL "Enable DataBar Stacked Omnidirectional" ON)
-option (ZXING_ENABLE_DATABAREXPANDEDSTACKED "Enable DataBar Expanded Stacked" ON)
+option (ZXING_ENABLE_DATABAR "Enable DataBar (RSS-14)" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_DATABAREXPANDED "Enable DataBar Expanded" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_DATABARLIMITED "Enable DataBar Limited" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_DATABARSTACKED "Enable DataBar Stacked" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_DATABARSTACKEDOMNIDIRECTIONAL "Enable DataBar Stacked Omnidirectional" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_DATABAREXPANDEDSTACKED "Enable DataBar Expanded Stacked" ${ZXING_ENABLE_ALL})
 
 # Postal Codes
-option (ZXING_ENABLE_AUSTRALIAPOST "Enable Australia Post" ON)
-option (ZXING_ENABLE_KIXCODE "Enable KIX Code (Dutch Post)" ON)
-option (ZXING_ENABLE_JAPANPOST "Enable Japan Post" ON)
-option (ZXING_ENABLE_KOREAPOST "Enable Korea Post" ON)
-option (ZXING_ENABLE_RM4SCC "Enable RM4SCC (Royal Mail)" ON)
-option (ZXING_ENABLE_MAILMARK "Enable Mailmark (Royal Mail)" ON)
-option (ZXING_ENABLE_USPSIMB "Enable USPS Intelligent Mail" ON)
-option (ZXING_ENABLE_DEUTSCHEPOSTLEITCODE "Enable Deutsche Post Leitcode" ON)
-option (ZXING_ENABLE_DEUTSCHEPOSTIDENTCODE "Enable Deutsche Post Identcode" ON)
-option (ZXING_ENABLE_POSTNET "Enable POSTNET" ON)
-option (ZXING_ENABLE_PLANET "Enable PLANET" ON)
+option (ZXING_ENABLE_AUSTRALIAPOST "Enable Australia Post" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_KIXCODE "Enable KIX Code (Dutch Post)" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_JAPANPOST "Enable Japan Post" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_KOREAPOST "Enable Korea Post" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_RM4SCC "Enable RM4SCC (Royal Mail)" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_MAILMARK "Enable Mailmark (Royal Mail)" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_USPSIMB "Enable USPS Intelligent Mail" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_DEUTSCHEPOSTLEITCODE "Enable Deutsche Post Leitcode" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_DEUTSCHEPOSTIDENTCODE "Enable Deutsche Post Identcode" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_POSTNET "Enable POSTNET" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_PLANET "Enable PLANET" ${ZXING_ENABLE_ALL})
 
 # Pharmaceutical Codes
-option (ZXING_ENABLE_CODE32 "Enable Code 32 (Italian Pharmacode)" ON)
-option (ZXING_ENABLE_PHARMACODE "Enable Pharmacode" ON)
-option (ZXING_ENABLE_PHARMACODETWOTRACK "Enable Pharmacode Two-Track" ON)
-option (ZXING_ENABLE_PZN "Enable PZN (German Pharmaceutical)" ON)
+option (ZXING_ENABLE_CODE32 "Enable Code 32 (Italian Pharmacode)" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_PHARMACODE "Enable Pharmacode" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_PHARMACODETWOTRACK "Enable Pharmacode Two-Track" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_PZN "Enable PZN (German Pharmaceutical)" ${ZXING_ENABLE_ALL})
 
 # 2-of-5 Family
-option (ZXING_ENABLE_MATRIX2OF5 "Enable Matrix 2 of 5" ON)
-option (ZXING_ENABLE_INDUSTRIAL2OF5 "Enable Industrial 2 of 5" ON)
-option (ZXING_ENABLE_IATA2OF5 "Enable IATA 2 of 5" ON)
-option (ZXING_ENABLE_DATALOGIC2OF5 "Enable Datalogic 2 of 5" ON)
+option (ZXING_ENABLE_MATRIX2OF5 "Enable Matrix 2 of 5" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_INDUSTRIAL2OF5 "Enable Industrial 2 of 5" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_IATA2OF5 "Enable IATA 2 of 5" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_DATALOGIC2OF5 "Enable Datalogic 2 of 5" ${ZXING_ENABLE_ALL})
 
 # Stacked 1D Codes
-option (ZXING_ENABLE_CODABLOCKF "Enable Codablock-F" ON)
-option (ZXING_ENABLE_CODE16K "Enable Code 16K" ON)
-option (ZXING_ENABLE_CODE49 "Enable Code 49" ON)
+option (ZXING_ENABLE_CODABLOCKF "Enable Codablock-F" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_CODE16K "Enable Code 16K" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_CODE49 "Enable Code 49" ${ZXING_ENABLE_ALL})
 
-# Fine-grained 2D format control (all default to ON)
-# QR Code Family
-option (ZXING_ENABLE_QRCODE "Enable QR Code" ON)
-option (ZXING_ENABLE_MICROQRCODE "Enable Micro QR Code" ON)
-option (ZXING_ENABLE_RMQRCODE "Enable rMQR Code (Rectangular Micro QR)" ON)
-
-# Aztec Family
-option (ZXING_ENABLE_AZTEC "Enable Aztec" ON)
-option (ZXING_ENABLE_AZTECRUNE "Enable Aztec Rune" ON)
-
-# Other 2D Codes
-option (ZXING_ENABLE_UPNQR "Enable UPN QR (Slovenian payment)" ON)
+# 2D Codes
+# Note: QR Code reader supports QR Code, Micro QR, rMQR, and UPN QR variants
+option (ZXING_ENABLE_QRCODE "Enable QR Code (includes Micro QR, rMQR, UPN QR)" ${ZXING_ENABLE_ALL})
+# Note: Aztec reader supports both Aztec and Aztec Rune
+option (ZXING_ENABLE_AZTEC "Enable Aztec (includes Aztec Rune)" ${ZXING_ENABLE_ALL})
 
 if (BUILD_SHARED_LIBS)
     set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -938,6 +934,20 @@ target_compile_options (ZXing
 )
 
 target_compile_features(ZXing PUBLIC cxx_std_17)
+
+# Define preprocessor macros for enabled formats so source code can use #ifdef guards
+foreach(format EAN8 EAN13 UPCA UPCE CODE39 CODE93 CODE128 CODABAR ITF CODE11 MSI TELEPEN LOGMARS DXFILMEDGE CHANNELCODE
+               DATABAR DATABAREXPANDED DATABARLIMITED DATABARSTACKED DATABARSTACKEDOMNIDIRECTIONAL DATABAREXPANDEDSTACKED
+               AUSTRALIAPOST KIXCODE JAPANPOST KOREAPOST RM4SCC MAILMARK USPSIMB DEUTSCHEPOSTLEITCODE DEUTSCHEPOSTIDENTCODE POSTNET PLANET
+               CODE32 PHARMACODE PHARMACODETWOTRACK PZN
+               MATRIX2OF5 INDUSTRIAL2OF5 IATA2OF5 DATALOGIC2OF5
+               CODABLOCKF CODE16K CODE49
+               QRCODE AZTEC
+               CODEONE DATAMATRIX DOTCODE GRIDMATRIX HANXIN MAXICODE PDF417)
+    if (ZXING_ENABLE_${format})
+        target_compile_definitions(ZXing PRIVATE ZXING_ENABLE_${format})
+    endif()
+endforeach()
 
 target_link_libraries (ZXing PRIVATE Threads::Threads)
 
