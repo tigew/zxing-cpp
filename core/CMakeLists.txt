@@ -70,10 +70,15 @@ option (ZXING_ENABLE_CODE16K "Enable Code 16K" ${ZXING_ENABLE_ALL})
 option (ZXING_ENABLE_CODE49 "Enable Code 49" ${ZXING_ENABLE_ALL})
 
 # 2D Codes
-# Note: QR Code reader supports QR Code, Micro QR, rMQR, and UPN QR variants
-option (ZXING_ENABLE_QRCODE "Enable QR Code (includes Micro QR, rMQR, UPN QR)" ${ZXING_ENABLE_ALL})
-# Note: Aztec reader supports both Aztec and Aztec Rune
-option (ZXING_ENABLE_AZTEC "Enable Aztec (includes Aztec Rune)" ${ZXING_ENABLE_ALL})
+# QR Code Family (each format is separate, but all share the same reader implementation)
+option (ZXING_ENABLE_QRCODE "Enable QR Code" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_MICROQRCODE "Enable Micro QR Code" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_RMQRCODE "Enable rMQR Code (Rectangular Micro QR)" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_UPNQR "Enable UPN QR (Slovenian payment)" ${ZXING_ENABLE_ALL})
+
+# Aztec Family (each format is separate, but both share the same reader implementation)
+option (ZXING_ENABLE_AZTEC "Enable Aztec" ${ZXING_ENABLE_ALL})
+option (ZXING_ENABLE_AZTECRUNE "Enable Aztec Rune" ${ZXING_ENABLE_ALL})
 
 if (BUILD_SHARED_LIBS)
     set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -349,7 +354,7 @@ if (ZXING_WRITERS_OLD)
 endif()
 # end of public header set
 
-if (ZXING_READERS AND ZXING_ENABLE_AZTEC)
+if (ZXING_READERS AND (ZXING_ENABLE_AZTEC OR ZXING_ENABLE_AZTECRUNE))
     set (AZTEC_FILES ${AZTEC_FILES}
         src/aztec/AZDecoder.h
         src/aztec/AZDecoder.cpp
@@ -360,7 +365,7 @@ if (ZXING_READERS AND ZXING_ENABLE_AZTEC)
         src/aztec/AZReader.cpp
     )
 endif()
-if (ZXING_WRITERS_OLD AND ZXING_ENABLE_AZTEC)
+if (ZXING_WRITERS_OLD AND (ZXING_ENABLE_AZTEC OR ZXING_ENABLE_AZTECRUNE))
     set (AZTEC_FILES ${AZTEC_FILES}
         src/aztec/AZEncodingState.h
         src/aztec/AZEncoder.h
@@ -851,7 +856,7 @@ if (ZXING_WRITERS_OLD AND ZXING_ENABLE_PDF417)
 endif()
 
 
-if ((ZXING_READERS OR ZXING_WRITERS_OLD) AND ZXING_ENABLE_QRCODE)
+if ((ZXING_READERS OR ZXING_WRITERS_OLD) AND (ZXING_ENABLE_QRCODE OR ZXING_ENABLE_MICROQRCODE OR ZXING_ENABLE_RMQRCODE OR ZXING_ENABLE_UPNQR))
     set (QRCODE_FILES
         src/qrcode/QRCodecMode.h
         src/qrcode/QRCodecMode.cpp
@@ -861,7 +866,7 @@ if ((ZXING_READERS OR ZXING_WRITERS_OLD) AND ZXING_ENABLE_QRCODE)
         src/qrcode/QRVersion.cpp
     )
 endif()
-if (ZXING_READERS AND ZXING_ENABLE_QRCODE)
+if (ZXING_READERS AND (ZXING_ENABLE_QRCODE OR ZXING_ENABLE_MICROQRCODE OR ZXING_ENABLE_RMQRCODE OR ZXING_ENABLE_UPNQR))
     set (QRCODE_FILES ${QRCODE_FILES}
         src/qrcode/QRBitMatrixParser.h
         src/qrcode/QRBitMatrixParser.cpp
@@ -879,7 +884,7 @@ if (ZXING_READERS AND ZXING_ENABLE_QRCODE)
         src/qrcode/QRReader.cpp
     )
 endif()
-if (ZXING_WRITERS_OLD AND ZXING_ENABLE_QRCODE)
+if (ZXING_WRITERS_OLD AND (ZXING_ENABLE_QRCODE OR ZXING_ENABLE_MICROQRCODE OR ZXING_ENABLE_RMQRCODE OR ZXING_ENABLE_UPNQR))
     set (QRCODE_FILES ${QRCODE_FILES}
         src/qrcode/QREncoder.h
         src/qrcode/QREncoder.cpp
@@ -942,7 +947,7 @@ foreach(format EAN8 EAN13 UPCA UPCE CODE39 CODE93 CODE128 CODABAR ITF CODE11 MSI
                CODE32 PHARMACODE PHARMACODETWOTRACK PZN
                MATRIX2OF5 INDUSTRIAL2OF5 IATA2OF5 DATALOGIC2OF5
                CODABLOCKF CODE16K CODE49
-               QRCODE AZTEC
+               QRCODE MICROQRCODE RMQRCODE UPNQR AZTEC AZTECRUNE
                CODEONE DATAMATRIX DOTCODE GRIDMATRIX HANXIN MAXICODE PDF417)
     if (ZXING_ENABLE_${format})
         target_compile_definitions(ZXing PRIVATE ZXING_ENABLE_${format})

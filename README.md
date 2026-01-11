@@ -286,10 +286,14 @@ When `ZXING_ENABLE_ALL=ON`, all formats are enabled by default. When `ZXING_ENAB
 </details>
 
 <details>
-<summary><b>2D Matrix Codes (9 controllable formats)</b></summary>
+<summary><b>2D Matrix Codes (13 formats)</b></summary>
 
-- `ZXING_ENABLE_QRCODE` - QR Code (includes Micro QR, rMQR, UPN QR variants)
-- `ZXING_ENABLE_AZTEC` - Aztec (includes Aztec Rune variant)
+- `ZXING_ENABLE_QRCODE` - QR Code
+- `ZXING_ENABLE_MICROQRCODE` - Micro QR Code
+- `ZXING_ENABLE_RMQRCODE` - rMQR Code (Rectangular Micro QR)
+- `ZXING_ENABLE_UPNQR` - UPN QR (Slovenian payment)
+- `ZXING_ENABLE_AZTEC` - Aztec
+- `ZXING_ENABLE_AZTECRUNE` - Aztec Rune
 - `ZXING_ENABLE_DATAMATRIX` - DataMatrix
 - `ZXING_ENABLE_PDF417` - PDF417
 - `ZXING_ENABLE_MAXICODE` - MaxiCode
@@ -297,6 +301,8 @@ When `ZXING_ENABLE_ALL=ON`, all formats are enabled by default. When `ZXING_ENAB
 - `ZXING_ENABLE_DOTCODE` - DotCode
 - `ZXING_ENABLE_GRIDMATRIX` - Grid Matrix
 - `ZXING_ENABLE_HANXIN` - Han Xin Code
+
+**Note:** QR Code family formats (QR Code, Micro QR, rMQR, UPN QR) share the same reader implementation. Enabling any one will compile the QR reader. Same for Aztec and Aztec Rune.
 </details>
 
 **Examples:**
