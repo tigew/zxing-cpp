@@ -3,20 +3,52 @@
 This document tracks the implementation status of barcode formats in zxing-cpp and provides guidelines for adding new format support.
 
 ## Table of Contents
+- [Implementation Policy](#implementation-policy)
 - [Current Implementation Status](#current-implementation-status)
 - [Missing Formats to Implement](#missing-formats-to-implement)
 - [Coding Conventions](#coding-conventions)
 - [Implementation Patterns](#implementation-patterns)
+- [Wrapper Updates Required](#wrapper-updates-required)
 - [Implementation Roadmap](#implementation-roadmap)
+
+---
+
+## Implementation Policy
+
+**IMPORTANT: All implementations MUST be fully functional. No skeleton, stub, or placeholder implementations are acceptable.**
+
+When implementing a new barcode format reader or writer:
+
+1. **Complete Functionality Required**: Every reader must fully decode the barcode format, including:
+   - Pattern detection and recognition
+   - Data decoding with proper character set handling
+   - Error correction where applicable (e.g., Reed-Solomon)
+   - All format variants must be supported
+
+2. **No Half-Baked Implementations**: Do not commit code that:
+   - Returns empty results without attempting decoding
+   - Has TODO comments for critical functionality
+   - Only handles a subset of the format's variants
+   - Lacks proper error detection/correction
+
+3. **Test Before Commit**: Ensure the implementation can decode real-world barcode samples before marking as complete.
+
+4. **Update All Layers**: Each implementation must include updates to:
+   - Core library (BarcodeFormat enum, reader/writer classes)
+   - CMake build configuration
+   - iOS wrapper (ZXIFormat.h, ZXIFormatHelper.mm)
+   - C API (ZXingC.h)
+   - This documentation
 
 ---
 
 ## Current Implementation Status
 
-### Fully Supported Formats (20 formats)
+### Fully Supported Formats (21 formats)
 
 | Format | Read | Write (OLD) | Write (NEW/Zint) | Notes |
 |--------|------|-------------|------------------|-------|
+| AustraliaPost | Yes | No | Yes | 4-state postal, 6 FCC variants (11, 45, 59, 62, 87, 92) |
 | Aztec | Yes | Yes | Yes | Full support |
 | Codabar | Yes | Yes | Yes | |
 | Code39 | Yes | Yes | Yes | Includes Extended variant |
@@ -316,6 +348,64 @@ static constexpr BarcodeFormatZXing2Zint barcodeFormatZXing2Zint[] = {
 
 ---
 
+## Wrapper Updates Required
+
+When adding a new barcode format to the core library, the following wrapper APIs must also be updated:
+
+### iOS Wrapper (Required)
+
+The iOS wrapper requires updates to expose new formats to Swift/Objective-C applications.
+
+**Files to update:**
+
+1. **`wrappers/ios/Sources/Wrapper/ZXIFormat.h`**
+   - Add new enum value to `ZXIFormat` typedef
+   ```objc
+   typedef NS_ENUM(NSInteger, ZXIFormat) {
+       // ... existing formats
+       AUSTRALIA_POST,  // Add new format
+       // ...
+   };
+   ```
+
+2. **`wrappers/ios/Sources/Wrapper/ZXIFormatHelper.mm`**
+   - Add case to `BarcodeFormatFromZXIFormat()` function
+   - Add case to `ZXIFormatFromBarcodeFormat()` function
+   ```objc
+   // In BarcodeFormatFromZXIFormat:
+   case ZXIFormat::AUSTRALIA_POST:
+       return ZXing::BarcodeFormat::AustraliaPost;
+
+   // In ZXIFormatFromBarcodeFormat:
+   case ZXing::BarcodeFormat::AustraliaPost:
+       return ZXIFormat::AUSTRALIA_POST;
+   ```
+
+### Other Wrappers (As Needed)
+
+The following wrappers may also need updates depending on how they expose format enums:
+
+| Wrapper | Location | Update Required |
+|---------|----------|-----------------|
+| Android | `wrappers/android/` | Format enum mapping |
+| Python | `wrappers/python/` | BarcodeFormat bindings |
+| C API | `core/src/ZXingC.h` | ZXing_BarcodeFormat enum |
+| .NET | `wrappers/dotnet/` | BarcodeFormat enum |
+| Rust | `wrappers/rust/` | BarcodeFormat enum |
+| WebAssembly | `wrappers/wasm/` | JavaScript bindings |
+
+### C API Updates
+
+When adding new formats, also update `core/src/ZXingC.h`:
+```c
+typedef enum {
+    // ... existing
+    ZXing_BarcodeFormat_AustraliaPost = (1 << 20),  // Next available bit
+} ZXing_BarcodeFormat;
+```
+
+---
+
 ## Implementation Roadmap
 
 ### Phase 1: Low-Complexity Linear Codes
@@ -396,18 +486,34 @@ cmake -B build -DZXING_ENABLE_NEWFORMAT=OFF
 ## Progress Tracking
 
 ### Completed
-- [x] Initial documentation created
+- [x] **Australia Post** (6 FCC variants) - Fully implemented with:
+  - 4-state bar detection with height analysis (Full, Ascender, Descender, Tracker)
+  - N-Table (numeric) and C-Table (alphanumeric) encoding/decoding
+  - Reed-Solomon GF(64) error correction
+  - FCC 11 (Standard Customer), 45 (Reply Paid), 59 (Customer Barcode 2), 62 (Customer Barcode 3), 87 (Routing), 92 (Redirection)
+  - Writer available via libzint integration (ZXING_WRITERS=NEW)
+  - iOS wrapper and C API updated
+
+### Pending Phases
 - [ ] Phase 1: Low-Complexity Linear Codes
 - [ ] Phase 2: Code 39 Variants
-- [ ] Phase 3: Postal Codes
+- [ ] Phase 3: Postal Codes (Australia Post first)
 - [ ] Phase 4: Stacked Linear Codes
 - [ ] Phase 5: 2D Matrix Codes
 
-### Next Steps
-1. Start with Code 11 implementation (simplest missing format)
-2. Follow the implementation pattern documented above
-3. Add unit tests for each new format
-4. Update this document as formats are completed
+### Implementation Checklist Template
+For each new format, complete these steps:
+- [ ] Add to `BarcodeFormat.h` enum
+- [ ] Add to `BarcodeFormat.cpp` NAMES array
+- [ ] Create reader implementation (`core/src/{format}/`)
+- [ ] Create writer implementation (if applicable)
+- [ ] Register in `MultiFormatReader.cpp`
+- [ ] Register in `MultiFormatWriter.cpp` (if applicable)
+- [ ] Update `core/CMakeLists.txt`
+- [ ] Update iOS wrapper (`ZXIFormat.h`, `ZXIFormatHelper.mm`)
+- [ ] Update C API (`ZXingC.h`)
+- [ ] Add unit tests
+- [ ] Update this documentation
 
 ---
 

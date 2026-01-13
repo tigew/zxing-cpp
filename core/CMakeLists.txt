@@ -346,6 +346,8 @@ if ((ZXING_READERS OR ZXING_WRITERS_OLD) AND ZXING_ENABLE_1D)
 endif()
 if (ZXING_READERS AND ZXING_ENABLE_1D)
     set (ONED_FILES ${ONED_FILES}
+        src/oned/ODAustraliaPostReader.h
+        src/oned/ODAustraliaPostReader.cpp
         src/oned/ODCodabarReader.h
         src/oned/ODCodabarReader.cpp
         src/oned/ODCode39Reader.h
