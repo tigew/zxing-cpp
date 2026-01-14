@@ -7,6 +7,7 @@
 
 #include "ODReader.h"
 
+#include "ODRowReader.h"
 #include "BinaryBitmap.h"
 #include "reader/ReaderOptions.h"
 #ifdef ZXING_WITH_CODABAR
