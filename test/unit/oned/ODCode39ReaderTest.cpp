@@ -5,7 +5,7 @@
 
 #include "oned/ODCode39Reader.h"
 
-#include "ReaderOptions.h"
+#include "reader/ReaderOptions.h"
 #include "Barcode.h"
 
 #include "gtest/gtest.h"

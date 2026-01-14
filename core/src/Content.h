@@ -7,7 +7,7 @@
 
 #include "ByteArray.h"
 #include "CharacterSet.h"
-#include "ReaderOptions.h"
+#include "reader/ReaderOptions.h"
 #include "ZXAlgorithms.h"
 
 #include <string>

@@ -4,7 +4,7 @@
 */
 // SPDX-License-Identifier: Apache-2.0
 
-#include "qrcode/QRDecoder.h"
+#include "matrix/qrcode/QRDecoder.h"
 
 #include "BitMatrix.h"
 #include "BitMatrixIO.h"

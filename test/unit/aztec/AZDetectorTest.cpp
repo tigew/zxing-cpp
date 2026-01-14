@@ -4,14 +4,14 @@
 */
 // SPDX-License-Identifier: Apache-2.0
 
-#include "aztec/AZDetector.h"
+#include "matrix/aztec/AZDetector.h"
 
 #include "BitMatrixIO.h"
 #include "DecoderResult.h"
 #include "PseudoRandom.h"
 #include "Utf.h"
-#include "aztec/AZDecoder.h"
-#include "aztec/AZDetectorResult.h"
+#include "matrix/aztec/AZDecoder.h"
+#include "matrix/aztec/AZDetectorResult.h"
 
 #include "gtest/gtest.h"
 #include <string_view>

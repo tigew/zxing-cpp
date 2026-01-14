@@ -4,7 +4,7 @@
 */
 // SPDX-License-Identifier: Apache-2.0
 
-#include "datamatrix/DMWriter.h"
+#include "matrix/datamatrix/DMWriter.h"
 #include "BitMatrixIO.h"
 
 #include "gtest/gtest.h"

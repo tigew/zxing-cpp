@@ -6,7 +6,7 @@
 #pragma once
 
 #include "BarcodeFormat.h"
-#include "ReaderOptions.h"
+#include "reader/ReaderOptions.h"
 
 #include <memory>
 

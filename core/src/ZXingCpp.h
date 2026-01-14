@@ -6,8 +6,8 @@
 #pragma once
 
 #include "BarcodeFormat.h"
-#include "ReadBarcode.h"
-#include "WriteBarcode.h"
+#include "reader/ReadBarcode.h"
+#include "reader/WriteBarcode.h"
 
 namespace ZXing {
 

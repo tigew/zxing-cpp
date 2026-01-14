@@ -6,7 +6,7 @@
 
 #include "oned/ODCodabarWriter.h"
 #include "BitMatrixIO.h"
-#include "ReaderOptions.h"
+#include "reader/ReaderOptions.h"
 #include "Barcode.h"
 #include "oned/ODCodabarReader.h"
 

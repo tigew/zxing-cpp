@@ -5,7 +5,7 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import "ZXIBarcodeWriter.h"
 #import "ZXIWriterOptions.h"
-#import "MultiFormatWriter.h"
+#import "reader/MultiFormatWriter.h"
 #import "BitMatrix.h"
 #import "BitMatrixIO.h"
 #import "ZXIFormatHelper.h"

@@ -4,7 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 #include "DecoderResult.h"
-#include "pdf417/PDFScanningDecoder.h"
+#include "stacked/pdf417/PDFScanningDecoder.h"
 
 #include "gtest/gtest.h"
 

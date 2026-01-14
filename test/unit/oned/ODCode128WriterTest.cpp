@@ -6,7 +6,7 @@
 
 #include "oned/ODCode128Writer.h"
 #include "BitMatrixIO.h"
-#include "ReaderOptions.h"
+#include "reader/ReaderOptions.h"
 #include "Barcode.h"
 #include "oned/ODCode128Reader.h"
 

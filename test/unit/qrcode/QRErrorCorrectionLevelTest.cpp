@@ -4,7 +4,7 @@
 */
 // SPDX-License-Identifier: Apache-2.0
 
-#include "qrcode/QRErrorCorrectionLevel.h"
+#include "matrix/qrcode/QRErrorCorrectionLevel.h"
 
 #include "gtest/gtest.h"
 

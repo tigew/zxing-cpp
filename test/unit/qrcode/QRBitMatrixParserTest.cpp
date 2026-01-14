@@ -7,9 +7,9 @@
 #include "BitMatrix.h"
 #include "BitMatrixIO.h"
 #include "ByteArray.h"
-#include "qrcode/QRBitMatrixParser.h"
-#include "qrcode/QRFormatInformation.h"
-#include "qrcode/QRVersion.h"
+#include "matrix/qrcode/QRBitMatrixParser.h"
+#include "matrix/qrcode/QRFormatInformation.h"
+#include "matrix/qrcode/QRVersion.h"
 
 #include "gtest/gtest.h"
 

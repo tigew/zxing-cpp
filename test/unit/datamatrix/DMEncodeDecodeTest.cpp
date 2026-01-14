@@ -6,8 +6,8 @@
 
 #include "BitMatrixIO.h"
 #include "DecoderResult.h"
-#include "datamatrix/DMDecoder.h"
-#include "datamatrix/DMWriter.h"
+#include "matrix/datamatrix/DMDecoder.h"
+#include "matrix/datamatrix/DMWriter.h"
 
 #include "gtest/gtest.h"
 

@@ -9,8 +9,8 @@
 
 #include "BarcodeFormat.h"
 #include "BitArray.h"
-#include "ReaderOptions.h"
-#include "GTIN.h"
+#include "reader/ReaderOptions.h"
+#include "stacked/gs1/GTIN.h"
 #include "ODUPCEANCommon.h"
 #include "Barcode.h"
 #include "JSON.h"

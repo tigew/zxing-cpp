@@ -3,7 +3,7 @@
 */
 // SPDX-License-Identifier: Apache-2.0
 
-#include "ReadBarcode.h"
+#include "reader/ReadBarcode.h"
 
 #include <android/bitmap.h>
 #include <android/log.h>

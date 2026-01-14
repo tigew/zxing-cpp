@@ -200,7 +200,7 @@ const ZXing_Barcode* ZXing_Barcodes_at(const ZXing_Barcodes* barcodes, int i);
 ZXing_Barcode* ZXing_Barcodes_move(ZXing_Barcodes* barcodes, int i);
 
 /*
- * ZXing/ReaderOptions.h
+ * ZXing/reader/ReaderOptions.h
  */
 
 typedef enum
@@ -263,7 +263,7 @@ int ZXing_ReaderOptions_getMinLineCount(const ZXing_ReaderOptions* opts);
 int ZXing_ReaderOptions_getMaxNumberOfSymbols(const ZXing_ReaderOptions* opts);
 
 /*
- * ZXing/ReadBarcode.h
+ * ZXing/reader/ReadBarcode.h
  */
 
 /** Note: opts is optional, i.e. it can be NULL, which will imply default settings. */
@@ -272,7 +272,7 @@ ZXing_Barcodes* ZXing_ReadBarcodes(const ZXing_ImageView* iv, const ZXing_Reader
 #ifdef ZXING_EXPERIMENTAL_API
 
 /*
- * ZXing/WriteBarcode.h
+ * ZXing/reader/WriteBarcode.h
  */
 
 ZXing_CreatorOptions* ZXing_CreatorOptions_new(ZXing_BarcodeFormat format);

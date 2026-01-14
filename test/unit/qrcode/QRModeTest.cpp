@@ -4,8 +4,8 @@
 */
 // SPDX-License-Identifier: Apache-2.0
 
-#include "qrcode/QRCodecMode.h"
-#include "qrcode/QRVersion.h"
+#include "matrix/qrcode/QRCodecMode.h"
+#include "matrix/qrcode/QRVersion.h"
 #include "Error.h"
 
 #include "gtest/gtest.h"

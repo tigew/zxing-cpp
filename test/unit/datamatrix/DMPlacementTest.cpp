@@ -6,7 +6,7 @@
 
 #include "BitMatrixIO.h"
 #include "ByteArray.h"
-#include "datamatrix/DMBitLayout.h"
+#include "matrix/datamatrix/DMBitLayout.h"
 
 #include "gtest/gtest.h"
 #include <algorithm>

@@ -15,7 +15,7 @@
 #include "oned/ODDXFilmEdgeReader.h"
 #include "oned/ODITFReader.h"
 #include "oned/ODCodabarReader.h"
-#include "ReaderOptions.h"
+#include "reader/ReaderOptions.h"
 #include "Barcode.h"
 
 using namespace ZXing;

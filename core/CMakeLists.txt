@@ -3,9 +3,70 @@ cmake_minimum_required(VERSION 3.16)
 project (ZXing VERSION "2.3.0")
 set (ZXING_SONAME 3) # see https://github.com/zxing-cpp/zxing-cpp/issues/333
 
-foreach(format 1D AZTEC DATAMATRIX MAXICODE PDF417 QRCODE)
+option ("ZXING_ENABLE_ALL" "Enable all barcode families" ON)
+option ("ZXING_ENABLE_CATEGORY_ONED" "Enable One-Dimensional symbols" ON)
+option ("ZXING_ENABLE_CATEGORY_STACKED" "Enable Stacked symbologies" ON)
+option ("ZXING_ENABLE_CATEGORY_COMPOSITE" "Enable GS1 composite symbols" ON)
+option ("ZXING_ENABLE_CATEGORY_TWOTRACK" "Enable Two-Track symbols" ON)
+option ("ZXING_ENABLE_CATEGORY_POSTAL" "Enable 4-State postal symbols" ON)
+option ("ZXING_ENABLE_CATEGORY_MATRIX" "Enable Matrix symbologies" ON)
+option ("ZXING_ENABLE_CATEGORY_OTHER" "Enable other barcode-like markings" ON)
+
+foreach(format 1D AZTEC DATAMATRIX MAXICODE PDF417 QRCODE MICRO_QR_CODE RMQR_CODE AUSTRALIA_POST
+               CODABAR CODE_39 CODE_93 CODE_128 DATA_BAR DATA_BAR_EXPANDED DATA_BAR_LIMITED DX_FILM_EDGE
+               EAN_8 EAN_13 ITF UPC_A UPC_E)
     option ("ZXING_ENABLE_${format}" "Enable support for ${format} barcodes" ON)
 endforeach()
+
+function (zxing_apply_enable out_var category_var format_var)
+    if (ZXING_ENABLE_ALL AND ${category_var} AND ${format_var})
+        set (${out_var} ON PARENT_SCOPE)
+    else()
+        set (${out_var} OFF PARENT_SCOPE)
+    endif()
+endfunction()
+
+if (NOT ZXING_ENABLE_ALL)
+    set (ZXING_ENABLE_CATEGORY_ONED OFF)
+    set (ZXING_ENABLE_CATEGORY_STACKED OFF)
+    set (ZXING_ENABLE_CATEGORY_COMPOSITE OFF)
+    set (ZXING_ENABLE_CATEGORY_TWOTRACK OFF)
+    set (ZXING_ENABLE_CATEGORY_POSTAL OFF)
+    set (ZXING_ENABLE_CATEGORY_MATRIX OFF)
+    set (ZXING_ENABLE_CATEGORY_OTHER OFF)
+endif()
+
+set (ZXING_ENABLE_1D_EFFECTIVE OFF)
+if (ZXING_ENABLE_CATEGORY_ONED AND (ZXING_ENABLE_1D OR ZXING_ENABLE_CODABAR OR ZXING_ENABLE_CODE_39 OR ZXING_ENABLE_CODE_93
+    OR ZXING_ENABLE_CODE_128 OR ZXING_ENABLE_DATA_BAR OR ZXING_ENABLE_DATA_BAR_EXPANDED OR ZXING_ENABLE_DATA_BAR_LIMITED
+    OR ZXING_ENABLE_DX_FILM_EDGE OR ZXING_ENABLE_EAN_8 OR ZXING_ENABLE_EAN_13 OR ZXING_ENABLE_ITF OR ZXING_ENABLE_UPC_A
+    OR ZXING_ENABLE_UPC_E))
+    set (ZXING_ENABLE_1D_EFFECTIVE ON)
+endif()
+zxing_apply_enable(ZXING_ENABLE_AZTEC_EFFECTIVE ZXING_ENABLE_CATEGORY_MATRIX ZXING_ENABLE_AZTEC)
+zxing_apply_enable(ZXING_ENABLE_DATAMATRIX_EFFECTIVE ZXING_ENABLE_CATEGORY_MATRIX ZXING_ENABLE_DATAMATRIX)
+zxing_apply_enable(ZXING_ENABLE_MAXICODE_EFFECTIVE ZXING_ENABLE_CATEGORY_MATRIX ZXING_ENABLE_MAXICODE)
+set (ZXING_ENABLE_QRCODE_EFFECTIVE OFF)
+if (ZXING_ENABLE_CATEGORY_MATRIX AND (ZXING_ENABLE_QRCODE OR ZXING_ENABLE_MICRO_QR_CODE OR ZXING_ENABLE_RMQR_CODE))
+    set (ZXING_ENABLE_QRCODE_EFFECTIVE ON)
+endif()
+zxing_apply_enable(ZXING_ENABLE_MICRO_QR_CODE_EFFECTIVE ZXING_ENABLE_CATEGORY_MATRIX ZXING_ENABLE_MICRO_QR_CODE)
+zxing_apply_enable(ZXING_ENABLE_RMQR_CODE_EFFECTIVE ZXING_ENABLE_CATEGORY_MATRIX ZXING_ENABLE_RMQR_CODE)
+zxing_apply_enable(ZXING_ENABLE_PDF417_EFFECTIVE ZXING_ENABLE_CATEGORY_STACKED ZXING_ENABLE_PDF417)
+zxing_apply_enable(ZXING_ENABLE_AUSTRALIA_POST_EFFECTIVE ZXING_ENABLE_CATEGORY_POSTAL ZXING_ENABLE_AUSTRALIA_POST)
+zxing_apply_enable(ZXING_ENABLE_CODABAR_EFFECTIVE ZXING_ENABLE_CATEGORY_ONED ZXING_ENABLE_CODABAR)
+zxing_apply_enable(ZXING_ENABLE_CODE_39_EFFECTIVE ZXING_ENABLE_CATEGORY_ONED ZXING_ENABLE_CODE_39)
+zxing_apply_enable(ZXING_ENABLE_CODE_93_EFFECTIVE ZXING_ENABLE_CATEGORY_ONED ZXING_ENABLE_CODE_93)
+zxing_apply_enable(ZXING_ENABLE_CODE_128_EFFECTIVE ZXING_ENABLE_CATEGORY_ONED ZXING_ENABLE_CODE_128)
+zxing_apply_enable(ZXING_ENABLE_DATA_BAR_EFFECTIVE ZXING_ENABLE_CATEGORY_ONED ZXING_ENABLE_DATA_BAR)
+zxing_apply_enable(ZXING_ENABLE_DATA_BAR_EXPANDED_EFFECTIVE ZXING_ENABLE_CATEGORY_ONED ZXING_ENABLE_DATA_BAR_EXPANDED)
+zxing_apply_enable(ZXING_ENABLE_DATA_BAR_LIMITED_EFFECTIVE ZXING_ENABLE_CATEGORY_ONED ZXING_ENABLE_DATA_BAR_LIMITED)
+zxing_apply_enable(ZXING_ENABLE_DX_FILM_EDGE_EFFECTIVE ZXING_ENABLE_CATEGORY_ONED ZXING_ENABLE_DX_FILM_EDGE)
+zxing_apply_enable(ZXING_ENABLE_EAN_8_EFFECTIVE ZXING_ENABLE_CATEGORY_ONED ZXING_ENABLE_EAN_8)
+zxing_apply_enable(ZXING_ENABLE_EAN_13_EFFECTIVE ZXING_ENABLE_CATEGORY_ONED ZXING_ENABLE_EAN_13)
+zxing_apply_enable(ZXING_ENABLE_ITF_EFFECTIVE ZXING_ENABLE_CATEGORY_ONED ZXING_ENABLE_ITF)
+zxing_apply_enable(ZXING_ENABLE_UPC_A_EFFECTIVE ZXING_ENABLE_CATEGORY_ONED ZXING_ENABLE_UPC_A)
+zxing_apply_enable(ZXING_ENABLE_UPC_E_EFFECTIVE ZXING_ENABLE_CATEGORY_ONED ZXING_ENABLE_UPC_E)
 
 if (BUILD_SHARED_LIBS)
     set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -49,9 +110,18 @@ endif()
 set (ZXING_PUBLIC_FLAGS
     $<$<BOOL:${ZXING_EXPERIMENTAL_API}>:-DZXING_EXPERIMENTAL_API>
     $<$<BOOL:${ZXING_WRITERS_NEW}>:-DZXING_USE_ZINT>
+    $<$<BOOL:${ZXING_ENABLE_CATEGORY_ONED}>:-DZXING_WITH_CATEGORY_ONED>
+    $<$<BOOL:${ZXING_ENABLE_CATEGORY_STACKED}>:-DZXING_WITH_CATEGORY_STACKED>
+    $<$<BOOL:${ZXING_ENABLE_CATEGORY_COMPOSITE}>:-DZXING_WITH_CATEGORY_COMPOSITE>
+    $<$<BOOL:${ZXING_ENABLE_CATEGORY_TWOTRACK}>:-DZXING_WITH_CATEGORY_TWOTRACK>
+    $<$<BOOL:${ZXING_ENABLE_CATEGORY_POSTAL}>:-DZXING_WITH_CATEGORY_POSTAL>
+    $<$<BOOL:${ZXING_ENABLE_CATEGORY_MATRIX}>:-DZXING_WITH_CATEGORY_MATRIX>
+    $<$<BOOL:${ZXING_ENABLE_CATEGORY_OTHER}>:-DZXING_WITH_CATEGORY_OTHER>
 )
-foreach(format 1D AZTEC DATAMATRIX MAXICODE PDF417 QRCODE)
-    list (APPEND ZXING_PUBLIC_FLAGS $<$<BOOL:${ZXING_ENABLE_${format}}>:-DZXING_WITH_${format}>)
+foreach(format 1D AZTEC DATAMATRIX MAXICODE PDF417 QRCODE MICRO_QR_CODE RMQR_CODE AUSTRALIA_POST
+               CODABAR CODE_39 CODE_93 CODE_128 DATA_BAR DATA_BAR_EXPANDED DATA_BAR_LIMITED DX_FILM_EDGE
+               EAN_8 EAN_13 ITF UPC_A UPC_E)
+    list (APPEND ZXING_PUBLIC_FLAGS $<$<BOOL:${ZXING_ENABLE_${format}_EFFECTIVE}>:-DZXING_WITH_${format}>)
 endforeach()
 
 if (WINRT)
@@ -118,8 +188,8 @@ set (COMMON_FILES
     src/Error.h
     src/Error.cpp
     src/Flags.h
-    src/GTIN.h
-    src/GTIN.cpp
+    src/stacked/gs1/GTIN.h
+    src/stacked/gs1/GTIN.cpp
     src/ImageView.h
     src/JSON.h
     src/JSON.cpp
@@ -127,13 +197,13 @@ set (COMMON_FILES
     src/Point.h
     src/Quadrilateral.h
     src/Range.h
-    src/ReaderOptions.h
-    src/ReadBarcode.h
-    src/ReadBarcode.cpp
+    src/reader/ReaderOptions.h
+    src/reader/ReadBarcode.h
+    src/reader/ReadBarcode.cpp
     src/Utf.h
     src/Utf.cpp
-    src/WriteBarcode.h
-    src/WriteBarcode.cpp
+    src/reader/WriteBarcode.h
+    src/reader/WriteBarcode.cpp
     src/ZXingCpp.h
     src/ZXingCpp.cpp
     src/ZXAlgorithms.h
@@ -159,8 +229,8 @@ if (ZXING_READERS OR ZXING_WRITERS_OLD)
 endif()
 if (ZXING_READERS OR ZXING_WRITERS_NEW)
     set (COMMON_FILES ${COMMON_FILES}
-        src/HRI.h
-        src/HRI.cpp
+        src/stacked/gs1/HRI.h
+        src/stacked/gs1/HRI.cpp
     )
 endif()
 if (ZXING_READERS)
@@ -172,8 +242,8 @@ if (ZXING_READERS)
         src/BitSource.cpp
         src/ConcentricFinder.h
         src/ConcentricFinder.cpp
-        src/DecodeHints.h
-        $<$<BOOL:${BUILD_SHARED_LIBS}>:src/DecodeHints.cpp> # [[deprecated]]
+        src/reader/DecodeHints.h
+        $<$<BOOL:${BUILD_SHARED_LIBS}>:src/reader/DecodeHints.cpp> # [[deprecated]]
         src/GlobalHistogramBinarizer.h
         src/GlobalHistogramBinarizer.cpp
         src/GridSampler.h
@@ -181,12 +251,12 @@ if (ZXING_READERS)
         src/LogMatrix.h
         src/HybridBinarizer.h
         src/HybridBinarizer.cpp
-        src/MultiFormatReader.h
-        src/MultiFormatReader.cpp
+        src/reader/MultiFormatReader.h
+        src/reader/MultiFormatReader.cpp
         src/Pattern.h
         src/PerspectiveTransform.h
         src/PerspectiveTransform.cpp
-        src/Reader.h
+        src/reader/Reader.h
         src/ReedSolomonDecoder.h
         src/ReedSolomonDecoder.cpp
         src/RegressionLine.h
@@ -215,8 +285,8 @@ if (ZXING_WRITERS_OLD)
         src/ByteMatrix.h
         src/ReedSolomonEncoder.h
         src/ReedSolomonEncoder.cpp
-        src/MultiFormatWriter.h
-        src/MultiFormatWriter.cpp
+        src/reader/MultiFormatWriter.h
+        src/reader/MultiFormatWriter.cpp
     )
 endif()
 
@@ -230,24 +300,24 @@ set (PUBLIC_HEADERS
     src/Content.h
     src/Error.h
     src/Flags.h
-    src/GTIN.h
+    src/stacked/gs1/GTIN.h
     src/ImageView.h
     src/Point.h
     src/Quadrilateral.h
     src/Range.h # re-evaluate for 3.0
-    src/ReadBarcode.h
-    src/ReaderOptions.h
+    src/reader/ReadBarcode.h
+    src/reader/ReaderOptions.h
     src/StructuredAppend.h
     src/TextUtfEncoding.h # [[deprecated]]
     src/ZXingCpp.h
     src/ZXAlgorithms.h
     src/ZXVersion.h # [[deprecated]]
     $<$<BOOL:${ZXING_C_API}>:${CMAKE_CURRENT_SOURCE_DIR}/src/ZXingC.h>
-    $<$<BOOL:${ZXING_EXPERIMENTAL_API}>:${CMAKE_CURRENT_SOURCE_DIR}/src/WriteBarcode.h>
+    $<$<BOOL:${ZXING_EXPERIMENTAL_API}>:${CMAKE_CURRENT_SOURCE_DIR}/src/reader/WriteBarcode.h>
 )
 if (ZXING_READERS)
     set (PUBLIC_HEADERS ${PUBLIC_HEADERS}
-        src/DecodeHints.h # [[deprecated]]
+        src/reader/DecodeHints.h # [[deprecated]]
         src/Result.h # [[deprecated]]
     )
 endif()
@@ -256,86 +326,86 @@ if (ZXING_WRITERS_OLD)
         src/BitMatrix.h
         src/BitMatrixIO.h
         src/Matrix.h
-        src/MultiFormatWriter.h
+        src/reader/MultiFormatWriter.h
     )
 endif()
 # end of public header set
 
-if (ZXING_READERS AND ZXING_ENABLE_AZTEC)
+if (ZXING_READERS AND ZXING_ENABLE_AZTEC_EFFECTIVE)
     set (AZTEC_FILES ${AZTEC_FILES}
-        src/aztec/AZDecoder.h
-        src/aztec/AZDecoder.cpp
-        src/aztec/AZDetector.h
-        src/aztec/AZDetector.cpp
-        src/aztec/AZDetectorResult.h
-        src/aztec/AZReader.h
-        src/aztec/AZReader.cpp
+        src/matrix/aztec/AZDecoder.h
+        src/matrix/aztec/AZDecoder.cpp
+        src/matrix/aztec/AZDetector.h
+        src/matrix/aztec/AZDetector.cpp
+        src/matrix/aztec/AZDetectorResult.h
+        src/matrix/aztec/AZReader.h
+        src/matrix/aztec/AZReader.cpp
     )
 endif()
-if (ZXING_WRITERS_OLD AND ZXING_ENABLE_AZTEC)
+if (ZXING_WRITERS_OLD AND ZXING_ENABLE_AZTEC_EFFECTIVE)
     set (AZTEC_FILES ${AZTEC_FILES}
-        src/aztec/AZEncodingState.h
-        src/aztec/AZEncoder.h
-        src/aztec/AZEncoder.cpp
-        src/aztec/AZHighLevelEncoder.h
-        src/aztec/AZHighLevelEncoder.cpp
-        src/aztec/AZToken.h
-        src/aztec/AZToken.cpp
-        src/aztec/AZWriter.h
-        src/aztec/AZWriter.cpp
+        src/matrix/aztec/AZEncodingState.h
+        src/matrix/aztec/AZEncoder.h
+        src/matrix/aztec/AZEncoder.cpp
+        src/matrix/aztec/AZHighLevelEncoder.h
+        src/matrix/aztec/AZHighLevelEncoder.cpp
+        src/matrix/aztec/AZToken.h
+        src/matrix/aztec/AZToken.cpp
+        src/matrix/aztec/AZWriter.h
+        src/matrix/aztec/AZWriter.cpp
     )
 endif()
 
 
-if ((ZXING_READERS OR ZXING_WRITERS_OLD) AND ZXING_ENABLE_DATAMATRIX)
+if ((ZXING_READERS OR ZXING_WRITERS_OLD) AND ZXING_ENABLE_DATAMATRIX_EFFECTIVE)
     set (DATAMATRIX_FILES
-        src/datamatrix/DMBitLayout.h
-        src/datamatrix/DMBitLayout.cpp
-        src/datamatrix/DMVersion.h
-        src/datamatrix/DMVersion.cpp
+        src/matrix/datamatrix/DMBitLayout.h
+        src/matrix/datamatrix/DMBitLayout.cpp
+        src/matrix/datamatrix/DMVersion.h
+        src/matrix/datamatrix/DMVersion.cpp
     )
 endif()
-if (ZXING_READERS AND ZXING_ENABLE_DATAMATRIX)
+if (ZXING_READERS AND ZXING_ENABLE_DATAMATRIX_EFFECTIVE)
     set (DATAMATRIX_FILES ${DATAMATRIX_FILES}
-        src/datamatrix/DMDataBlock.h
-        src/datamatrix/DMDataBlock.cpp
-        src/datamatrix/DMDecoder.h
-        src/datamatrix/DMDecoder.cpp
-        src/datamatrix/DMDetector.h
-        src/datamatrix/DMDetector.cpp
-        src/datamatrix/DMReader.h
-        src/datamatrix/DMReader.cpp
+        src/matrix/datamatrix/DMDataBlock.h
+        src/matrix/datamatrix/DMDataBlock.cpp
+        src/matrix/datamatrix/DMDecoder.h
+        src/matrix/datamatrix/DMDecoder.cpp
+        src/matrix/datamatrix/DMDetector.h
+        src/matrix/datamatrix/DMDetector.cpp
+        src/matrix/datamatrix/DMReader.h
+        src/matrix/datamatrix/DMReader.cpp
     )
 endif()
-if (ZXING_WRITERS_OLD AND ZXING_ENABLE_DATAMATRIX)
+if (ZXING_WRITERS_OLD AND ZXING_ENABLE_DATAMATRIX_EFFECTIVE)
     set (DATAMATRIX_FILES ${DATAMATRIX_FILES}
-        src/datamatrix/DMECEncoder.h
-        src/datamatrix/DMECEncoder.cpp
-        src/datamatrix/DMEncoderContext.h
-        src/datamatrix/DMHighLevelEncoder.h
-        src/datamatrix/DMHighLevelEncoder.cpp
-        src/datamatrix/DMSymbolInfo.h
-        src/datamatrix/DMSymbolInfo.cpp
-        src/datamatrix/DMSymbolShape.h
-        src/datamatrix/DMWriter.h
-        src/datamatrix/DMWriter.cpp
+        src/matrix/datamatrix/DMECEncoder.h
+        src/matrix/datamatrix/DMECEncoder.cpp
+        src/matrix/datamatrix/DMEncoderContext.h
+        src/matrix/datamatrix/DMHighLevelEncoder.h
+        src/matrix/datamatrix/DMHighLevelEncoder.cpp
+        src/matrix/datamatrix/DMSymbolInfo.h
+        src/matrix/datamatrix/DMSymbolInfo.cpp
+        src/matrix/datamatrix/DMSymbolShape.h
+        src/matrix/datamatrix/DMWriter.h
+        src/matrix/datamatrix/DMWriter.cpp
     )
 endif()
 
 
-if (ZXING_READERS AND ZXING_ENABLE_MAXICODE)
+if (ZXING_READERS AND ZXING_ENABLE_MAXICODE_EFFECTIVE)
     set (MAXICODE_FILES ${MAXICODE_FILES}
-        src/maxicode/MCBitMatrixParser.h
-        src/maxicode/MCBitMatrixParser.cpp
-        src/maxicode/MCDecoder.h
-        src/maxicode/MCDecoder.cpp
-        src/maxicode/MCReader.h
-        src/maxicode/MCReader.cpp
+        src/matrix/maxicode/MCBitMatrixParser.h
+        src/matrix/maxicode/MCBitMatrixParser.cpp
+        src/matrix/maxicode/MCDecoder.h
+        src/matrix/maxicode/MCDecoder.cpp
+        src/matrix/maxicode/MCReader.h
+        src/matrix/maxicode/MCReader.cpp
     )
 endif()
 
 
-if ((ZXING_READERS OR ZXING_WRITERS_OLD) AND ZXING_ENABLE_1D)
+if ((ZXING_READERS OR ZXING_WRITERS_OLD) AND ZXING_ENABLE_1D_EFFECTIVE)
     set (ONED_FILES
         src/oned/ODUPCEANCommon.h
         src/oned/ODUPCEANCommon.cpp
@@ -344,10 +414,10 @@ if ((ZXING_READERS OR ZXING_WRITERS_OLD) AND ZXING_ENABLE_1D)
         src/oned/ODCode128Patterns.cpp
     )
 endif()
-if (ZXING_READERS AND ZXING_ENABLE_1D)
+if (ZXING_READERS AND ZXING_ENABLE_1D_EFFECTIVE)
     set (ONED_FILES ${ONED_FILES}
-        src/oned/ODAustraliaPostReader.h
-        src/oned/ODAustraliaPostReader.cpp
+        src/postal/ODAustraliaPostReader.h
+        src/postal/ODAustraliaPostReader.cpp
         src/oned/ODCodabarReader.h
         src/oned/ODCodabarReader.cpp
         src/oned/ODCode39Reader.h
@@ -377,7 +447,7 @@ if (ZXING_READERS AND ZXING_ENABLE_1D)
         src/oned/ODRowReader.h
     )
 endif()
-if (ZXING_WRITERS_OLD AND ZXING_ENABLE_1D)
+if (ZXING_WRITERS_OLD AND ZXING_ENABLE_1D_EFFECTIVE)
     set (ONED_FILES ${ONED_FILES}
         src/oned/ODCodabarWriter.h
         src/oned/ODCodabarWriter.cpp
@@ -403,94 +473,94 @@ if (ZXING_WRITERS_OLD AND ZXING_ENABLE_1D)
 endif()
 
 
-if ((ZXING_READERS OR ZXING_WRITERS_OLD) AND ZXING_ENABLE_PDF417)
+if ((ZXING_READERS OR ZXING_WRITERS_OLD) AND ZXING_ENABLE_PDF417_EFFECTIVE)
     set (PDF417_FILES
-        src/pdf417/ZXBigInteger.h
-        src/pdf417/ZXBigInteger.cpp
+        src/stacked/pdf417/ZXBigInteger.h
+        src/stacked/pdf417/ZXBigInteger.cpp
     )
 endif()
-if (ZXING_READERS AND ZXING_ENABLE_PDF417)
+if (ZXING_READERS AND ZXING_ENABLE_PDF417_EFFECTIVE)
     set (PDF417_FILES ${PDF417_FILES}
-        src/pdf417/PDFBarcodeMetadata.h
-        src/pdf417/PDFBarcodeValue.h
-        src/pdf417/PDFBarcodeValue.cpp
-        src/pdf417/PDFBoundingBox.h
-        src/pdf417/PDFBoundingBox.cpp
-        src/pdf417/PDFCodeword.h
-        src/pdf417/PDFCodewordDecoder.h
-        src/pdf417/PDFCodewordDecoder.cpp
-        src/pdf417/PDFCustomData.h
-        src/pdf417/PDFDecoder.h
-        src/pdf417/PDFDecoder.cpp
-        src/pdf417/PDFDetectionResult.h
-        src/pdf417/PDFDetectionResult.cpp
-        src/pdf417/PDFDetectionResultColumn.h
-        src/pdf417/PDFDetectionResultColumn.cpp
-        src/pdf417/PDFDetector.h
-        src/pdf417/PDFDetector.cpp
-        src/pdf417/PDFModulusGF.h
-        src/pdf417/PDFModulusGF.cpp
-        src/pdf417/PDFModulusPoly.h
-        src/pdf417/PDFModulusPoly.cpp
-        src/pdf417/PDFReader.h
-        src/pdf417/PDFReader.cpp
-        src/pdf417/PDFScanningDecoder.h
-        src/pdf417/PDFScanningDecoder.cpp
-        src/pdf417/ZXNullable.h
+        src/stacked/pdf417/PDFBarcodeMetadata.h
+        src/stacked/pdf417/PDFBarcodeValue.h
+        src/stacked/pdf417/PDFBarcodeValue.cpp
+        src/stacked/pdf417/PDFBoundingBox.h
+        src/stacked/pdf417/PDFBoundingBox.cpp
+        src/stacked/pdf417/PDFCodeword.h
+        src/stacked/pdf417/PDFCodewordDecoder.h
+        src/stacked/pdf417/PDFCodewordDecoder.cpp
+        src/stacked/pdf417/PDFCustomData.h
+        src/stacked/pdf417/PDFDecoder.h
+        src/stacked/pdf417/PDFDecoder.cpp
+        src/stacked/pdf417/PDFDetectionResult.h
+        src/stacked/pdf417/PDFDetectionResult.cpp
+        src/stacked/pdf417/PDFDetectionResultColumn.h
+        src/stacked/pdf417/PDFDetectionResultColumn.cpp
+        src/stacked/pdf417/PDFDetector.h
+        src/stacked/pdf417/PDFDetector.cpp
+        src/stacked/pdf417/PDFModulusGF.h
+        src/stacked/pdf417/PDFModulusGF.cpp
+        src/stacked/pdf417/PDFModulusPoly.h
+        src/stacked/pdf417/PDFModulusPoly.cpp
+        src/stacked/pdf417/PDFReader.h
+        src/stacked/pdf417/PDFReader.cpp
+        src/stacked/pdf417/PDFScanningDecoder.h
+        src/stacked/pdf417/PDFScanningDecoder.cpp
+        src/stacked/pdf417/ZXNullable.h
     )
 endif()
-if (ZXING_WRITERS_OLD AND ZXING_ENABLE_PDF417)
+if (ZXING_WRITERS_OLD AND ZXING_ENABLE_PDF417_EFFECTIVE)
     set (PDF417_FILES ${PDF417_FILES}
-        src/pdf417/PDFCompaction.h
-        src/pdf417/PDFEncoder.h
-        src/pdf417/PDFEncoder.cpp
-        src/pdf417/PDFHighLevelEncoder.h
-        src/pdf417/PDFHighLevelEncoder.cpp
-        src/pdf417/PDFWriter.h
-        src/pdf417/PDFWriter.cpp
+        src/stacked/pdf417/PDFCompaction.h
+        src/stacked/pdf417/PDFEncoder.h
+        src/stacked/pdf417/PDFEncoder.cpp
+        src/stacked/pdf417/PDFHighLevelEncoder.h
+        src/stacked/pdf417/PDFHighLevelEncoder.cpp
+        src/stacked/pdf417/PDFWriter.h
+        src/stacked/pdf417/PDFWriter.cpp
     )
 endif()
 
 
-if ((ZXING_READERS OR ZXING_WRITERS_OLD) AND ZXING_ENABLE_QRCODE)
+if ((ZXING_READERS OR ZXING_WRITERS_OLD) AND ZXING_ENABLE_QRCODE_EFFECTIVE)
     set (QRCODE_FILES
-        src/qrcode/QRCodecMode.h
-        src/qrcode/QRCodecMode.cpp
-        src/qrcode/QRErrorCorrectionLevel.h
-        src/qrcode/QRErrorCorrectionLevel.cpp
-        src/qrcode/QRVersion.h
-        src/qrcode/QRVersion.cpp
+        src/matrix/qrcode/QRCodecMode.h
+        src/matrix/qrcode/QRCodecMode.cpp
+        src/matrix/qrcode/QRErrorCorrectionLevel.h
+        src/matrix/qrcode/QRErrorCorrectionLevel.cpp
+        src/matrix/qrcode/QRVersion.h
+        src/matrix/qrcode/QRVersion.cpp
     )
 endif()
-if (ZXING_READERS AND ZXING_ENABLE_QRCODE)
+if (ZXING_READERS AND ZXING_ENABLE_QRCODE_EFFECTIVE)
     set (QRCODE_FILES ${QRCODE_FILES}
-        src/qrcode/QRBitMatrixParser.h
-        src/qrcode/QRBitMatrixParser.cpp
-        src/qrcode/QRDataBlock.h
-        src/qrcode/QRDataBlock.cpp
-        src/qrcode/QRDataMask.h
-        src/qrcode/QRDecoder.h
-        src/qrcode/QRDecoder.cpp
-        src/qrcode/QRDetector.h
-        src/qrcode/QRDetector.cpp
-        src/qrcode/QRECB.h
-        src/qrcode/QRFormatInformation.h
-        src/qrcode/QRFormatInformation.cpp
-        src/qrcode/QRReader.h
-        src/qrcode/QRReader.cpp
+        src/matrix/qrcode/QRBitMatrixParser.h
+        src/matrix/qrcode/QRBitMatrixParser.cpp
+        src/matrix/qrcode/QRDataBlock.h
+        src/matrix/qrcode/QRDataBlock.cpp
+        src/matrix/qrcode/QRDataMask.h
+        src/matrix/qrcode/QRDecoder.h
+        src/matrix/qrcode/QRDecoder.cpp
+        src/matrix/qrcode/QRDetector.h
+        src/matrix/qrcode/QRDetector.cpp
+        src/matrix/qrcode/QRECB.h
+        src/matrix/qrcode/QRFormatInformation.h
+        src/matrix/qrcode/QRFormatInformation.cpp
+        src/matrix/qrcode/QRReader.h
+        src/matrix/qrcode/QRReader.cpp
     )
 endif()
-if (ZXING_WRITERS_OLD AND ZXING_ENABLE_QRCODE)
+if (ZXING_WRITERS_OLD AND ZXING_ENABLE_QRCODE_EFFECTIVE)
     set (QRCODE_FILES ${QRCODE_FILES}
-        src/qrcode/QREncoder.h
-        src/qrcode/QREncoder.cpp
-        src/qrcode/QREncodeResult.h
-        src/qrcode/QRMaskUtil.h
-        src/qrcode/QRMaskUtil.cpp
-        src/qrcode/QRMatrixUtil.h
-        src/qrcode/QRMatrixUtil.cpp
-        src/qrcode/QRWriter.h
-        src/qrcode/QRWriter.cpp
+        src/matrix/qrcode/QREncoder.h
+        src/matrix/qrcode/QREncoder.cpp
+        src/matrix/qrcode/QREncodeResult.h
+        src/matrix/qrcode/QRMaskUtil.h
+        src/matrix/qrcode/QRMaskUtil.cpp
+        src/matrix/qrcode/QRMatrixUtil.h
+        src/matrix/qrcode/QRMatrixUtil.cpp
+        src/matrix/qrcode/QRWriter.h
+        src/matrix/qrcode/QRWriter.cpp
     )
 endif()
 
@@ -575,11 +645,11 @@ set_target_properties(ZXing PROPERTIES PUBLIC_HEADER "${PUBLIC_HEADERS}")
 
 set(PRECOMPILE_HEADERS ${PUBLIC_HEADERS})
 list(REMOVE_ITEM PRECOMPILE_HEADERS "$<$<BOOL:${ZXING_C_API}>:${CMAKE_CURRENT_SOURCE_DIR}/src/ZXingC.h>")
-list(REMOVE_ITEM PRECOMPILE_HEADERS src/DecodeHints.h) # [[deprecated]]
+list(REMOVE_ITEM PRECOMPILE_HEADERS src/reader/DecodeHints.h) # [[deprecated]]
 list(REMOVE_ITEM PRECOMPILE_HEADERS src/Result.h)      # [[deprecated]]
 list(REMOVE_ITEM PRECOMPILE_HEADERS src/ZXVersion.h)   # [[deprecated]]
 target_precompile_headers(ZXing PRIVATE ${PRECOMPILE_HEADERS})
-set_source_files_properties(src/DecodeHints.cpp PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
+set_source_files_properties(src/reader/DecodeHints.cpp PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
 
 if(CMAKE_BUILD_TYPE MATCHES "Release|RelWithDebInfo")
     # The following is a list of translation units that fulfill two criteria regarding the use of -Os vs -O3:
@@ -593,24 +663,24 @@ if(CMAKE_BUILD_TYPE MATCHES "Release|RelWithDebInfo")
         src/BarcodeFormat.cpp
         src/BitMatrixIO.cpp
         src/Error.cpp
-        src/GTIN.cpp
-        src/HRI.cpp
-        src/MultiFormatReader.cpp
-        src/WriteBarcode.cpp
+        src/stacked/gs1/GTIN.cpp
+        src/stacked/gs1/HRI.cpp
+        src/reader/MultiFormatReader.cpp
+        src/reader/WriteBarcode.cpp
         src/ZXingC.cpp
         src/ZXingCpp.cpp
-        src/aztec/AZHighLevelEncoder.cpp
-        src/datamatrix/DMDataBlock.cpp
-        src/datamatrix/DMHighLevelEncoder.cpp
+        src/matrix/aztec/AZHighLevelEncoder.cpp
+        src/matrix/datamatrix/DMDataBlock.cpp
+        src/matrix/datamatrix/DMHighLevelEncoder.cpp
         src/oned/ODDataBarExpandedBitDecoder.cpp
-        src/pdf417/PDFHighLevelEncoder.cpp
-        src/qrcode/QRBitMatrixParser.cpp
-        src/qrcode/QRDataBlock.cpp
-        src/qrcode/QRDecoder.cpp
-        src/qrcode/QREncoder.cpp
-        src/qrcode/QRMaskUtil.cpp
-        src/qrcode/QRReader.cpp
-        src/qrcode/QRVersion.cpp
+        src/stacked/pdf417/PDFHighLevelEncoder.cpp
+        src/matrix/qrcode/QRBitMatrixParser.cpp
+        src/matrix/qrcode/QRDataBlock.cpp
+        src/matrix/qrcode/QRDecoder.cpp
+        src/matrix/qrcode/QREncoder.cpp
+        src/matrix/qrcode/QRMaskUtil.cpp
+        src/matrix/qrcode/QRReader.cpp
+        src/matrix/qrcode/QRVersion.cpp
         ${LIBZINT_FILES}
         PROPERTIES SKIP_PRECOMPILE_HEADERS ON COMPILE_FLAGS -Os)
     endif()

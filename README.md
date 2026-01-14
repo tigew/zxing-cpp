@@ -54,11 +54,11 @@ Thanks a lot for your contribution!
 
 ### To read barcodes:
 1. Load your image into memory (3rd-party library required).
-2. Call `ReadBarcodes()` from [`ReadBarcode.h`](core/src/ReadBarcode.h), the simplest API to get a list of `Barcode` objects.
+2. Call `ReadBarcodes()` from [`ReadBarcode.h`](core/src/reader/ReadBarcode.h), the simplest API to get a list of `Barcode` objects.
 
 A very simple example looks like this:
 ```c++
-#include "ZXing/ReadBarcode.h"
+#include "ZXing/reader/ReadBarcode.h"
 #include <iostream>
 
 int main(int argc, char** argv)
@@ -82,7 +82,7 @@ To see the full capability of the API, have a look at [`ZXingReader.cpp`](exampl
 [Note: At least C++17 is required on the client side to use the API.]
 
 ### To write barcodes:
-1. Create a [`MultiFormatWriter`](core/src/MultiFormatWriter.h) instance with the format you want to generate. Set encoding and margins if needed.
+1. Create a [`MultiFormatWriter`](core/src/reader/MultiFormatWriter.h) instance with the format you want to generate. Set encoding and margins if needed.
 2. Call `encode()` with text content and the image size. This returns a [`BitMatrix`](core/src/BitMatrix.h) which is a binary image of the barcode where `true` == visual black and `false` == visual white.
 3. Convert the bit matrix to your native image format. See also the `ToMatrix<T>(BitMatrix&)` helper function.
 

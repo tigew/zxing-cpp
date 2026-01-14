@@ -72,67 +72,94 @@ When implementing a new barcode format reader or writer:
 
 ---
 
-## Missing Formats to Implement
+## Types of Symbology (Zint-aligned)
 
-### Priority 1: Postal Codes (High demand)
+The list below mirrors the Zint manual’s structure and is used to plan missing format implementations. Each entry
+includes a complexity estimate and notes to guide future work.
 
-| Format | Category | Complexity | Notes |
+### 6.1 One-Dimensional Symbols
+| Format | Variants | Complexity | Notes |
 |--------|----------|------------|-------|
-| Australia Post (4 variants) | Postal | Medium | Standard Customer, Reply Paid, Routing, Redirection |
-| Dutch Post KIX Code | Postal | Medium | Netherlands postal |
-| Japan Post | Postal | Medium | |
-| Korea Post | Postal | Medium | |
-| Royal Mail 4-State (RM4SCC) | Postal | Medium | UK postal |
-| Royal Mail 4-State Mailmark | Postal | Medium | Modern UK postal |
-| USPS OneCode (Intelligent Mail) | Postal | High | US postal |
-| POSTNET / PLANET | Postal | Low | Legacy US postal |
-| Deutsche Post Leitcode | Postal | Medium | German routing |
-| Deutsche Post Identcode | Postal | Medium | German identification |
+| Code 11 | — | Low | Telecommunications |
+| Code 2 of 5 | Standard, IATA, Industrial, Interleaved (ISO 16390), Data Logic, ITF-14, Deutsche Post Leitcode/Identcode | Low | 2 of 5 family |
+| UPC (ISO 15420) | UPC-A, UPC-E | Low | Retail UPC |
+| EAN (ISO 15420) | EAN-2, EAN-5, EAN-8, EAN-13, SBN/ISBN/ISBN-13 | Low | Retail EAN |
+| Plessey | UK Plessey, MSI Plessey | Medium | Inventory/warehousing |
+| Telepen | Alpha, Numeric | Medium | UK library system |
+| Code 39 (ISO 16388) | Standard, Extended, Code 93, PZN, LOGMARS, Code 32, HIBC Code 39, VIN | Low | Code 39 family |
+| Codabar (EN 798) | — | Low | Legacy |
+| Pharmacode | — | Low | Pharmaceutical |
+| Code 128 (ISO 15417) | Standard, Subset B, GS1-128, EAN-14, NVE-18, HIBC, DPD | Medium | High density |
+| GS1 DataBar (ISO 24724) | Omnidirectional/Truncated, Limited, Expanded | Medium | GS1 family |
+| Korea Post Barcode | — | Medium | Postal linear |
+| Channel Code | — | Medium | Compact numeric encoding |
 
-### Priority 2: Industrial/Linear Codes
-
-| Format | Category | Complexity | Notes |
+### 6.2 Stacked Symbologies
+| Format | Variants | Complexity | Notes |
 |--------|----------|------------|-------|
-| Code 11 | Linear | Low | Telecommunications |
-| MSI (Modified Plessey) | Linear | Low | Inventory/warehousing |
-| Telepen | Linear | Low | UK library system |
-| LOGMARS | Linear | Low | Code 39 variant for military |
-| Code 32 | Linear | Low | Italian Pharmacode (Code 39 variant) |
-| Pharmacode | Linear | Low | Pharmaceutical |
-| Pharmacode Two-Track | Linear | Medium | Pharmaceutical |
-| Pharmazentralnummer | Linear | Low | German pharmaceutical (Code 39 variant) |
-| Channel Code | Linear | Medium | Compact numeric encoding |
+| Codablock-F | — | High | Stacked Code 128/39 |
+| Code 16K (EN 12323) | — | High | Stacked Code 128 |
+| PDF417 (ISO 15438) | Compact PDF417, MicroPDF417 (ISO 24728) | Medium | Stacked linear |
+| GS1 DataBar Stacked (ISO 24724) | Stacked, Stacked Omnidirectional, Expanded Stacked | Medium | GS1 variants |
+| Code 49 | — | High | Multi-row alphanumeric |
 
-### Priority 3: Code 2 of 5 Variants
-
-| Format | Category | Complexity | Notes |
+### 6.3 GS1 Composite Symbols (ISO 24723)
+| Format | Variants | Complexity | Notes |
 |--------|----------|------------|-------|
-| Matrix 2 of 5 | Linear | Low | Also known as Code 25 |
-| Industrial 2 of 5 | Linear | Low | |
-| IATA 2 of 5 | Linear | Low | Airline industry |
-| Datalogic 2 of 5 | Linear | Low | |
+| GS1 Composite | CC-A, CC-B, CC-C | High | Composite components |
 
-### Priority 4: Stacked/Multi-Row Linear
-
-| Format | Category | Complexity | Notes |
+### 6.4 Two-Track Symbols
+| Format | Variants | Complexity | Notes |
 |--------|----------|------------|-------|
-| Codablock F | Stacked | High | Stacked Code 128/39 |
-| Code 16k | Stacked | High | Stacked Code 128 |
-| Code 49 | Stacked | High | Multi-row alphanumeric |
-| GS1 DataBar Stacked | Stacked | Medium | Already partial via `stacked` option |
-| GS1 DataBar Stacked Omnidirectional | Stacked | Medium | |
-| GS1 DataBar Expanded Stacked | Stacked | Medium | Already partial via `stacked` option |
+| Two-Track Pharmacode | — | Medium | Pharmaceutical |
+| POSTNET | — | Low | Legacy US postal |
+| PLANET | — | Low | Legacy US postal |
 
-### Priority 5: 2D Matrix Codes
-
-| Format | Category | Complexity | Notes |
+### 6.5 4-State Postal Codes
+| Format | Variants | Complexity | Notes |
 |--------|----------|------------|-------|
-| Aztec Runes | Matrix | Medium | Small Aztec variant |
-| Code One | Matrix | High | 2D matrix code |
-| DotCode | Matrix | High | Dot-based matrix |
-| Grid Matrix | Matrix | High | Chinese standard |
-| Han Xin | Matrix | High | Chinese standard GB/T 21049 |
-| UPNQR | Matrix | Low | Slovenian QR Code variant |
+| Australia Post 4-State | Customer, Reply Paid, Routing, Redirect | Medium | 4-state postal |
+| Dutch Post KIX | — | Medium | Netherlands postal |
+| Royal Mail 4-State (RM4SCC) | — | Medium | UK postal |
+| Royal Mail Mailmark | — | High | UK postal |
+| USPS Intelligent Mail | — | High | US postal |
+| Japanese Postal Code | — | Medium | JP postal |
+| DAFT Code | — | Medium | French postal |
+
+### 6.6 Matrix Symbols
+| Format | Variants | Complexity | Notes |
+|--------|----------|------------|-------|
+| Data Matrix (ISO 16022) | — | Medium | ECC200 |
+| QR Code (ISO 18004) | — | Medium | QR family |
+| Micro QR Code (ISO 18004) | — | Medium | QR variant |
+| Rectangular Micro QR Code (rMQR) (ISO 23941) | — | Medium | QR variant |
+| UPNQR | — | Low | Slovenian QR variant |
+| MaxiCode (ISO 16023) | — | High | Shipping |
+| Aztec Code (ISO 24778) | — | Medium | Aztec |
+| Aztec Runes (ISO 24778) | — | Low | Small Aztec |
+| Code One | — | High | 2D matrix code |
+| Grid Matrix | — | High | Chinese standard |
+| DotCode | — | High | Dot-based matrix |
+| Han Xin Code (ISO 20830) | — | High | Chinese standard |
+| Ultracode | — | High | Matrix hybrid |
+
+### 6.7 Other Barcode-Like Markings
+| Format | Variants | Complexity | Notes |
+|--------|----------|------------|-------|
+| Facing Identification Mark (FIM) | — | Low | USPS |
+| Flattermarken | — | Low | Legacy |
+
+### Reader Folder Structure (Zint-aligned)
+Match reader/writer placement to the symbology family:
+- `core/src/oned/` → One-Dimensional Symbols
+- `core/src/stacked/` → Stacked Symbologies (e.g., `stacked/pdf417/`)
+- `core/src/stacked/gs1/` → GS1 helpers (e.g., GTIN, HRI)
+- `core/src/composite/` → GS1 Composite Symbols
+- `core/src/twotrack/` → Two-Track Symbols
+- `core/src/postal/` → 4-State Postal Codes
+- `core/src/matrix/` → Matrix Symbols (e.g., `matrix/aztec/`, `matrix/qrcode/`, `matrix/datamatrix/`, `matrix/maxicode/`)
+- `core/src/other/` → Other Barcode-Like Markings
+- `core/src/reader/` → Reader orchestration and public reader APIs
 
 ---
 
@@ -220,7 +247,7 @@ core/src/newformat/
 ```cpp
 #pragma once
 
-#include "Reader.h"
+#include "reader/Reader.h"
 
 namespace ZXing::NewFormat {
 
@@ -290,8 +317,24 @@ static const BarcodeFormatName NAMES[] = {
 
 In `core/CMakeLists.txt`:
 ```cmake
-# Add format option
+# Master enable flag (global)
+option("ZXING_ENABLE_ALL" "Enable all barcode families" ON)
+
+# Category-level enable flags
+option("ZXING_ENABLE_CATEGORY_ONED" "Enable One-Dimensional symbols" ON)
+option("ZXING_ENABLE_CATEGORY_STACKED" "Enable Stacked symbologies" ON)
+option("ZXING_ENABLE_CATEGORY_COMPOSITE" "Enable GS1 composite symbols" ON)
+option("ZXING_ENABLE_CATEGORY_TWOTRACK" "Enable Two-Track symbols" ON)
+option("ZXING_ENABLE_CATEGORY_POSTAL" "Enable 4-State postal symbols" ON)
+option("ZXING_ENABLE_CATEGORY_MATRIX" "Enable Matrix symbologies" ON)
+option("ZXING_ENABLE_CATEGORY_OTHER" "Enable other barcode-like markings" ON)
+
+# Format-level flag (single reader)
 option("ZXING_ENABLE_NEWFORMAT" "Enable support for NEWFORMAT barcodes" ON)
+
+# Variant-level flags (when a format has multiple variants)
+option("ZXING_ENABLE_NEWFORMAT_VARIANT_X" "Enable NEWFORMAT Variant X" ON)
+option("ZXING_ENABLE_NEWFORMAT_VARIANT_Y" "Enable NEWFORMAT Variant Y" ON)
 
 # Add to public flags
 list(APPEND ZXING_PUBLIC_FLAGS
@@ -406,56 +449,18 @@ typedef enum {
 
 ---
 
-## Implementation Roadmap
+## Implementation Roadmap (Zint-aligned)
 
-### Phase 1: Low-Complexity Linear Codes
-Start with simple 1D formats that follow established patterns:
+Use the symbology categories above as the primary roadmap grouping. Prioritize within each family based on demand,
+implementation complexity, and available test assets:
 
-1. **Code 11** - Simple linear, limited character set
-2. **MSI (Modified Plessey)** - Simple linear with checksum
-3. **Pharmacode** - Very simple linear (single track)
-4. **Matrix 2 of 5** - Simple numeric-only code
-5. **Industrial 2 of 5** - Similar to Matrix 2/5
-6. **IATA 2 of 5** - Airline variant
-7. **Datalogic 2 of 5** - Similar structure
-
-### Phase 2: Code 39 Variants
-These derive from existing Code39 implementation:
-
-1. **LOGMARS** - Military variant of Code 39
-2. **Code 32** - Italian pharmacode (base 32 encoding)
-3. **Pharmazentralnummer** - German pharmaceutical
-
-### Phase 3: Postal Codes
-These share 4-state bar patterns:
-
-1. **Royal Mail 4-State (RM4SCC)** - Base implementation
-2. **Royal Mail 4-State Mailmark** - Extension of RM4SCC
-3. **POSTNET / PLANET** - Simple height-based encoding
-4. **Dutch Post KIX** - Similar to RM4SCC
-5. **Australia Post** - 4 variants, bar-based
-6. **Japan Post** - Similar pattern concept
-7. **Korea Post** - Similar structure
-8. **Deutsche Post Leitcode/Identcode** - German variants
-9. **USPS Intelligent Mail** - Complex, combines POSTNET features
-
-### Phase 4: Stacked Linear Codes
-More complex multi-row formats:
-
-1. **DataBar Stacked variants** - Extend existing DataBar
-2. **Codablock F** - Stacked Code 128/39
-3. **Code 16k** - Stacked Code 128
-4. **Code 49** - Multi-row alphanumeric
-
-### Phase 5: 2D Matrix Codes
-Most complex implementations:
-
-1. **Aztec Runes** - Small Aztec variant
-2. **UPNQR** - QR Code variant
-3. **DotCode** - Dot-based matrix
-4. **Code One** - 2D matrix
-5. **Grid Matrix** - Chinese standard
-6. **Han Xin** - Chinese standard
+1. **One-Dimensional Symbols** (basic linear codes and variants)
+2. **Stacked Symbologies**
+3. **GS1 Composite Symbols**
+4. **Two-Track Symbols**
+5. **4-State Postal Codes**
+6. **Matrix Symbols**
+7. **Other Barcode-Like Markings**
 
 ---
 
@@ -494,12 +499,14 @@ cmake -B build -DZXING_ENABLE_NEWFORMAT=OFF
   - Writer available via libzint integration (ZXING_WRITERS=NEW)
   - iOS wrapper and C API updated
 
-### Pending Phases
-- [ ] Phase 1: Low-Complexity Linear Codes
-- [ ] Phase 2: Code 39 Variants
-- [ ] Phase 3: Postal Codes (Australia Post first)
-- [ ] Phase 4: Stacked Linear Codes
-- [ ] Phase 5: 2D Matrix Codes
+### Pending Families
+- [ ] One-Dimensional Symbols
+- [ ] Stacked Symbologies
+- [ ] GS1 Composite Symbols
+- [ ] Two-Track Symbols
+- [ ] 4-State Postal Codes
+- [ ] Matrix Symbols
+- [ ] Other Barcode-Like Markings
 
 ### Implementation Checklist Template
 For each new format, complete these steps:
