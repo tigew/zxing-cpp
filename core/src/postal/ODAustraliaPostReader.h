@@ -7,9 +7,11 @@
 
 #include "reader/Reader.h"
 
-namespace ZXing::OneD {
-
+namespace ZXing {
 class BitMatrix;
+}
+
+namespace ZXing::OneD {
 
 /**
  * Reader for Australia Post 4-State Customer Barcodes.
@@ -40,7 +42,7 @@ public:
 	Barcodes decode(const BinaryBitmap& image, int maxSymbols) const override;
 
 private:
-	Barcode decodeInternal(const BitMatrix& image, bool tryRotated) const;
+	Barcode decodeRow(const BitMatrix& image, int rowNumber) const;
 };
 
 } // namespace ZXing::OneD

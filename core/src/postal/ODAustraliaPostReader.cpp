@@ -152,11 +152,12 @@ static int DecodeNPair(uint8_t b0, uint8_t b1) {
 	return -1;
 }
 
-// Decode a triplet of bar states to a character index using C Table
+// Decode a triplet of bar states to a character index using C Table (reverse lookup)
 static int DecodeCTripletIndex(uint8_t b0, uint8_t b1, uint8_t b2) {
-	int value = b0 * 16 + b1 * 4 + b2;
-	if (value >= 0 && value < 64)
-		return value;
+	for (int i = 0; i < 64; ++i) {
+		if (C_TABLE[i][0] == b0 && C_TABLE[i][1] == b1 && C_TABLE[i][2] == b2)
+			return i;
+	}
 	return -1;
 }
 
@@ -385,25 +386,25 @@ static std::vector<uint8_t> ReadBarStates(const BarcodeRegion& region) {
 }
 
 // Decode the bar states into content
-static std::string DecodeBarStates(const std::vector<uint8_t>& states, const FCCInfo** outFCC) {
+static std::string DecodeBarStates(const std::vector<uint8_t>& inputStates, const FCCInfo** outFCC) {
 	*outFCC = nullptr;
 
-	size_t barCount = states.size();
+	size_t barCount = inputStates.size();
 	if (barCount < 37)
 		return {};
 
 	// Check start bars: must be 1,3 (Descender, Full)
-	if (states[0] != DESCENDER || states[1] != FULL)
+	if (inputStates[0] != DESCENDER || inputStates[1] != FULL)
 		return {};
 
 	// Check stop bars: must be 1,3 (Descender, Full)
-	if (states[barCount - 2] != DESCENDER || states[barCount - 1] != FULL)
+	if (inputStates[barCount - 2] != DESCENDER || inputStates[barCount - 1] != FULL)
 		return {};
 
 	// Decode FCC (Format Control Code) - 4 bars at positions 2-5
 	// FCC is encoded as 2 N-table digits
-	int fccDigit1 = DecodeNPair(states[2], states[3]);
-	int fccDigit2 = DecodeNPair(states[4], states[5]);
+	int fccDigit1 = DecodeNPair(inputStates[2], inputStates[3]);
+	int fccDigit2 = DecodeNPair(inputStates[4], inputStates[5]);
 
 	if (fccDigit1 < 0 || fccDigit2 < 0)
 		return {};
@@ -421,10 +422,13 @@ static std::string DecodeBarStates(const std::vector<uint8_t>& states, const FCC
 
 	*outFCC = fccInfo;
 
+	// Make a local copy of states for RS correction
+	std::vector<uint8_t> states = inputStates;
+
 	// Build RS codeword for error checking
 	std::vector<int> rsCodeword;
 	// Convert bars to triplets (each triplet = one RS symbol)
-	// Data starts after start bars (2) and FCC (4), RS parity is last 12 bars before stop (2)
+	// Data starts after start bars (2), RS parity is last 12 bars before stop (2)
 	int dataStart = 2;  // After start bars
 
 	for (int i = dataStart; i + 2 < static_cast<int>(barCount) - 2; i += 3) {
@@ -435,6 +439,7 @@ static std::string DecodeBarStates(const std::vector<uint8_t>& states, const FCC
 	if (!ReedSolomonDecode(GenericGF::MaxiCodeField64(), rsCodeword, 4))
 		return {};
 
+	// Apply corrected values back to states
 	for (size_t i = 0; i < rsCodeword.size(); ++i) {
 		int value = rsCodeword[i];
 		int barIndex = dataStart + static_cast<int>(i) * 3;
@@ -500,8 +505,36 @@ static std::string DecodeBarStates(const std::vector<uint8_t>& states, const FCC
 	return result;
 }
 
-Barcode AustraliaPostReader::decodeInternal(const BitMatrix& image, bool tryRotated) const {
-	int height = image.height();
+Barcode AustraliaPostReader::decodeRow(const BitMatrix& image, int rowNumber) const {
+	BarcodeRegion region = DetectBarcodeRegion(image, rowNumber);
+	if (!region.valid)
+		return {};
+
+	// Read bar states from the region
+	auto states = ReadBarStates(region);
+
+	// Try to decode
+	const FCCInfo* fccInfo = nullptr;
+	std::string content = DecodeBarStates(states, &fccInfo);
+
+	if (!content.empty() && fccInfo) {
+		// Symbology identifier for Australia Post: X0
+		SymbologyIdentifier si = {'X', '0'};
+
+		// Use linear barcode constructor with y position, xStart, xStop
+		int y = (region.top + region.bottom) / 2;
+		return Barcode(content, y, region.left, region.right, BarcodeFormat::AustraliaPost, si);
+	}
+
+	return {};
+}
+
+Barcode AustraliaPostReader::decode(const BinaryBitmap& image) const {
+	auto binImg = image.getBitMatrix();
+	if (binImg == nullptr)
+		return {};
+
+	int height = binImg->height();
 
 	// Try different vertical positions to find the barcode
 	std::vector<int> scanPositions = {
@@ -513,69 +546,34 @@ Barcode AustraliaPostReader::decodeInternal(const BitMatrix& image, bool tryRota
 	};
 
 	for (int y : scanPositions) {
-		BarcodeRegion region = DetectBarcodeRegion(image, y);
-		if (!region.valid)
-			continue;
+		Barcode result = decodeRow(*binImg, y);
+		if (result.isValid())
+			return result;
+	}
 
-		// Read bar states from the region
-		auto states = ReadBarStates(region);
+	// Try rotated 90 degrees if tryRotate is enabled
+	if (_opts.tryRotate()) {
+		BitMatrix rotated = binImg->copy();
+		rotated.rotate90();
+		height = rotated.height();
 
-		// Try to decode
-		const FCCInfo* fccInfo = nullptr;
-		std::string content = DecodeBarStates(states, &fccInfo);
+		scanPositions = {
+			height / 2,
+			height / 3,
+			2 * height / 3
+		};
 
-		if (!content.empty() && fccInfo) {
-			// Build position quadrilateral
-			QuadrilateralI position;
-			if (tryRotated) {
-				position = QuadrilateralI{
-					{region.top, image.width() - region.right},
-					{region.bottom, image.width() - region.right},
-					{region.bottom, image.width() - region.left},
-					{region.top, image.width() - region.left}
-				};
-			} else {
-				position = QuadrilateralI{
-					{region.left, region.top},
-					{region.right, region.top},
-					{region.right, region.bottom},
-					{region.left, region.bottom}
-				};
-			}
-
-			// Symbology identifier for Australia Post
-			SymbologyIdentifier si = {'X', '0'};
-
-			return Barcode(content, position, BarcodeFormat::AustraliaPost, si);
+		for (int y : scanPositions) {
+			Barcode result = decodeRow(rotated, y);
+			if (result.isValid())
+				return result;
 		}
 	}
 
 	return {};
 }
 
-Barcode AustraliaPostReader::decode(const BinaryBitmap& image) const {
-	auto binImg = image.getBitMatrix();
-	if (binImg == nullptr)
-		return {};
-
-	// Try normal orientation
-	Barcode result = decodeInternal(*binImg, false);
-	if (result.isValid())
-		return result;
-
-	// Try rotated 90 degrees if tryRotate is enabled
-	if (_opts.tryRotate()) {
-		BitMatrix rotated = binImg->copy();
-		rotated.rotate90();
-		result = decodeInternal(rotated, true);
-		if (result.isValid())
-			return result;
-	}
-
-	return {};
-}
-
-Barcodes AustraliaPostReader::decode(const BinaryBitmap& image, int maxSymbols) const {
+Barcodes AustraliaPostReader::decode(const BinaryBitmap& image, [[maybe_unused]] int maxSymbols) const {
 	Barcodes results;
 	auto result = decode(image);
 	if (result.isValid()) {
