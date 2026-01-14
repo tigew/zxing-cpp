@@ -4,29 +4,32 @@
 */
 // SPDX-License-Identifier: Apache-2.0
 
-#include "MultiFormatReader.h"
+#include "reader/MultiFormatReader.h"
 
 #include "BarcodeFormat.h"
 #include "BinaryBitmap.h"
-#include "Reader.h"
-#include "ReaderOptions.h"
+#include "reader/Reader.h"
+#include "reader/ReaderOptions.h"
 #ifdef ZXING_WITH_AZTEC
-#include "aztec/AZReader.h"
+#include "matrix/aztec/AZReader.h"
 #endif
 #ifdef ZXING_WITH_DATAMATRIX
-#include "datamatrix/DMReader.h"
+#include "matrix/datamatrix/DMReader.h"
 #endif
 #ifdef ZXING_WITH_MAXICODE
-#include "maxicode/MCReader.h"
+#include "matrix/maxicode/MCReader.h"
+#endif
+#ifdef ZXING_WITH_AUSTRALIA_POST
+#include "postal/ODAustraliaPostReader.h"
 #endif
 #ifdef ZXING_WITH_1D
 #include "oned/ODReader.h"
 #endif
 #ifdef ZXING_WITH_PDF417
-#include "pdf417/PDFReader.h"
+#include "stacked/pdf417/PDFReader.h"
 #endif
 #ifdef ZXING_WITH_QRCODE
-#include "qrcode/QRReader.h"
+#include "matrix/qrcode/QRReader.h"
 #endif
 
 #include <memory>
@@ -41,6 +44,10 @@ MultiFormatReader::MultiFormatReader(const ReaderOptions& opts) : _opts(opts)
 #ifdef ZXING_WITH_1D
 	if (formats.testFlags(BarcodeFormat::LinearCodes) && !opts.tryHarder())
 		_readers.emplace_back(new OneD::Reader(opts));
+#endif
+#ifdef ZXING_WITH_AUSTRALIA_POST
+	if (formats.testFlag(BarcodeFormat::AustraliaPost) && !opts.tryHarder())
+		_readers.emplace_back(new OneD::AustraliaPostReader(opts));
 #endif
 
 #ifdef ZXING_WITH_QRCODE
@@ -65,6 +72,10 @@ MultiFormatReader::MultiFormatReader(const ReaderOptions& opts) : _opts(opts)
 #endif
 
 	// At end in "try harder" mode
+#ifdef ZXING_WITH_AUSTRALIA_POST
+	if (formats.testFlag(BarcodeFormat::AustraliaPost) && opts.tryHarder())
+		_readers.emplace_back(new OneD::AustraliaPostReader(opts));
+#endif
 #ifdef ZXING_WITH_1D
 	if (formats.testFlags(BarcodeFormat::LinearCodes) && opts.tryHarder())
 		_readers.emplace_back(new OneD::Reader(opts));

@@ -7,7 +7,7 @@
 #include "oned/ODCode93Reader.h"
 #include "BitArray.h"
 #include "BitArrayUtility.h"
-#include "ReaderOptions.h"
+#include "reader/ReaderOptions.h"
 #include "Barcode.h"
 
 #include "gtest/gtest.h"

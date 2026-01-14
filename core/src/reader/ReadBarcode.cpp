@@ -3,7 +3,7 @@
 */
 // SPDX-License-Identifier: Apache-2.0
 
-#include "ReadBarcode.h"
+#include "reader/ReadBarcode.h"
 
 #if !defined(ZXING_READERS) && !defined(ZXING_WRITERS)
 #include "Version.h"
@@ -12,7 +12,7 @@
 #ifdef ZXING_READERS
 #include "GlobalHistogramBinarizer.h"
 #include "HybridBinarizer.h"
-#include "MultiFormatReader.h"
+#include "reader/MultiFormatReader.h"
 #include "Pattern.h"
 #include "ThresholdBinarizer.h"
 #endif

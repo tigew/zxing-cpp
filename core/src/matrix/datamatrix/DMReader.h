@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "Reader.h"
+#include "reader/Reader.h"
 
 namespace ZXing::DataMatrix {
 

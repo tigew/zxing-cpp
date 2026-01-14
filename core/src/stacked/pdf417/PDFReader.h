@@ -6,10 +6,17 @@
 
 #pragma once
 
-#include "Reader.h"
+#include "reader/Reader.h"
 
-namespace ZXing::Aztec {
+#include <list>
 
+namespace ZXing::Pdf417 {
+
+/**
+* This implementation can detect and decode PDF417 codes in an image.
+*
+* @author Guenther Grau
+*/
 class Reader : public ZXing::Reader
 {
 public:
@@ -19,4 +26,4 @@ public:
 	Barcodes decode(const BinaryBitmap& image, int maxSymbols) const override;
 };
 
-} // namespace ZXing::Aztec
+} // namespace ZXing::Pdf417

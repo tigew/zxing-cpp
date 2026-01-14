@@ -6,7 +6,7 @@
 #include "ODDataBarLimitedReader.h"
 
 #include "BarcodeFormat.h"
-#include "GTIN.h"
+#include "stacked/gs1/GTIN.h"
 #include "ODDataBarCommon.h"
 #include "Barcode.h"
 

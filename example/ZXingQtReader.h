@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "ReadBarcode.h"
+#include "reader/ReadBarcode.h"
 
 #include <QImage>
 #include <QDebug>

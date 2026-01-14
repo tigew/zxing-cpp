@@ -9,7 +9,7 @@
 
 #include "BinaryBitmap.h"
 #include "ConcentricFinder.h"
-#include "ReaderOptions.h"
+#include "reader/ReaderOptions.h"
 #include "DecoderResult.h"
 #include "DetectorResult.h"
 #include "LogMatrix.h"

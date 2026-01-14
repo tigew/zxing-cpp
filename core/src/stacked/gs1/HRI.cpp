@@ -5,7 +5,7 @@
 */
 // SPDX-License-Identifier: Apache-2.0
 
-#include "HRI.h"
+#include "stacked/gs1/HRI.h"
 
 #include "ZXAlgorithms.h"
 

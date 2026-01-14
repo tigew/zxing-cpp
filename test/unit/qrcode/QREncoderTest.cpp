@@ -9,10 +9,10 @@
 #include "CharacterSet.h"
 #include "TextDecoder.h"
 #include "Utf.h"
-#include "qrcode/QREncoder.h"
-#include "qrcode/QRCodecMode.h"
-#include "qrcode/QREncodeResult.h"
-#include "qrcode/QRErrorCorrectionLevel.h"
+#include "matrix/qrcode/QREncoder.h"
+#include "matrix/qrcode/QRCodecMode.h"
+#include "matrix/qrcode/QREncodeResult.h"
+#include "matrix/qrcode/QRErrorCorrectionLevel.h"
 
 #include "gtest/gtest.h"
 

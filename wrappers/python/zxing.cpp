@@ -8,17 +8,17 @@
 #include "BarcodeFormat.h"
 
 // Reader
-#include "ReadBarcode.h"
+#include "reader/ReadBarcode.h"
 #include "ZXAlgorithms.h"
 
 // Writer
 #ifdef ZXING_EXPERIMENTAL_API
-#include "WriteBarcode.h"
+#include "reader/WriteBarcode.h"
 #include <bit>
 #else
 #include "BitMatrix.h"
 #include "Matrix.h"
-#include "MultiFormatWriter.h"
+#include "reader/MultiFormatWriter.h"
 #include <cstring>
 #endif
 

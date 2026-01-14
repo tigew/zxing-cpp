@@ -5,7 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 #include "BitMatrixIO.h"
-#include "pdf417/PDFWriter.h"
+#include "stacked/pdf417/PDFWriter.h"
 
 #include "gtest/gtest.h"
 

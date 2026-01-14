@@ -6,9 +6,9 @@
 
 #include "BitMatrix.h"
 #ifdef ZXING_EXPERIMENTAL_API
-#include "WriteBarcode.h"
+#include "reader/WriteBarcode.h"
 #else
-#include "MultiFormatWriter.h"
+#include "reader/MultiFormatWriter.h"
 #endif
 
 #include <vector>

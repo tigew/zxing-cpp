@@ -6,7 +6,7 @@
 
 #ifdef ZXING_EXPERIMENTAL_API
 
-#include "WriteBarcode.h"
+#include "reader/WriteBarcode.h"
 #include "BitMatrix.h"
 #include "JSON.h"
 
@@ -155,7 +155,7 @@ inline bool IsAscii(ByteView bv)
 #include "ECI.h"
 
 #ifdef ZXING_READERS
-#include "ReadBarcode.h"
+#include "reader/ReadBarcode.h"
 #endif
 
 #include <charconv>
@@ -560,8 +560,8 @@ struct SetCommonWriterOptions
 
 #else // ZXING_USE_ZINT
 
-#include "MultiFormatWriter.h"
-#include "ReadBarcode.h"
+#include "reader/MultiFormatWriter.h"
+#include "reader/ReadBarcode.h"
 
 namespace ZXing {
 

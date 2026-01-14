@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "GTIN.h"
+#include "stacked/gs1/GTIN.h"
 
 #include <array>
 #include <cstddef>

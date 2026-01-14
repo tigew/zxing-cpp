@@ -6,9 +6,9 @@
 #include "BitArray.h"
 #include "ByteArray.h"
 #include "DecoderResult.h"
-#include "qrcode/QRErrorCorrectionLevel.h"
-#include "qrcode/QRVersion.h"
-#include "pdf417/PDFDecoder.h"
+#include "matrix/qrcode/QRErrorCorrectionLevel.h"
+#include "matrix/qrcode/QRVersion.h"
+#include "stacked/pdf417/PDFDecoder.h"
 
 #include <algorithm>
 #include <cstddef>

@@ -18,7 +18,8 @@ let package = Package(
             exclude: ["libzint", "ZXingC.cpp", "ZXingCpp.cpp"],
             publicHeadersPath: ".",
             cxxSettings: [
-                .define("ZXING_READERS")
+                .define("ZXING_READERS"),
+                .define("ZXING_ENABLE_ALL")
             ]
         ),
         .target(

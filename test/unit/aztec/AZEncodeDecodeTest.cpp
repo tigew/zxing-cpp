@@ -9,11 +9,11 @@
 #include "DecoderResult.h"
 #include "PseudoRandom.h"
 #include "TextEncoder.h"
-#include "aztec/AZDecoder.h"
-#include "aztec/AZDetector.h"
-#include "aztec/AZDetectorResult.h"
-#include "aztec/AZEncoder.h"
-#include "aztec/AZWriter.h"
+#include "matrix/aztec/AZDecoder.h"
+#include "matrix/aztec/AZDetector.h"
+#include "matrix/aztec/AZDetectorResult.h"
+#include "matrix/aztec/AZEncoder.h"
+#include "matrix/aztec/AZWriter.h"
 
 #include <algorithm>
 #include <utility>

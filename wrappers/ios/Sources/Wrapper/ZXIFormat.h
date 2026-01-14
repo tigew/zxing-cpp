@@ -7,9 +7,31 @@
 #define ZXIFormat_h
 
 typedef NS_ENUM(NSInteger, ZXIFormat) {
-    NONE, AZTEC, CODABAR, CODE_39, CODE_93, CODE_128, DATA_BAR, DATA_BAR_EXPANDED, DATA_BAR_LIMITED,
-    DATA_MATRIX, DX_FILM_EDGE, EAN_8, EAN_13, ITF, MAXICODE, PDF_417, QR_CODE, MICRO_QR_CODE, RMQR_CODE, UPC_A, UPC_E,
-    LINEAR_CODES, MATRIX_CODES, ANY
+    NONE = 0,
+    AZTEC = 1,
+    CODABAR = 2,
+    CODE_39 = 3,
+    CODE_93 = 4,
+    CODE_128 = 5,
+    DATA_BAR = 6,
+    DATA_BAR_EXPANDED = 7,
+    DATA_BAR_LIMITED = 8,
+    DATA_MATRIX = 9,
+    DX_FILM_EDGE = 10,
+    EAN_8 = 11,
+    EAN_13 = 12,
+    ITF = 13,
+    MAXICODE = 14,
+    PDF_417 = 15,
+    QR_CODE = 16,
+    MICRO_QR_CODE = 17,
+    RMQR_CODE = 18,
+    UPC_A = 19,
+    UPC_E = 20,
+    LINEAR_CODES = 21,
+    MATRIX_CODES = 22,
+    ANY = 23,
+    AUSTRALIA_POST = 24
 };
 
 #endif 

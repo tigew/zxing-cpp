@@ -7,7 +7,7 @@
 #include <stddef.h>
 
 #include "ByteArray.h"
-#include "datamatrix/DMHighLevelEncoder.h"
+#include "matrix/datamatrix/DMHighLevelEncoder.h"
 
 using namespace ZXing;
 using namespace ZXing::DataMatrix;

@@ -98,12 +98,13 @@ typedef enum
 	ZXing_BarcodeFormat_RMQRCode = (1 << 17),
 	ZXing_BarcodeFormat_DXFilmEdge = (1 << 18),
 	ZXing_BarcodeFormat_DataBarLimited = (1 << 19),
+	ZXing_BarcodeFormat_AustraliaPost = (1 << 20),
 
 	ZXing_BarcodeFormat_LinearCodes = ZXing_BarcodeFormat_Codabar | ZXing_BarcodeFormat_Code39 | ZXing_BarcodeFormat_Code93
 									  | ZXing_BarcodeFormat_Code128 | ZXing_BarcodeFormat_EAN8 | ZXing_BarcodeFormat_EAN13
 									  | ZXing_BarcodeFormat_ITF | ZXing_BarcodeFormat_DataBar | ZXing_BarcodeFormat_DataBarExpanded
 									  | ZXing_BarcodeFormat_DataBarLimited | ZXing_BarcodeFormat_DXFilmEdge | ZXing_BarcodeFormat_UPCA
-									  | ZXing_BarcodeFormat_UPCE,
+									  | ZXing_BarcodeFormat_UPCE | ZXing_BarcodeFormat_AustraliaPost,
 	ZXing_BarcodeFormat_MatrixCodes = ZXing_BarcodeFormat_Aztec | ZXing_BarcodeFormat_DataMatrix | ZXing_BarcodeFormat_MaxiCode
 									  | ZXing_BarcodeFormat_PDF417 | ZXing_BarcodeFormat_QRCode | ZXing_BarcodeFormat_MicroQRCode
 									  | ZXing_BarcodeFormat_RMQRCode,
@@ -199,7 +200,7 @@ const ZXing_Barcode* ZXing_Barcodes_at(const ZXing_Barcodes* barcodes, int i);
 ZXing_Barcode* ZXing_Barcodes_move(ZXing_Barcodes* barcodes, int i);
 
 /*
- * ZXing/ReaderOptions.h
+ * ZXing/reader/ReaderOptions.h
  */
 
 typedef enum
@@ -262,7 +263,7 @@ int ZXing_ReaderOptions_getMinLineCount(const ZXing_ReaderOptions* opts);
 int ZXing_ReaderOptions_getMaxNumberOfSymbols(const ZXing_ReaderOptions* opts);
 
 /*
- * ZXing/ReadBarcode.h
+ * ZXing/reader/ReadBarcode.h
  */
 
 /** Note: opts is optional, i.e. it can be NULL, which will imply default settings. */
@@ -271,7 +272,7 @@ ZXing_Barcodes* ZXing_ReadBarcodes(const ZXing_ImageView* iv, const ZXing_Reader
 #ifdef ZXING_EXPERIMENTAL_API
 
 /*
- * ZXing/WriteBarcode.h
+ * ZXing/reader/WriteBarcode.h
  */
 
 ZXing_CreatorOptions* ZXing_CreatorOptions_new(ZXing_BarcodeFormat format);

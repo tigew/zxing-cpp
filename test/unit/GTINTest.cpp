@@ -3,7 +3,7 @@
 */
 // SPDX-License-Identifier: Apache-2.0
 
-#include "GTIN.h"
+#include "stacked/gs1/GTIN.h"
 
 #include "gtest/gtest.h"
 

@@ -3,14 +3,14 @@
 */
 // SPDX-License-Identifier: Apache-2.0
 
-#include "MultiFormatWriter.h"
+#include "reader/MultiFormatWriter.h"
 
 #include "BitMatrix.h"
 #ifdef ZXING_WITH_AZTEC
-#include "aztec/AZWriter.h"
+#include "matrix/aztec/AZWriter.h"
 #endif
 #ifdef ZXING_WITH_DATAMATRIX
-#include "datamatrix/DMWriter.h"
+#include "matrix/datamatrix/DMWriter.h"
 #endif
 #ifdef ZXING_WITH_1D
 #include "oned/ODCodabarWriter.h"
@@ -24,11 +24,11 @@
 #include "oned/ODUPCEWriter.h"
 #endif
 #ifdef ZXING_WITH_PDF417
-#include "pdf417/PDFWriter.h"
+#include "stacked/pdf417/PDFWriter.h"
 #endif
 #ifdef ZXING_WITH_QRCODE
-#include "qrcode/QRErrorCorrectionLevel.h"
-#include "qrcode/QRWriter.h"
+#include "matrix/qrcode/QRErrorCorrectionLevel.h"
+#include "matrix/qrcode/QRWriter.h"
 #endif
 #include "Utf.h"
 

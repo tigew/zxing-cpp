@@ -260,7 +260,7 @@ ZXing_Barcode* ZXing_Barcodes_move(ZXing_Barcodes* barcodes, int i)
 }
 
 /*
- * ZXing/ReaderOptions.h
+ * ZXing/reader/ReaderOptions.h
  */
 
 ZXing_ReaderOptions* ZXing_ReaderOptions_new()
@@ -313,7 +313,7 @@ ZX_ENUM_PROPERTY(TextMode, textMode, TextMode)
 #undef ZX_ENUM_PROPERTY
 
 /*
- * ZXing/ReadBarcode.h
+ * ZXing/reader/ReadBarcode.h
  */
 
 ZXing_Barcodes* ZXing_ReadBarcodes(const ZXing_ImageView* iv, const ZXing_ReaderOptions* opts)
@@ -329,7 +329,7 @@ ZXing_Barcodes* ZXing_ReadBarcodes(const ZXing_ImageView* iv, const ZXing_Reader
 
 #ifdef ZXING_EXPERIMENTAL_API
 /*
- * ZXing/WriteBarcode.h
+ * ZXing/reader/WriteBarcode.h
  */
 
 ZXing_CreatorOptions* ZXing_CreatorOptions_new(ZXing_BarcodeFormat format)

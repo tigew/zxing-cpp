@@ -5,7 +5,7 @@
 
 #define HIDE_DECODE_HINTS_ALIAS
 
-#include "ReadBarcode.h"
+#include "reader/ReadBarcode.h"
 
 namespace ZXing {
 

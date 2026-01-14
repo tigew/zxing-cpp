@@ -7,7 +7,7 @@
 
 #include "CharacterSet.h"
 #include "ECI.h"
-#include "HRI.h"
+#include "stacked/gs1/HRI.h"
 #include "TextDecoder.h"
 #include "Utf.h"
 #include "ZXAlgorithms.h"

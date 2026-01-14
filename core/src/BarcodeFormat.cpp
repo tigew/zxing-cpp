@@ -24,6 +24,7 @@ struct BarcodeFormatName
 
 static const BarcodeFormatName NAMES[] = {
 	{BarcodeFormat::None, "None"},
+	{BarcodeFormat::AustraliaPost, "AustraliaPost"},
 	{BarcodeFormat::Aztec, "Aztec"},
 	{BarcodeFormat::Codabar, "Codabar"},
 	{BarcodeFormat::Code39, "Code39"},

@@ -18,7 +18,7 @@
 #include "PDFDetector.h"
 #include "PDFScanningDecoder.h"
 #include "Pattern.h"
-#include "ReaderOptions.h"
+#include "reader/ReaderOptions.h"
 
 #include <algorithm>
 #include <cstdlib>

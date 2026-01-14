@@ -7,8 +7,8 @@
 #include "ByteArray.h"
 #include "CharacterSet.h"
 #include "ZXAlgorithms.h"
-#include "datamatrix/DMHighLevelEncoder.h"
-#include "datamatrix/DMSymbolInfo.h"
+#include "matrix/datamatrix/DMHighLevelEncoder.h"
+#include "matrix/datamatrix/DMSymbolInfo.h"
 
 #include "gtest/gtest.h"
 

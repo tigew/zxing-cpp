@@ -10,7 +10,7 @@
 #include "BarcodeFormat.h"
 #include "ByteArray.h"
 #include "Content.h"
-#include "ReaderOptions.h"
+#include "reader/ReaderOptions.h"
 #include "Error.h"
 #include "ImageView.h"
 #include "Quadrilateral.h"

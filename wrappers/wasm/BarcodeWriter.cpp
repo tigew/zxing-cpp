@@ -4,7 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 #include "BarcodeFormat.h"
-#include "MultiFormatWriter.h"
+#include "reader/MultiFormatWriter.h"
 #include "BitMatrix.h"
 #include "CharacterSet.h"
 

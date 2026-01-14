@@ -6,7 +6,7 @@
 
 #include "BitArray.h"
 #include "BitArrayUtility.h"
-#include "ReaderOptions.h"
+#include "reader/ReaderOptions.h"
 #include "Barcode.h"
 #include "oned/ODCode39Reader.h"
 

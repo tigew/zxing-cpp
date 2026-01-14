@@ -4,7 +4,7 @@
  */
 // SPDX-License-Identifier: Apache-2.0
 
-#include "GTIN.h"
+#include "stacked/gs1/GTIN.h"
 #include "Version.h"
 
 #include <iomanip>
@@ -12,9 +12,9 @@
 #if defined(ZXING_EXPERIMENTAL_API)
 
 #ifdef ZXING_READERS
-#include "ReadBarcode.h"
+#include "reader/ReadBarcode.h"
 #endif
-#include "WriteBarcode.h"
+#include "reader/WriteBarcode.h"
 
 #include "gtest/gtest.h"
 

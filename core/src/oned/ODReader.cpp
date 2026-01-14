@@ -8,17 +8,37 @@
 #include "ODReader.h"
 
 #include "BinaryBitmap.h"
-#include "ReaderOptions.h"
+#include "reader/ReaderOptions.h"
+#ifdef ZXING_WITH_CODABAR
 #include "ODCodabarReader.h"
+#endif
+#ifdef ZXING_WITH_CODE_128
 #include "ODCode128Reader.h"
+#endif
+#ifdef ZXING_WITH_CODE_39
 #include "ODCode39Reader.h"
+#endif
+#ifdef ZXING_WITH_CODE_93
 #include "ODCode93Reader.h"
+#endif
+#ifdef ZXING_WITH_DATA_BAR_EXPANDED
 #include "ODDataBarExpandedReader.h"
+#endif
+#ifdef ZXING_WITH_DATA_BAR_LIMITED
 #include "ODDataBarLimitedReader.h"
+#endif
+#ifdef ZXING_WITH_DATA_BAR
 #include "ODDataBarReader.h"
+#endif
+#ifdef ZXING_WITH_DX_FILM_EDGE
 #include "ODDXFilmEdgeReader.h"
+#endif
+#ifdef ZXING_WITH_ITF
 #include "ODITFReader.h"
+#endif
+#if defined(ZXING_WITH_EAN_13) || defined(ZXING_WITH_EAN_8) || defined(ZXING_WITH_UPC_A) || defined(ZXING_WITH_UPC_E)
 #include "ODMultiUPCEANReader.h"
+#endif
 #include "Barcode.h"
 
 #include <algorithm>
@@ -46,27 +66,47 @@ Reader::Reader(const ReaderOptions& opts) : ZXing::Reader(opts)
 
 	auto formats = opts.formats().empty() ? BarcodeFormat::Any : opts.formats();
 
+#if defined(ZXING_WITH_EAN_13) || defined(ZXING_WITH_EAN_8) || defined(ZXING_WITH_UPC_A) || defined(ZXING_WITH_UPC_E)
 	if (formats.testFlags(BarcodeFormat::EAN13 | BarcodeFormat::UPCA | BarcodeFormat::EAN8 | BarcodeFormat::UPCE))
 		_readers.emplace_back(new MultiUPCEANReader(opts));
+#endif
 
+#ifdef ZXING_WITH_CODE_39
 	if (formats.testFlag(BarcodeFormat::Code39))
 		_readers.emplace_back(new Code39Reader(opts));
+#endif
+#ifdef ZXING_WITH_CODE_93
 	if (formats.testFlag(BarcodeFormat::Code93))
 		_readers.emplace_back(new Code93Reader(opts));
+#endif
+#ifdef ZXING_WITH_CODE_128
 	if (formats.testFlag(BarcodeFormat::Code128))
 		_readers.emplace_back(new Code128Reader(opts));
+#endif
+#ifdef ZXING_WITH_ITF
 	if (formats.testFlag(BarcodeFormat::ITF))
 		_readers.emplace_back(new ITFReader(opts));
+#endif
+#ifdef ZXING_WITH_CODABAR
 	if (formats.testFlag(BarcodeFormat::Codabar))
 		_readers.emplace_back(new CodabarReader(opts));
+#endif
+#ifdef ZXING_WITH_DATA_BAR
 	if (formats.testFlag(BarcodeFormat::DataBar))
 		_readers.emplace_back(new DataBarReader(opts));
+#endif
+#ifdef ZXING_WITH_DATA_BAR_EXPANDED
 	if (formats.testFlag(BarcodeFormat::DataBarExpanded))
 		_readers.emplace_back(new DataBarExpandedReader(opts));
+#endif
+#ifdef ZXING_WITH_DATA_BAR_LIMITED
 	if (formats.testFlag(BarcodeFormat::DataBarLimited))
 		_readers.emplace_back(new DataBarLimitedReader(opts));
+#endif
+#ifdef ZXING_WITH_DX_FILM_EDGE
 	if (formats.testFlag(BarcodeFormat::DXFilmEdge))
 		_readers.emplace_back(new DXFilmEdgeReader(opts));
+#endif
 }
 
 Reader::~Reader() = default;

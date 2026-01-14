@@ -6,8 +6,8 @@
 
 #include "ODITFReader.h"
 
-#include "ReaderOptions.h"
-#include "GTIN.h"
+#include "reader/ReaderOptions.h"
+#include "stacked/gs1/GTIN.h"
 #include "Barcode.h"
 #include "ZXAlgorithms.h"
 

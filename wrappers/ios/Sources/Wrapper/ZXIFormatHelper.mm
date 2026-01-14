@@ -48,6 +48,8 @@ ZXing::BarcodeFormat BarcodeFormatFromZXIFormat(ZXIFormat format) {
             return ZXing::BarcodeFormat::Codabar;
         case ZXIFormat::AZTEC:
             return ZXing::BarcodeFormat::Aztec;
+        case ZXIFormat::AUSTRALIA_POST:
+            return ZXing::BarcodeFormat::AustraliaPost;
         case ZXIFormat::MICRO_QR_CODE:
             return ZXing::BarcodeFormat::MicroQRCode;
         case ZXIFormat::RMQR_CODE:
@@ -65,6 +67,8 @@ ZXIFormat ZXIFormatFromBarcodeFormat(ZXing::BarcodeFormat format) {
             return ZXIFormat::NONE;
         case ZXing::BarcodeFormat::Aztec:
             return ZXIFormat::AZTEC;
+        case ZXing::BarcodeFormat::AustraliaPost:
+            return ZXIFormat::AUSTRALIA_POST;
         case ZXing::BarcodeFormat::Codabar:
             return ZXIFormat::CODABAR;
         case ZXing::BarcodeFormat::Code39:

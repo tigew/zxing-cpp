@@ -9,7 +9,7 @@
 
 #include "BitArray.h"
 #include "Error.h"
-#include "GTIN.h"
+#include "stacked/gs1/GTIN.h"
 
 namespace ZXing::OneD::DataBar {
 

@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "ReaderOptions.h"
+#include "reader/ReaderOptions.h"
 #include "ImageView.h"
 #include "Barcode.h"
 

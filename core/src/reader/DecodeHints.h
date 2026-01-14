@@ -5,6 +5,6 @@
 
 #pragma once
 
-#include "ReaderOptions.h"
+#include "reader/ReaderOptions.h"
 
 // TODO: remove this backward compatibility header once the deprecated name DecodeHints has been removed (3.0)
