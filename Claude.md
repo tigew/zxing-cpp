@@ -336,12 +336,32 @@ option("ZXING_ENABLE_NEWFORMAT" "Enable support for NEWFORMAT barcodes" ON)
 option("ZXING_ENABLE_NEWFORMAT_VARIANT_X" "Enable NEWFORMAT Variant X" ON)
 option("ZXING_ENABLE_NEWFORMAT_VARIANT_Y" "Enable NEWFORMAT Variant Y" ON)
 
+# Effective enablement (master or category + format/variant)
+function (zxing_apply_category out_var category_var)
+    if (ZXING_ENABLE_ALL OR ${category_var})
+        set (${out_var} ON PARENT_SCOPE)
+    else()
+        set (${out_var} OFF PARENT_SCOPE)
+    endif()
+endfunction()
+
+function (zxing_apply_enable out_var category_var format_var)
+    if (ZXING_ENABLE_ALL OR (${category_var} AND ${format_var}))
+        set (${out_var} ON PARENT_SCOPE)
+    else()
+        set (${out_var} OFF PARENT_SCOPE)
+    endif()
+endfunction()
+
+zxing_apply_category(ZXING_ENABLE_CATEGORY_MATRIX_EFFECTIVE ZXING_ENABLE_CATEGORY_MATRIX)
+zxing_apply_enable(ZXING_ENABLE_NEWFORMAT_EFFECTIVE ZXING_ENABLE_CATEGORY_MATRIX_EFFECTIVE ZXING_ENABLE_NEWFORMAT)
+
 # Add to public flags
 list(APPEND ZXING_PUBLIC_FLAGS
-    $<$<BOOL:${ZXING_ENABLE_NEWFORMAT}>:-DZXING_WITH_NEWFORMAT>)
+    $<$<BOOL:${ZXING_ENABLE_NEWFORMAT_EFFECTIVE}>:-DZXING_WITH_NEWFORMAT>)
 
 # Add reader files
-if (ZXING_READERS AND ZXING_ENABLE_NEWFORMAT)
+if (ZXING_READERS AND ZXING_ENABLE_NEWFORMAT_EFFECTIVE)
     set(NEWFORMAT_FILES ${NEWFORMAT_FILES}
         src/newformat/NFReader.h
         src/newformat/NFReader.cpp
@@ -350,7 +370,7 @@ if (ZXING_READERS AND ZXING_ENABLE_NEWFORMAT)
 endif()
 
 # Add writer files
-if (ZXING_WRITERS_OLD AND ZXING_ENABLE_NEWFORMAT)
+if (ZXING_WRITERS_OLD AND ZXING_ENABLE_NEWFORMAT_EFFECTIVE)
     set(NEWFORMAT_FILES ${NEWFORMAT_FILES}
         src/newformat/NFWriter.h
         src/newformat/NFWriter.cpp
